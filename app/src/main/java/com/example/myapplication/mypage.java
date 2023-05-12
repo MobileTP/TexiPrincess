@@ -1,16 +1,26 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
 
 public class mypage extends AppCompatActivity {
 
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
     TextView usingCount, saveCost, userName, userSex;
     RadioGroup userSeatGroup;
     @Override
@@ -35,6 +45,45 @@ public class mypage extends AppCompatActivity {
         userSeatGroup.check();
          */
 
+        toolbar=findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
+
+        navigationView=findViewById(R.id.navigationView);
+        drawerLayout=findViewById(R.id.drawer_layout);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.menu_mypage:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_mytaxi:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        //내생택 리스트 생기면 바꿔주기~~~~~~~~
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_myreview:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        intent = new Intent(getApplicationContext(), my_review.class);
+                        startActivity(intent);
+                        return true;
+                }
+
+                return false;
+            }
+        });
 
         //선화좌석 선택변경 시
         userSeatGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

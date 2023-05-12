@@ -12,26 +12,24 @@
         android:layout_height="match_parent"
         android:background="#fffff0">
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </FrameLayout>
-
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
+
+            <fragment
+                android:name="com.example.myapplication.navi_header"
+                android:id="@+id/fragment_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/navi_header" />
+
             <Button
                 android:id="@+id/review_btn_1"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:background="@drawable/border"
+                android:background="@drawable/button_selector"
                 android:text="약속시간을 잘 지켜요"
                 android:textColor="#000000"
                 android:textSize="27sp" />
@@ -40,7 +38,7 @@
                 android:id="@+id/review_btn_2"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:background="@drawable/border"
+                android:background="@drawable/button_selector"
                 android:text="매너가 좋아요"
                 android:textColor="#000000"
                 android:textSize="27sp" />
@@ -49,12 +47,23 @@
                 android:id="@+id/review_btn_3"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:background="@drawable/border"
+                android:background="@drawable/button_selector"
                 android:text="깔끔해요"
                 android:textColor="#000000"
                 android:textSize="27sp" />
             <TextView/>
         </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_review_next"
+            android:text="다음"
+            android:background="@drawable/button_unclicked"
+            android:textColor="#000000"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            />
 
         <include layout="@layout/toolbar_layout"/>
     </RelativeLayout>

@@ -6,7 +6,7 @@
             />
         <item
             android:id="@+id/menu_mytaxi"
-            android:title="내택"
+            android:title="내생택"
             />
         <item
             android:id="@+id/menu_myreview"

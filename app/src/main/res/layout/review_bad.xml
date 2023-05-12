@@ -20,45 +20,61 @@
 
             <fragment
                 android:name="com.example.myapplication.navi_header"
-                android:id="@+id/fragment_Myprofile"
+                android:id="@+id/fragment_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/navi_header" />
 
-            <TextView
-                android:id="@+id/Myreview_top_1"
+            <Button
+                android:id="@+id/review_btn_4"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:background="@drawable/border"
-                android:text="약속시간을 잘 지켜요"
+                android:background="@drawable/button_selector"
+                android:text="약속시간을 안 지켜요"
                 android:textColor="#000000"
-                android:textAlignment="center"
-                android:gravity="center"
                 android:textSize="27sp" />
             <TextView/>
-            <TextView
-                android:id="@+id/Myreview_top_2"
+            <Button
+                android:id="@+id/review_btn_5"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:background="@drawable/border"
-                android:text="매너가 좋아요"
+                android:background="@drawable/button_selector"
+                android:text="매너가 나빠요"
                 android:textColor="#000000"
-                android:textAlignment="center"
-                android:gravity="center"
                 android:textSize="27sp" />
             <TextView/>
-            <TextView
-                android:id="@+id/Myreview_top_3"
+            <Button
+                android:id="@+id/review_btn_6"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:background="@drawable/border"
-                android:text="깔끔해요"
+                android:background="@drawable/button_selector"
+                android:text="어수선해요"
                 android:textColor="#000000"
-                android:textAlignment="center"
-                android:gravity="center"
                 android:textSize="27sp" />
             <TextView/>
         </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_review_before"
+            android:text="이전"
+            android:background="@drawable/button_unclicked"
+            android:textColor="#000000"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_review_finish"
+            android:text="완료"
+            android:background="@drawable/button_unclicked"
+            android:textColor="#000000"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            />
 
         <include layout="@layout/toolbar_layout"/>
     </RelativeLayout>
