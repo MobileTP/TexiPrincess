@@ -148,7 +148,8 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp">
+                android:paddingBottom="16dp"
+                android:checkedButton="@id/User_seat_back">
 
                 <RadioButton
                     android:id="@+id/User_seat_front"

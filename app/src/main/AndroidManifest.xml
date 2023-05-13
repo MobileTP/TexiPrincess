@@ -15,10 +15,19 @@
             android:name=".mypage"
             android:exported="false" />
         <activity
+            android:name=".boarding"
+            android:exported="false" />
+        <activity
+            android:name=".my_review"
+            android:exported="false" />
+        <activity
             android:name=".bogi_listActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".reviewBad"
             android:exported="false" />
         <activity
             android:name=".reviewGood"
