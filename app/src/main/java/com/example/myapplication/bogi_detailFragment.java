@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import org.w3c.dom.Text;
+
 public class bogi_detailFragment extends Fragment {
 
     private Toolbar toolbar;
@@ -28,10 +30,23 @@ public class bogi_detailFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         Bundle bundle = getArguments();
-        String name = bundle.getString("name");
-        Toast.makeText(getActivity().getApplicationContext(), name, Toast.LENGTH_SHORT).show();
-        TextView name1 = rootView.findViewById(R.id.departure);
-        name1.setText(name);
+        String depart = bundle.getString("depart");
+        String arrive = bundle.getString("arrive");
+        String time = bundle.getString("time");
+        int head = bundle.getInt("head");
+        int price = bundle.getInt("price");
+        TextView departtxt = rootView.findViewById(R.id.depart);
+        TextView arrivetxt = rootView.findViewById(R.id.arrive);
+        TextView timetxt = rootView.findViewById(R.id.time);
+        TextView headtxt = rootView.findViewById(R.id.head);
+        TextView pricetxt = rootView.findViewById(R.id.price);
+        departtxt.setText(depart);
+        arrivetxt.setText(arrive);
+        timetxt.setText(time);
+        headtxt.setText(head + "/4");
+        pricetxt.setText(price + "원");
+
+
         return rootView;
     }
 

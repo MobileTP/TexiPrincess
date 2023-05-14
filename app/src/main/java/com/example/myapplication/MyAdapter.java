@@ -44,10 +44,14 @@ public class MyAdapter extends BaseAdapter {
         ImageView imageView = (ImageView)view.findViewById(R.id.poster);
         TextView movieName = (TextView)view.findViewById(R.id.movieName);
         TextView grade = (TextView)view.findViewById(R.id.grade);
+        TextView time = (TextView)view.findViewById(R.id.dapart);
 
         imageView.setImageResource(sample.get(position).getPoster());
-        movieName.setText(sample.get(position).getMovieName());
-        grade.setText(sample.get(position).getGrade());
+        movieName.setText(sample.get(position).getDepart());
+        grade.setText(sample.get(position).getArrive());
+
+        String[] str = sample.get(position).getTime().split(" ");
+        time.setText(str[1]);
 
         return view;
     }

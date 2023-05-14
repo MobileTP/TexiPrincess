@@ -35,7 +35,7 @@
                 android:text="출발장소   "/>
 
             <TextView
-                android:id="@+id/departure"
+                android:id="@+id/depart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -52,7 +52,7 @@
                 android:text="도착장소   "/>
 
             <TextView
-                android:id="@+id/arrival"
+                android:id="@+id/arrive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -86,7 +86,7 @@
                 android:text="현재인원   "/>
 
             <TextView
-                android:id="@+id/person"
+                android:id="@+id/head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"

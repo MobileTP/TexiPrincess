@@ -48,7 +48,11 @@ public class bogi_listActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 Bundle bundle = new Bundle();
-                bundle.putString("name", myAdapter.getItem(position).getGrade());
+                bundle.putString("depart", myAdapter.getItem(position).getDepart());
+                bundle.putString("arrive", myAdapter.getItem(position).getArrive());
+                bundle.putString("time", myAdapter.getItem(position).getTime());
+                bundle.putInt("head", myAdapter.getItem(position).getHeadCount());
+                bundle.putInt("price", myAdapter.getItem(position).getPrice());
                 openfragment(Bogi_detailFragment, bundle);
             }
         });
@@ -66,22 +70,10 @@ public class bogi_listActivity extends AppCompatActivity {
     {
         movieDataList = new ArrayList<SampleData>();
 
-        movieDataList.add(new SampleData(R.drawable.logo, "미션임파서블","15세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "아저씨","19세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
-        movieDataList.add(new SampleData(R.drawable.logo, "어벤져스","12세 이상관람가"));
+        movieDataList.add(new SampleData(R.drawable.logo, "가천대학교","태평역", "2023/05/01 10:55", 2, 24000));
+        movieDataList.add(new SampleData(R.drawable.logo, "잠실역","강남역", "2023/05/02 11:55", 1, 10000));
+        movieDataList.add(new SampleData(R.drawable.logo, "건대입구역","홍대입구역", "2023/05/03 12:55", 3, 34000));
+        movieDataList.add(new SampleData(R.drawable.logo, "성수역","사당역", "2023/05/04 13:55", 1, 30000));
+        movieDataList.add(new SampleData(R.drawable.logo, "석촌역","가천대역", "2023/05/05 14:55", 4, 12000));
     }
 }
