@@ -11,11 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private navi_header fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -27,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
         //injae
+
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
@@ -35,6 +39,37 @@ public class HomeActivity extends AppCompatActivity {
 
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.menu_mypage:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_mytaxi:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        //내생택 리스트 생기면 바꿔주기~~~~~~~~
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_myreview:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        intent = new Intent(getApplicationContext(), my_review.class);
+                        startActivity(intent);
+                        return true;
+                }
+
+                return false;
+            }
+        });
         //injae
 
         sangButton = findViewById(R.id.taxi_sang);

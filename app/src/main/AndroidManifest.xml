@@ -17,11 +17,24 @@
             android:name=".mypage"
             android:exported="false" />
         <activity
+            android:name=".boarding"
+            android:exported="false" />
+        <activity
+            android:name=".my_review"
+            android:exported="false" />
+        <activity
             android:name=".bogi_listActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
+        <activity
+            android:name=".reviewBad"
+            android:exported="false" />
+        <activity
+            android:name=".reviewGood"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item
-            android:id="@+id/menu_mypage"
-            android:title="마이페이지"
-            />
-        <item
-            android:id="@+id/menu_mytaxi"
-            android:title="내택"
-            />
-        <item
-            android:id="@+id/menu_myreview"
-            android:title="내리뷰"
-            />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+        <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_mypage"
+                    android:title="마이페이지"
+                    />
+                <item
+                    android:id="@+id/menu_mytaxi"
+                    android:title="내생택"
+                    />
+                <item
+                    android:id="@+id/menu_myreview"
+                    android:title="내리뷰"
+                    />
+        </group>
 </menu>

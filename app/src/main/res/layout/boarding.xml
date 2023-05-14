@@ -4,23 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
-    android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
-        android:id="@+id/activity_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fffff0"
-        tools:context=".HomeActivity">
+        android:background="#fffff0">
 
-        <ImageView
-            android:id="@+id/logo_imageview"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+        <TextView
+            android:id="@+id/boarding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/logo" />
+            android:textSize="50sp"
+            android:text="탑승 중..." />
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -30,21 +27,21 @@
             android:stretchColumns="*">
             <TableRow>
                 <Button
-                    android:id="@+id/taxi_sang"
+                    android:id="@+id/boarding_btn_payment"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:background="#000000"
-                    android:text="택 생성"
-                    android:textColor="#ffffff"
+                    android:background="@drawable/border"
+                    android:text="결제"
+                    android:textColor="#000000"
                     android:textSize="27sp" />
 
                 <Button
-                    android:id="@+id/taxi_bogi"
+                    android:id="@+id/boarding_btn_review"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
-                    android:text="택 보기"
-                    android:textColor="#ffffff"
-                    android:background="#000000"
+                    android:text="리뷰"
+                    android:textColor="#000000"
+                    android:background="@drawable/border"
                     android:textSize="27sp"
                     android:layout_centerHorizontal="true"/>
             </TableRow>
