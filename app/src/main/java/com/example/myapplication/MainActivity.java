@@ -7,6 +7,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.seungwon.LoginActivity;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
             }
