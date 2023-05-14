@@ -1,12 +1,16 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.seungwon.LoginActivity;
+
 public class MainActivity extends AppCompatActivity {
+
 
     private static int SPLASH_TIME_OUT = 3000; // 3초
 
@@ -19,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
             }

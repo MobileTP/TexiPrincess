@@ -2,19 +2,11 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.MenuItem;
-import android.view.View;
-import androidx.appcompat.widget.Toolbar;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -22,22 +14,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class HomeActivity extends AppCompatActivity {
-
-    private Button sangButton;
-    private Button bogiButton;
-    private double pressedTime;
+public class my_review extends AppCompatActivity {
 
     private navi_header fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home2);
-        //injae
+        setContentView(R.layout.my_reivew);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -78,48 +66,8 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
-        //injae
-
-        sangButton = findViewById(R.id.taxi_sang);
-        sangButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        bogiButton = findViewById(R.id.taxi_bogi);
-        bogiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, bogi_listActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if ( pressedTime == 0 ) {
-//            Toast.makeText(HomeActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
-//            pressedTime = System.currentTimeMillis();
-//        }
-//        else {
-//            int seconds = (int) (System.currentTimeMillis() - pressedTime);
-//
-//            if ( seconds > 5000 ) {
-//                Toast.makeText(HomeActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
-//                pressedTime = 0 ;
-//            }
-//            else {
-//                super.onBackPressed();
-////                finish(); // app 종료 시키기
-//            }
-//        }
-//    }
-
-    //injae
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -139,6 +87,5 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-    //injae
-}
 
+}
