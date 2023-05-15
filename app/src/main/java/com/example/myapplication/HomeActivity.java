@@ -94,8 +94,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             return;
         }
 
-//        //지도를 띄우자
-//        // java code
+        //지도를 띄우자
+        // java code
 //        mapView = new MapView(this);
 //        mapViewContainer = (ViewGroup) findViewById(R.id.map);
 //        mapViewContainer.addView(mapView);
