@@ -2,41 +2,26 @@ package com.example.myapplication;
 
 public class CommentData {
 
-    private int poster;
-    private String depart;
-    private String arrive;
-    private String time;
-    private int headCount;
-    private int price;
+    private int profile;
+    private String name;
+    private String comment;
 
-    public CommentData(int poster, String depart, String arrive, String time, int headCount, int price){
-        this.poster = poster;
-        this.depart = depart;
-        this.arrive = arrive;
-        this.time = time;
-        this.headCount = headCount;
-        this.price = price;
+    public CommentData(int profile, String name, String comment){
+        this.profile = profile;
+        this.name = name;
+        this.comment = comment;
     }
 
-    public int getPoster() { return this.poster; }
+    public int getprofile() { return this.profile; }
 
-    public String getDepart()
+    public String getname()
     {
-        return this.depart;
+        return this.name;
     }
 
-    public String getArrive()
+    public String getcomment()
     {
-        return this.arrive;
+        return this.comment;
     }
-
-    public String getTime()
-    {
-        return this.time;
-    }
-
-    public int getHeadCount() { return this.headCount; }
-
-    public int getPrice() { return this.price; }
 
 }
