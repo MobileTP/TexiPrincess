@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fffff0">
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <fragment
+                android:name="com.example.myapplication.navi_header"
+                android:id="@+id/fragment_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/navi_header" />
+
+            <Button
+                android:id="@+id/review_btn_4"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:background="@drawable/button_selector"
+                android:text="약속시간을 안 지켜요"
+                android:textColor="#000000"
+                android:textSize="27sp" />
+            <TextView/>
+            <Button
+                android:id="@+id/review_btn_5"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:background="@drawable/button_selector"
+                android:text="매너가 나빠요"
+                android:textColor="#000000"
+                android:textSize="27sp" />
+            <TextView/>
+            <Button
+                android:id="@+id/review_btn_6"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:background="@drawable/button_selector"
+                android:text="어수선해요"
+                android:textColor="#000000"
+                android:textSize="27sp" />
+            <TextView/>
+        </TableLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_review_before"
+            android:text="이전"
+            android:background="@drawable/button_unclicked"
+            android:textColor="#000000"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_review_finish"
+            android:text="완료"
+            android:background="@drawable/button_unclicked"
+            android:textColor="#000000"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            />
+
+        <include layout="@layout/toolbar_layout"/>
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/navigationView"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="left"
+        app:headerLayout="@layout/navi_header"
+        app:menu="@menu/drawer_menu"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

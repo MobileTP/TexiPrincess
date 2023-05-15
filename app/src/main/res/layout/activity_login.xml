@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/chrome_yellow"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="157dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/taxi_car_front_view" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="고물가 시대에 가성비 좋은 서비스!"/>
+
+    <EditText
+        android:id="@+id/idValue"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/login_textview_design"
+        android:hint="아이디를 입력하세요."
+        android:maxLines="1"
+        android:maxLength="15"
+        android:textSize="12sp"
+        android:inputType="textVisiblePassword"
+        android:padding="5dip" />
+
+    <EditText
+        android:id="@+id/pwValue"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/login_textview_design"
+        android:hint="비밀번호를 입력하세요."
+        android:maxLines="1"
+        android:maxLength="15"
+        android:textSize="12sp"
+        android:inputType="textPassword"
+        android:padding="5dip" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="183dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="#FEE500"
+        android:text="로그인"
+        />
+
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="183dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/kakao_login_medium_narrow"
+        android:layout_gravity="center"/>
+
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:text="카카오 로그인" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginStart="4dp"-->
+<!--        android:text="카카오 사용자 이름"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="40dp"/>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="아직 계정이 없으신가요?"
+        android:textAlignment="center"
+        android:layout_marginTop="70dp"/>
+
+    <Button
+        android:id="@+id/registerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:text="회원가입하기"
+        android:background="#FEE500"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>

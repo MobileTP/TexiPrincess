@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<<<<<<< HEAD-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/activity_home"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="#fffff0"-->
+<!--    tools:context=".HomeActivity">-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/logo_imageview"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="250dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:src="@drawable/logo"/>-->
+
+<!--    <TableLayout-->
+<!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:stretchColumns="*">-->
+<!--        <TableRow>-->
+<!--            <Button-->
+<!--                android:id="@+id/taxi_sang"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:background="#000000"-->
+<!--                android:text="택 생성"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:textSize="27sp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/taxi_bogi"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:text="택 보기"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:background="#000000"-->
+<!--                android:textSize="27sp"-->
+<!--                android:layout_centerHorizontal="true"/>-->
+<!--        </TableRow>-->
+<!--    </TableLayout>-->
+
+<!--</RelativeLayout>-->
+
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/activity_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#fffff0"
+        tools:context=".HomeActivity">
+
+        <include layout="@layout/toolbar_layout"/>
+
+        <FrameLayout
+            android:id="@+id/map_frame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/taxi_sang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:background="#000000"
+                    android:text="택 생성"
+                    android:textColor="#ffffff"
+                    android:textSize="27sp" />
+
+                <Button
+                    android:id="@+id/taxi_bogi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:text="택 보기"
+                    android:textColor="#ffffff"
+                    android:background="#000000"
+                    android:textSize="27sp"
+                    android:layout_centerHorizontal="true"/>
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/navigationView"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="left"
+        app:headerLayout="@layout/navi_header"
+        app:menu="@menu/drawer_menu"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+
