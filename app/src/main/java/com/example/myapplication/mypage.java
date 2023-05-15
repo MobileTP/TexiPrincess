@@ -70,7 +70,7 @@ public class mypage extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
                         startActivity(intent);
                         return true;
 
