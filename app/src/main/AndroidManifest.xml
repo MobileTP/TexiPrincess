@@ -37,10 +37,6 @@
             android:name=".MapviewActivity"
             android:exported="false" />
 
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="57daea90b273d6956e6edc2708c69c61" />
-
         <activity
             android:name=".bogi_listActivity"
             android:exported="false" />

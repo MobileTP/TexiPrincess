@@ -94,13 +94,13 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             return;
         }
 
-//        //지도를 띄우자
-//        // java code
-//        mapView = new MapView(this);
-//        mapViewContainer = (ViewGroup) findViewById(R.id.map);
-//        mapViewContainer.addView(mapView);
-//        mapView.setMapViewEventListener(this);
-//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        //지도를 띄우자
+        // java code
+        mapView = new MapView(this);
+        mapViewContainer = (ViewGroup) findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapViewEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
