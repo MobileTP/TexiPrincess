@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CreateTaxi">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_revert" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/map_frame"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1">-->
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/map"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+
+<!--    </FrameLayout>-->
+
+    <LinearLayout
+        android:id="@+id/info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/rounded_border">
+
+        <EditText
+            android:id="@+id/departure"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="출발지" />
+
+        <EditText
+            android:id="@+id/arrival"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="도착지" />
+
+        <EditText
+            android:id="@+id/departure_time"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="출발 시간" />
+
+        <EditText
+            android:id="@+id/number_of_people"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="인원 수" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="생성"
+        android:textColor="#696969"
+        android:background="@drawable/rounded_button" />
+
+</LinearLayout>
