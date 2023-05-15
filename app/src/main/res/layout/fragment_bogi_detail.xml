@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     android:background="#fffff0">
 
-    <RelativeLayout
-        android:id="@+id/map_view"
+    <include layout="@layout/toolbar_layout"/>
+
+<!--    지도 들어가야할 자리-->
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_marginLeft="75dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="86dp"
         android:layout_marginBottom="30dp"
         android:layout_width="250dp"
         android:layout_height="250dp" />
@@ -39,7 +42,7 @@
                 android:text="출발장소   "/>
 
             <TextView
-                android:id="@+id/departure"
+                android:id="@+id/depart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -56,7 +59,7 @@
                 android:text="도착장소   "/>
 
             <TextView
-                android:id="@+id/arrival"
+                android:id="@+id/arrive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -90,7 +93,7 @@
                 android:text="현재인원   "/>
 
             <TextView
-                android:id="@+id/person"
+                android:id="@+id/head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"

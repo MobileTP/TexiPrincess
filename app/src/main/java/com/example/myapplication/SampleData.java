@@ -1,28 +1,42 @@
 package com.example.myapplication;
 
 public class SampleData {
+
     private int poster;
-    private String movieName;
-    private String grade;
+    private String depart;
+    private String arrive;
+    private String time;
+    private int headCount;
+    private int price;
 
-    public SampleData(int poster, String movieName, String grade){
+    public SampleData(int poster, String depart, String arrive, String time, int headCount, int price){
         this.poster = poster;
-        this.movieName = movieName;
-        this.grade = grade;
+        this.depart = depart;
+        this.arrive = arrive;
+        this.time = time;
+        this.headCount = headCount;
+        this.price = price;
     }
 
-    public int getPoster()
+    public int getPoster() { return this.poster; }
+
+    public String getDepart()
     {
-        return this.poster;
+        return this.depart;
     }
 
-    public String getMovieName()
+    public String getArrive()
     {
-        return this.movieName;
+        return this.arrive;
     }
 
-    public String getGrade()
+    public String getTime()
     {
-        return this.grade;
+        return this.time;
     }
+
+    public int getHeadCount() { return this.headCount; }
+
+    public int getPrice() { return this.price; }
+
 }
