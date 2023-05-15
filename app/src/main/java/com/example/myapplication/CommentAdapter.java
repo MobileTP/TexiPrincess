@@ -6,13 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +27,8 @@ public class CommentAdapter extends ArrayAdapter implements AdapterView.OnItemCl
 
     class ViewHolder {
         public TextView tv_name;
-        public TextView tv_summary;
-        public ImageView iv_thumb;
+        public TextView tv_comment;
+        public ImageView iv_profile;
     }
 
     public CommentAdapter(Context context, ArrayList list) {
@@ -45,77 +43,24 @@ public class CommentAdapter extends ArrayAdapter implements AdapterView.OnItemCl
 
         if (convertView == null){
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            convertView = layoutInflater.inflate(R.layout.row_item, parent, false);
+            convertView = layoutInflater.inflate(R.layout.comment_list_custom, parent, false);
         }
 
         viewHolder = new ViewHolder();
-        viewHolder.tv_name = (TextView) convertView.findViewById(R.id.movieName);
-        viewHolder.tv_summary = (TextView) convertView.findViewById(R.id.grade);
-        viewHolder.iv_thumb = (ImageView) convertView.findViewById(R.id.poster);
+        viewHolder.tv_name = (TextView) convertView.findViewById(R.id.name);
+        viewHolder.tv_comment = (TextView) convertView.findViewById(R.id.comment);
+        viewHolder.iv_profile = (ImageView) convertView.findViewById(R.id.profile);
 
-        final CommentData actor = (CommentData) list.get(position);
-        viewHolder.tv_name.setText(actor.getDepart());
-        viewHolder.tv_summary.setText(actor.getArrive());
+        final CommentData comment = (CommentData) list.get(position);
+        viewHolder.tv_name.setText(comment.getname());
+        viewHolder.tv_comment.setText(comment.getcomment());
         Glide
                 .with(context)
-                .load(actor.getPoster())
-                .into(viewHolder.iv_thumb);
-        viewHolder.tv_name.setTag(actor.getDepart());
+                .load(comment.getprofile())
+                .into(viewHolder.iv_profile);
+        viewHolder.tv_name.setTag(comment.getname());
 
-
-//        //아이템 클릭 방법2 - 클릭시 아이템 반전 효과가 안 먹힘
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(context, " " + actor.getName(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-        //Return the completed view to render on screen
         return convertView;
     }
 
-//    Context mContext = null;
-//    LayoutInflater mLayoutInflater = null;
-//    ArrayList<CommentData> sample;
-//
-//    public CommentAdapter(Context context, ArrayList<CommentData> data) {
-//        mContext = context;
-//        sample = data;
-//        mLayoutInflater = LayoutInflater.from(mContext);
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return sample.size();
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public CommentData getItem(int position) {
-//        return sample.get(position);
-//    }
-//
-//    @Override
-//    public View getView(int position, View converView, ViewGroup parent) {
-//        View view = mLayoutInflater.inflate(R.layout.listview_custom, null);
-//
-//        ImageView imageView = (ImageView)view.findViewById(R.id.poster);
-//        TextView movieName = (TextView)view.findViewById(R.id.movieName);
-//        TextView grade = (TextView)view.findViewById(R.id.grade);
-//        TextView time = (TextView)view.findViewById(R.id.dapart);
-//
-//        imageView.setImageResource(sample.get(position).getPoster());
-//        movieName.setText(sample.get(position).getDepart());
-//        grade.setText(sample.get(position).getArrive());
-//
-//        String[] str = sample.get(position).getTime().split(" ");
-//        time.setText(str[1]);
-//
-//        return view;
-//    }
 }
