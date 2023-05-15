@@ -9,10 +9,11 @@
     <include layout="@layout/toolbar_layout"/>
 
 <!--    지도 들어가야할 자리-->
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_marginLeft="75dp"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="130dp"
         android:layout_marginBottom="30dp"
         android:layout_width="250dp"
         android:layout_height="250dp"
