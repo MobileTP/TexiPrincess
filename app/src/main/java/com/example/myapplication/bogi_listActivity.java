@@ -39,7 +39,7 @@ public class bogi_listActivity extends AppCompatActivity {
         this.InitializeMovieData();
 
         ListView listView = (ListView)findViewById(R.id.listView);
-        final MyAdapter myAdapter = new MyAdapter(this,movieDataList);
+        final MyAdapter myAdapter = new MyAdapter(this, movieDataList);
 
         listView.setAdapter(myAdapter);
 

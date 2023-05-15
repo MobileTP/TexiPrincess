@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="56dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffff0">
+
+    <ListView
+        android:id="@+id/listView_custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+</FrameLayout>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--&lt;!&ndash;댓글 창을 위한 화면 디자인입니다&ndash;&gt;-->
+<!--<RelativeLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:orientation="vertical"-->
+<!--    android:layout_marginTop="56dp"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="#fffff0">-->
+
+<!--    <ListView-->
+<!--        android:id="@+id/listView"-->
+<!--        android:layout_marginTop="56dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+<!--</RelativeLayout>-->
+
