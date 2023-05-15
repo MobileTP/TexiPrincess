@@ -45,7 +45,8 @@
 
 <!--</RelativeLayout>-->
 
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -54,27 +55,36 @@
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/activity_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="#fffff0"
         tools:context=".HomeActivity">
 
-        <ImageView
-            android:id="@+id/logo_imageview"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/logo" />
+        <include layout="@layout/toolbar_layout"/>
+
+        <FrameLayout
+            android:id="@+id/map_frame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
 
         <TableLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:stretchColumns="*">
+
             <TableRow>
+
                 <Button
                     android:id="@+id/taxi_sang"
                     android:layout_width="wrap_content"
@@ -95,8 +105,8 @@
                     android:layout_centerHorizontal="true"/>
             </TableRow>
         </TableLayout>
-        <include layout="@layout/toolbar_layout"/>
-    </RelativeLayout>
+
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
@@ -108,3 +118,4 @@
         app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
+
