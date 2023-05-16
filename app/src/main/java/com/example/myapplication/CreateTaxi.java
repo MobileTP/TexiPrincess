@@ -43,7 +43,7 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createtaxi);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbarC);
         setSupportActionBar(toolbar);
 
 //        try {
