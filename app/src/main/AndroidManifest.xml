@@ -20,10 +20,11 @@
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="e5c619d692f49b32c748abbfd950ce0a"/>
         <activity
             android:name=".MySangTaxi"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CreateTaxi"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".mypage"
             android:exported="false" />

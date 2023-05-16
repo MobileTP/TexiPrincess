@@ -1,14 +1,21 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -19,6 +26,8 @@ public class MySangTaxi extends AppCompatActivity {
 
 //    툴바
     private Toolbar toolbar;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
 
 
     @Override
@@ -29,6 +38,43 @@ public class MySangTaxi extends AppCompatActivity {
 //        툴바
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
+
+        navigationView=findViewById(R.id.navigationView);
+        drawerLayout=findViewById(R.id.drawer_layout);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.menu_mypage:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_mytaxi:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        //내생택 리스트 생기면 바꿔주기~~~~~~~~
+                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_myreview:
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        intent = new Intent(getApplicationContext(), my_review.class);
+                        startActivity(intent);
+                        return true;
+                }
+
+                return false;
+            }
+        });
 
 //        객체 생성
         this.InitializeMovieData();
@@ -73,5 +119,25 @@ public class MySangTaxi extends AppCompatActivity {
         movieDataList.add(new SampleData(R.drawable.logo, "건대입구역","홍대입구역", "2023/05/03 12:55", 3, 34000));
         movieDataList.add(new SampleData(R.drawable.logo, "성수역","사당역", "2023/05/04 13:55", 1, 30000));
         movieDataList.add(new SampleData(R.drawable.logo, "석촌역","가천대역", "2023/05/05 14:55", 4, 12000));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ // 왼쪽 상단 버튼 눌렀을 때
+                drawerLayout.openDrawer(androidx.core.view.GravityCompat.START);
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() { //뒤로가기 했을 때
+        if (drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
