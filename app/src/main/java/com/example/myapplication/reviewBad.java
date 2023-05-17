@@ -103,7 +103,10 @@ public class reviewBad extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //추가 DB 업데이트
+                //추가 리뷰테이블 업데이트
+                Boolean btn1 = getIntent().getBooleanExtra("btn1",false);
+                Boolean btn2 = getIntent().getBooleanExtra("btn2",false);
+                Boolean btn3 = getIntent().getBooleanExtra("btn3",false);
                 //리뷰 테이블에 1개씩 증가
                 if(btn4.isSelected())
                     ;

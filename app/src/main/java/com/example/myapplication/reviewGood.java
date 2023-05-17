@@ -94,15 +94,10 @@ public class reviewGood extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //추가 DB 업데이트
-                //리뷰 테이블에 1개씩 증가
-                if(btn1.isSelected())
-                    ;
-                if(btn2.isSelected())
-                    ;
-                if(btn2.isSelected())
-                    ;
                 Intent intent = new Intent(getApplicationContext(), reviewBad.class);
+                intent.putExtra("btn1",btn1.isSelected());
+                intent.putExtra("btn2",btn2.isSelected());
+                intent.putExtra("btn3",btn3.isSelected());
                 startActivity(intent);
             }
         });
