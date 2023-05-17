@@ -3,6 +3,8 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ public class reviewBad extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    private Button prev, finish, btn4, btn5, btn6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,12 @@ public class reviewBad extends AppCompatActivity {
 
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
+
+        prev=findViewById(R.id.btn_review_prev);
+        finish=findViewById(R.id.btn_review_finish);
+        btn4=findViewById(R.id.review_btn_4);
+        btn5=findViewById(R.id.review_btn_5);
+        btn6=findViewById(R.id.review_btn_6);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -64,6 +73,49 @@ public class reviewBad extends AppCompatActivity {
                 return false;
             }
         });
+
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn4.setSelected(!btn4.isSelected());
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn5.setSelected(!btn5.isSelected());
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn6.setSelected(!btn6.isSelected());
+            }
+        });
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), reviewGood.class);
+                startActivity(intent);
+            }
+        });
+
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //추가 DB 업데이트
+                //리뷰 테이블에 1개씩 증가
+                if(btn4.isSelected())
+                    ;
+                if(btn5.isSelected())
+                    ;
+                if(btn6.isSelected())
+                    ;
+                Intent intent = new Intent(getApplicationContext(), boarding.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
