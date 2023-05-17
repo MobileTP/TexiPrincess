@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class my_review extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    private TextView reviewTop[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class my_review extends AppCompatActivity {
 
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
+
+        reviewTop= new TextView[]{findViewById(R.id.Myreview_top_1), findViewById(R.id.Myreview_top_2), findViewById(R.id.Myreview_top_3)};
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -66,6 +70,52 @@ public class my_review extends AppCompatActivity {
                 return false;
             }
         });
+
+        ////사용자의 리뷰 중 top3를 찾기
+        //추가 리뷰테이블에서 리뷰 별 개수 받아오기
+        int[] review={6,5,3,1,0,0};
+        int[] top={-1,-1,-1};
+        int tmp = -1;
+        int ord = 0;
+        while(ord!=3) {
+            for (int i = 0; i < 6; i++) {
+                if (i == 0) {
+                    tmp = -1;
+                }
+
+                if (i == top[0] || i == top[1])
+                    continue;
+                if (tmp < review[i]) {
+                    tmp = review[i];
+                    top[ord] = i;
+                }
+            }
+            switch (top[ord]){
+                case 0:
+                    reviewTop[ord].setText("친절해요 "+review[top[ord]]);
+                    break;
+                case 1:
+                    reviewTop[ord].setText("시간을 잘 지켜요 "+review[top[ord]]);
+                    break;
+                case 2:
+                    reviewTop[ord].setText("말을 안 걸어요 "+review[top[ord]]);
+                    break;
+                case 3:
+                    reviewTop[ord].setText("불친절해요 "+review[top[ord]]);
+                    break;
+                case 4:
+                    reviewTop[ord].setText("시간을 안 지켜요 "+review[top[ord]]);
+                    break;
+                case 5:
+                    reviewTop[ord].setText("말을 자꾸 걸어요 "+review[top[ord]]);
+                    break;
+            }
+
+            ord++;
+        }
+
+
+
     }
 
     @Override

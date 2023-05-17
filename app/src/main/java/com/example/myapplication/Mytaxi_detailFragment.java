@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,6 +68,8 @@ public class Mytaxi_detailFragment extends Fragment implements View.OnClickListe
         switch (view.getId()) {
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), boarding.class);
+                startActivity(intent);
                 break;
             case R.id.comment:
                 Toast.makeText(getContext(),"comment",Toast.LENGTH_SHORT).show();

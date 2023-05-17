@@ -64,6 +64,8 @@ public class bogi_detailFragment extends Fragment implements View.OnClickListene
         switch (view.getId()) {
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), boarding.class);
+                startActivity(intent);
                 break;
             case R.id.comment:
                 Toast.makeText(getContext(),"comment",Toast.LENGTH_SHORT).show();
