@@ -37,7 +37,9 @@
         <activity
             android:name=".MapviewActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".ReviewActivity"
+            android:exported="false" />
         <activity
             android:name=".bogi_listActivity"
             android:exported="false" />
