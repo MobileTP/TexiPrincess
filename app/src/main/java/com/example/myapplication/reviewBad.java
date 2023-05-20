@@ -114,7 +114,7 @@ public class reviewBad extends AppCompatActivity {
                     ;
                 if(btn6.isSelected())
                     ;
-                Intent intent = new Intent(getApplicationContext(), boarding.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
             }
         });

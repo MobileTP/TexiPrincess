@@ -63,6 +63,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".seungwon.PayActivity"/>
+        <activity android:name=".seungwon.KakaoPayActivity"/>
         <activity
             android:name=".seungwon.RegisterActivity"
             android:exported="true" /> <!-- portrait - 세로모드 고정 -->

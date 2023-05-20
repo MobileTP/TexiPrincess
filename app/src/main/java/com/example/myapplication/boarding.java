@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.seungwon.PayActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class boarding extends AppCompatActivity {
@@ -76,7 +77,7 @@ public class boarding extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //추가 결제 클래스로 연결
-                Intent intent = new Intent(getApplicationContext(), CreateTaxi.class);
+                Intent intent = new Intent(getApplicationContext(), PayActivity.class);
                 startActivity(intent);
             }
         });
