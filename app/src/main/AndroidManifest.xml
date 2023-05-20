@@ -25,6 +25,9 @@
             android:name=".CreateTaxi"
             android:exported="false" />
         <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".mypage"
             android:exported="false" />
         <activity

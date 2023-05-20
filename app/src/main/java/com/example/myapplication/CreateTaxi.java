@@ -1,11 +1,14 @@
 package com.example.myapplication;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -28,12 +31,22 @@ import net.daum.mf.map.api.MapPolyline;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
     private MapView mapView;
     private ViewGroup mapViewContainer;
     private Toolbar toolbar;
     private Button createButton, searchButton1,searchButton2;
     private EditText departure, arrival, departureTime, numberOfPeople;
+
+    private static final String BASE_URL = "https://dapi.kakao.com/";
+    private static final String API_KEY = "KakaoAK fe94c788c227a80046a80f13fce7d65a"; // REST API key
+
 
     public CreateTaxi() {
     }
@@ -46,73 +59,96 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        // 권한ID를 가져옵니다
-        int permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.INTERNET);
-
-        int permission2 = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-
-        int permission3 = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        // 권한이 열려있는지 확인
-        if (permission == PackageManager.PERMISSION_DENIED || permission2 == PackageManager.PERMISSION_DENIED || permission3 == PackageManager.PERMISSION_DENIED) {
-            // 마쉬멜로우 이상버전부터 권한을 물어본다
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
-                requestPermissions(
-                        new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        1000);
-            }
-            return;
-        }
-
-        //지도를 띄우자
-        // java code
-        mapView = new MapView(this);
-        mapViewContainer = (ViewGroup) findViewById(R.id.map);
-        mapViewContainer.addView(mapView);
-        mapView.setMapViewEventListener(this);
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // 권한ID를 가져옵니다
+//        int permission = ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.INTERNET);
+//
+//        int permission2 = ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION);
+//
+//        int permission3 = ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION);
+//
+//        // 권한이 열려있는지 확인
+//        if (permission == PackageManager.PERMISSION_DENIED || permission2 == PackageManager.PERMISSION_DENIED || permission3 == PackageManager.PERMISSION_DENIED) {
+//            // 마쉬멜로우 이상버전부터 권한을 물어본다
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
+//                requestPermissions(
+//                        new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+//                        1000);
+//            }
+//            return;
+//        }
+//
+//        //지도를 띄우자
+//        // java code
+//        mapView = new MapView(this);
+//        mapViewContainer = (ViewGroup) findViewById(R.id.map);
+//        mapViewContainer.addView(mapView);
+//        mapView.setMapViewEventListener(this);
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//
         departure = findViewById(R.id.departure);
         arrival = findViewById(R.id.arrival);
         departureTime = findViewById(R.id.departure_time);
         numberOfPeople = findViewById(R.id.number_of_people);
 
-
-
-        searchButton1 = findViewById(R.id.search_button_departure);
-        searchButton1.setOnClickListener(new View.OnClickListener() {
+        departure.setFocusable(false);
+        departure.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Add the functionality to go back to the previous window
-
+            public void onClick(View v) {
+                //주소 검색 웹뷰 화면으로 이동
+                Intent intent = new Intent(CreateTaxi.this, SearchActivity.class);
+                getSearchResult.launch(intent);
             }
         });
 
-        searchButton2 = findViewById(R.id.search_button_destination);
-        searchButton2.setOnClickListener(new View.OnClickListener() {
+        arrival.setFocusable(false);
+        arrival.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Add the functionality to go back to the previous window
-
+            public void onClick(View v) {
+                //주소 검색 웹뷰 화면으로 이동
+                Intent intent = new Intent(CreateTaxi.this, SearchActivity.class);
+                getSearchResult.launch(intent);
             }
         });
+
+
+
+//        searchButton1 = findViewById(R.id.search_button_departure);
+//        searchButton1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Retrieve the text from the departure EditText
+//                String departureText = departure.getText().toString();
+//
+//                // Use the text as a parameter for the searchKeyword method
+//                searchKeyword(departureText);
+//            }
+//        });
+//
+//        searchButton2 = findViewById(R.id.search_button_destination);
+//        searchButton2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Add the functionality to go back to the previous window
+//
+//            }
+//        });
 
         createButton = findViewById(R.id.create_button);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +158,45 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
             }
         });
     }
+
+    private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                //search Activity 로부터의 결과 값이 이골으로 전달 된다
+                if (result.getResultCode() == RESULT_OK){
+                    if(result.getData() != null) {
+                        String data = result.getData().getStringExtra("data");
+                        departure.setText(data);
+                    }
+                }
+            }
+    );
+
+    private void searchKeyword(String keyword) {
+        Retrofit retrofit = new Retrofit.Builder() // Retrofit setup
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        KakaoAPI api = retrofit.create(KakaoAPI.class); // Create communication interface object
+        Call<ResultSearchKeyword> call = api.getSearchKeyword(API_KEY, keyword); // Input search conditions
+
+        // Request to API server
+        call.enqueue(new Callback<ResultSearchKeyword>() {
+            @Override
+            public void onResponse(Call<ResultSearchKeyword> call, Response<ResultSearchKeyword> response) {
+                // Communication success (search results are stored in response.body())
+                Log.d("Test", "Raw: " + response.raw());
+                Log.d("Test", "Body: " + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ResultSearchKeyword> call, Throwable t) {
+                // Communication failure
+                Log.w("CreateTaxi", "Communication failure: " + t.getMessage());
+            }
+        });
+    }
+
     // 권한 체크 이후로직
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grandResults) {

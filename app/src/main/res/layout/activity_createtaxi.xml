@@ -31,49 +31,18 @@
         android:layout_margin="15dp"
         android:background="@drawable/rounded_border">
 
-        <LinearLayout
+
+        <EditText
+            android:id="@+id/departure"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_height="48dp"
+            android:hint="출발지" />
 
-            <EditText
-                android:id="@+id/departure"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:hint="출발지" />
-
-            <Button
-                android:id="@+id/search_button_departure"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="검색"
-                android:textColor="#696969"
-                android:background="@drawable/rounded_button2"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/arrival"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <EditText
-                android:id="@+id/arrival"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:hint="도착지" />
-
-            <Button
-                android:id="@+id/search_button_destination"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="검색"
-                android:textColor="#696969"
-                android:background="@drawable/rounded_button2"/>
-        </LinearLayout>
+            android:layout_height="48dp"
+            android:hint="도착지" />
 
         <EditText
             android:id="@+id/departure_time"
