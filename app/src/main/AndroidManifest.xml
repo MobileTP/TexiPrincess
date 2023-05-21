@@ -20,10 +20,11 @@
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="e5c619d692f49b32c748abbfd950ce0a"/>
         <activity
             android:name=".MySangTaxi"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CreateTaxi"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
@@ -39,7 +40,9 @@
         <activity
             android:name=".MapviewActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".ReviewActivity"
+            android:exported="false" />
         <activity
             android:name=".bogi_listActivity"
             android:exported="false" />
@@ -63,6 +66,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".seungwon.PayActivity"/>
+        <activity android:name=".seungwon.KakaoPayActivity"/>
         <activity
             android:name=".seungwon.RegisterActivity"
             android:exported="true" /> <!-- portrait - 세로모드 고정 -->
