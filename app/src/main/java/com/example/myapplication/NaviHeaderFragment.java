@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class navi_header extends Fragment {
+public class NaviHeaderFragment extends Fragment {
 
     @Nullable
     @Override

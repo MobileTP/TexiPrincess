@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.comment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,23 +12,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
-import android.view.View;
+
 import androidx.appcompat.widget.Toolbar;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.mypage.MyPageActivity;
+import com.example.myapplication.mypage.MyReviewActivity;
+import com.example.myapplication.mypage.MySangTaxiActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import net.daum.mf.map.api.MapPoint;
@@ -44,7 +42,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private Button bogiButton;
     private double pressedTime;
 
-    private navi_header fragmentNavi;
+    private NaviHeaderFragment fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -114,7 +112,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                     case R.id.menu_mypage:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         startActivity(intent);
                         return true;
 
@@ -122,14 +120,14 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
-                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
+                        intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         startActivity(intent);
                         return true;
 
                     case R.id.menu_myreview:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        intent = new Intent(getApplicationContext(), my_review.class);
+                        intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         startActivity(intent);
                         return true;
                 }
@@ -143,7 +141,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         sangButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, CreateTaxi.class);
+                Intent intent = new Intent(HomeActivity.this, CreateTaxiActivity.class);
                 startActivity(intent);
             }
         });
@@ -152,7 +150,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         bogiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, bogi_listActivity.class);
+                Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
                 startActivity(intent);
             }
         });

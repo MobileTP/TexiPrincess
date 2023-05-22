@@ -1,4 +1,4 @@
-package com.example.myapplication.seungwon;
+package com.example.myapplication.payment;
 
 import androidx.appcompat.app.AppCompatActivity;
 

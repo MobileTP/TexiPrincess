@@ -1,27 +1,19 @@
 package com.example.myapplication;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.mypage.MyAdapter;
+
 import java.util.ArrayList;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-
-import com.google.android.material.navigation.NavigationView;
-
-public class bogi_listActivity extends AppCompatActivity {
+public class BogiListActivity extends AppCompatActivity {
 
     ArrayList<SampleData> movieDataList;
 
@@ -43,7 +35,7 @@ public class bogi_listActivity extends AppCompatActivity {
 
         listView.setAdapter(myAdapter);
 
-        bogi_detailFragment Bogi_detailFragment = new bogi_detailFragment();
+        BogiDetailFragment BogiDetailFragment = new BogiDetailFragment();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
@@ -53,7 +45,7 @@ public class bogi_listActivity extends AppCompatActivity {
                 bundle.putString("time", myAdapter.getItem(position).getTime());
                 bundle.putInt("head", myAdapter.getItem(position).getHeadCount());
                 bundle.putInt("price", myAdapter.getItem(position).getPrice());
-                openfragment(Bogi_detailFragment, bundle);
+                openfragment(BogiDetailFragment, bundle);
             }
         });
 

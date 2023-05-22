@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.comment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 

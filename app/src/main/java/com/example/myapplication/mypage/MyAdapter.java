@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.mypage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.myapplication.R;
+import com.example.myapplication.SampleData;
 
 import java.util.ArrayList;
 

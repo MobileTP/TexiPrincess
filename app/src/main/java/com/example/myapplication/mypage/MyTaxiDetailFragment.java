@@ -1,11 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,7 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-public class Mytaxi_detailFragment extends Fragment implements View.OnClickListener {
+import com.example.myapplication.R;
+import com.example.myapplication.boarding.BoardingActivity;
+import com.example.myapplication.comment.commentFragment;
+
+public class MyTaxiDetailFragment extends Fragment implements View.OnClickListener {
 
     private Button commentBtn;
     private Toolbar toolbar;
@@ -68,7 +69,7 @@ public class Mytaxi_detailFragment extends Fragment implements View.OnClickListe
         switch (view.getId()) {
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), boarding.class);
+                Intent intent = new Intent(getActivity(), BoardingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.comment:

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.mypage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.myapplication.R;
 import com.google.android.material.navigation.NavigationView;
 
-import org.w3c.dom.Text;
-
-public class mypage extends AppCompatActivity {
+public class MyPageActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -57,7 +56,7 @@ public class mypage extends AppCompatActivity {
                     case R.id.menu_mypage:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         startActivity(intent);
                         return true;
 
@@ -65,14 +64,14 @@ public class mypage extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
-                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
+                        intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         startActivity(intent);
                         return true;
 
                     case R.id.menu_myreview:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        intent = new Intent(getApplicationContext(), my_review.class);
+                        intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         startActivity(intent);
                         return true;
                 }

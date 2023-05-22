@@ -5,7 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-public interface KakaoAPI {
+public interface KakaoAPI_Interface {
     @GET("v2/local/search/keyword.json") // Receive Keyword.json information
     Call<ResultSearchKeyword> getSearchKeyword(
             @Header("Authorization") String key, // Kakao API authentication key [required]
