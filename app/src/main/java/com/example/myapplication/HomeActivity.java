@@ -144,7 +144,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         sangButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, CreateTaxi.class);
+                Intent intent = new Intent(HomeActivity.this, ReviewActivity.class);
                 startActivity(intent);
             }
         });
