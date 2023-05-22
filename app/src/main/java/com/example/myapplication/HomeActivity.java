@@ -28,12 +28,18 @@ import com.example.myapplication.mypage.MyPageActivity;
 import com.example.myapplication.mypage.MyReviewActivity;
 import com.example.myapplication.mypage.MySangTaxiActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class HomeActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener{
     private MapView mapView;
@@ -47,10 +53,31 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    DatabaseReference database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
+        //Firebase read
+        database=FirebaseDatabase.getInstance().getReference();
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                HashMap get = (HashMap) dataSnapshot.getValue();
+                Log.d("Firebase", String.valueOf(get));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        database.addValueEventListener(postListener);
+        //Firebase read
+
         //injae
 
         toolbar=findViewById(R.id.toolBar);
