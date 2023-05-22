@@ -24,27 +24,22 @@ public class mypage extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     TextView usingCount, saveCost, userName, userSex;
     RadioGroup userSeatGroup;
+    RadioButton userSeatFront, userSeatBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
-        //DB에서 받아와야 함
+
         usingCount=findViewById(R.id.mypage_use_count);
         saveCost=findViewById(R.id.mypage_save_cost);
         userName=findViewById(R.id.User_name);
         userSex=findViewById(R.id.User_sex);
-        //선호좌석 radio group
+
         userSeatGroup=findViewById(R.id.User_seat);
+        userSeatFront=findViewById(R.id.User_seat_front);
+        userSeatBack=findViewById(R.id.User_seat_back);
 
-        //DB에서 정보를 받아오기
-        /*
-        usingCount.setText();
-        saveCost.setText();
-        userName.setText();
-        userSex.setText();
-
-        userSeatGroup.check();
-         */
+        getDB();
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -92,9 +87,11 @@ public class mypage extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 switch(checkedId){
                     case R.id.User_seat_front: //0
+                        //추가
                         //선호좌석이 앞이라면 DB업데이트
                         break;
                     case R.id.User_seat_back: //1
+                        //추가
                         //선호좌석이 뒤라면 DB업데이트
                         break;
                 }
@@ -124,4 +121,40 @@ public class mypage extends AppCompatActivity {
         }
     }
     //injae
+
+    public void getDB(){
+        usingCount=findViewById(R.id.mypage_use_count);
+        saveCost=findViewById(R.id.mypage_save_cost);
+        userName=findViewById(R.id.User_name);
+        userSex=findViewById(R.id.User_sex);
+
+        userSeatGroup=findViewById(R.id.User_seat);
+        userSeatFront=findViewById(R.id.User_seat_front);
+        userSeatBack=findViewById(R.id.User_seat_back);
+
+        //추가
+        //유저테이블에서 정보들 받아오기
+        String DBusingCount="1";
+        String DBsaveCost="3000";
+        String DBuserName="유인재";
+        String DBuserSex="남자";
+        int DBuserSeatGroup=0;
+        //연결
+
+        usingCount.setText(DBusingCount);
+        saveCost.setText(DBsaveCost);
+        userName.setText(DBuserName);
+        userSex.setText(DBuserSex);
+
+        if(DBuserSeatGroup == 0){
+            userSeatFront.setChecked(true);
+            userSeatBack.setChecked(false);
+        }else{
+            userSeatFront.setChecked(false);
+            userSeatBack.setChecked(true);
+        }
+
+
+
+    }
 }

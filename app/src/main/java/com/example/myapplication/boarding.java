@@ -3,6 +3,8 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.seungwon.PayActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class boarding extends AppCompatActivity {
@@ -20,7 +23,7 @@ public class boarding extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
+    private Button pay, review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,9 @@ public class boarding extends AppCompatActivity {
 
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
+
+        pay=findViewById(R.id.boarding_btn_payment);
+        review=findViewById(R.id.boarding_btn_review);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -51,7 +57,7 @@ public class boarding extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
                         startActivity(intent);
                         return true;
 
@@ -66,6 +72,24 @@ public class boarding extends AppCompatActivity {
                 return false;
             }
         });
+
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //추가 결제 클래스로 연결
+                Intent intent = new Intent(getApplicationContext(), PayActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), reviewGood.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
