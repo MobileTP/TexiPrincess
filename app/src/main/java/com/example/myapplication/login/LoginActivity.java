@@ -1,5 +1,7 @@
 package com.example.myapplication.login;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,9 +71,16 @@ public class LoginActivity extends AppCompatActivity {
                                 public Unit invoke(User user, Throwable throwable) {
                                     if (throwable != null) {
                                         Log.e("Deubg", "사용자 정보 받기 실패!");
+                                        Log.d(TAG, "로그인이 안되어 있음");
                                     } else if (user != null) {
                                         Log.e("Debug", "사용자 정보 받기 성공!");
                                         String nickName = user.getKakaoAccount().getProfile().getNickname();
+                                        Log.d(TAG, "invoke: id " + user.getId());
+                                        Log.d(TAG, "invoke: email " + user.getKakaoAccount().getEmail());
+                                        Log.d(TAG, "invoke: nickName " + user.getKakaoAccount().getProfile().getNickname());
+                                        Log.d(TAG, "invoke: gender " + user.getKakaoAccount().getGender());
+                                        Log.d(TAG, "invoke: age " + user.getKakaoAccount().getAgeRange());
+                                        Log.d(TAG, "invoke: birthday " + user.getKakaoAccount().getBirthday());
 //                                        Glide.with(profile).load(user.getKakaoAccount().getProfile().getProfileImageUrl()).circleCrop().into(profile);
 //                                        textView.setText(nickName);
                                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
@@ -104,6 +113,28 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+//        private void updateKakaoLoginUi() {
+//            UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+//                @Override
+//                public Unit invoke(User user, Throwable throwable) {
+//                    // 로그인 되어있으면
+//                    if(user != null){
+//                        Log.d(TAG, "invoke: id" + user.getId());
+//                        Log.d(TAG, "invoke: email" + user.getKakaoAccount().getEmail());
+//                        Log.d(TAG, "invoke: nickName" + user.getKakaoAccount().getProfile().getNickname());
+//                        Log.d(TAG, "invoke: gender" + user.getKakaoAccount().getGender());
+//                        Log.d(TAG, "invoke: age" + user.getKakaoAccount().getAgeRange());
+//                        Log.d(TAG, "invoke: birthday" + user.getKakaoAccount().getBirthday());
+//                    }
+//                    else {
+//                        // 로그인 안되어있으면
+//                        Log.d(TAG, "로그인이 안되어 있음");
+//                    }
+//                    return null;
+//                }
+//            });
+//        }
 
 //        Button button2 = findViewById(R.id.buttonPay);
 //        button2.setOnClickListener(new View.OnClickListener() {
