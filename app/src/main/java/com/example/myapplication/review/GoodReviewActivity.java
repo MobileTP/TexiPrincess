@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.review;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,21 +12,26 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.myapplication.mypage.MyPageActivity;
+import com.example.myapplication.mypage.MyReviewActivity;
+import com.example.myapplication.mypage.MySangTaxiActivity;
+import com.example.myapplication.NaviHeaderFragment;
+import com.example.myapplication.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class reviewBad extends AppCompatActivity {
+public class GoodReviewActivity extends AppCompatActivity {
 
-    private navi_header fragmentNavi;
+    private NaviHeaderFragment fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
-    private Button prev, finish, btn4, btn5, btn6;
+    private Button next, btn1, btn2, btn3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.review_bad);
+        setContentView(R.layout.activity_good_review);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -37,11 +42,10 @@ public class reviewBad extends AppCompatActivity {
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
 
-        prev=findViewById(R.id.btn_review_prev);
-        finish=findViewById(R.id.btn_review_finish);
-        btn4=findViewById(R.id.review_btn_4);
-        btn5=findViewById(R.id.review_btn_5);
-        btn6=findViewById(R.id.review_btn_6);
+        next=findViewById(R.id.btn_review_next);
+        btn1=findViewById(R.id.review_btn_1);
+        btn2=findViewById(R.id.review_btn_2);
+        btn3=findViewById(R.id.review_btn_3);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -50,7 +54,7 @@ public class reviewBad extends AppCompatActivity {
                     case R.id.menu_mypage:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         startActivity(intent);
                         return true;
 
@@ -58,14 +62,14 @@ public class reviewBad extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
-                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
+                        intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         startActivity(intent);
                         return true;
 
                     case R.id.menu_myreview:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        intent = new Intent(getApplicationContext(), my_review.class);
+                        intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         startActivity(intent);
                         return true;
                 }
@@ -74,51 +78,34 @@ public class reviewBad extends AppCompatActivity {
             }
         });
 
-        btn4.setOnClickListener(new View.OnClickListener() {
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btn4.setSelected(!btn4.isSelected());
+                btn1.setSelected(!btn1.isSelected());
             }
         });
-        btn5.setOnClickListener(new View.OnClickListener() {
+        btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btn5.setSelected(!btn5.isSelected());
+                btn2.setSelected(!btn2.isSelected());
             }
         });
-        btn6.setOnClickListener(new View.OnClickListener() {
+        btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btn6.setSelected(!btn6.isSelected());
+                btn3.setSelected(!btn3.isSelected());
             }
         });
-        prev.setOnClickListener(new View.OnClickListener() {
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), reviewGood.class);
+                Intent intent = new Intent(getApplicationContext(), BadReviewActivity.class);
+                intent.putExtra("btn1",btn1.isSelected());
+                intent.putExtra("btn2",btn2.isSelected());
+                intent.putExtra("btn3",btn3.isSelected());
                 startActivity(intent);
             }
         });
-
-        finish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //추가 리뷰테이블 업데이트
-                Boolean btn1 = getIntent().getBooleanExtra("btn1",false);
-                Boolean btn2 = getIntent().getBooleanExtra("btn2",false);
-                Boolean btn3 = getIntent().getBooleanExtra("btn3",false);
-                //리뷰 테이블에 1개씩 증가
-                if(btn4.isSelected())
-                    ;
-                if(btn5.isSelected())
-                    ;
-                if(btn6.isSelected())
-                    ;
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override

@@ -1,41 +1,39 @@
-package com.example.myapplication;
+package com.example.myapplication.review;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.HomeActivity;
+import com.example.myapplication.mypage.MyPageActivity;
+import com.example.myapplication.mypage.MyReviewActivity;
+import com.example.myapplication.mypage.MySangTaxiActivity;
+import com.example.myapplication.NaviHeaderFragment;
+import com.example.myapplication.R;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
+public class BadReviewActivity extends AppCompatActivity {
 
-public class MySangTaxi extends AppCompatActivity {
-
-//    DB에서 가져온 데이터 저장할 객체
-    ArrayList<SampleData> movieDataList;
-
-//    툴바
+    private NaviHeaderFragment fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    private Button prev, finish, btn4, btn5, btn6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_sang_taxi);
+        setContentView(R.layout.activity_bad_review);
 
-//        툴바
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
@@ -45,6 +43,12 @@ public class MySangTaxi extends AppCompatActivity {
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
 
+        prev=findViewById(R.id.btn_review_prev);
+        finish=findViewById(R.id.btn_review_finish);
+        btn4=findViewById(R.id.review_btn_4);
+        btn5=findViewById(R.id.review_btn_5);
+        btn6=findViewById(R.id.review_btn_6);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -52,7 +56,7 @@ public class MySangTaxi extends AppCompatActivity {
                     case R.id.menu_mypage:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        Intent intent = new Intent(getApplicationContext(), mypage.class);
+                        Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         startActivity(intent);
                         return true;
 
@@ -60,14 +64,14 @@ public class MySangTaxi extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
-                        intent = new Intent(getApplicationContext(), MySangTaxi.class);
+                        intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         startActivity(intent);
                         return true;
 
                     case R.id.menu_myreview:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        intent = new Intent(getApplicationContext(), my_review.class);
+                        intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         startActivity(intent);
                         return true;
                 }
@@ -76,49 +80,51 @@ public class MySangTaxi extends AppCompatActivity {
             }
         });
 
-//        객체 생성
-        this.InitializeMovieData();
-
-//        리스트뷰 찾기
-        ListView listView = (ListView)findViewById(R.id.listView);
-//        어댑터로 연결
-        final MyAdapter myAdapter = new MyAdapter(this,movieDataList);
-
-//        리스트뷰에 띄우기
-        listView.setAdapter(myAdapter);
-
-        Mytaxi_detailFragment mytaxi_detailFragment = new Mytaxi_detailFragment();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        btn4.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id){
-                Bundle bundle = new Bundle();
-                bundle.putString("depart", myAdapter.getItem(position).getDepart());
-                bundle.putString("arrive", myAdapter.getItem(position).getArrive());
-                bundle.putString("time", myAdapter.getItem(position).getTime());
-                bundle.putInt("head", myAdapter.getItem(position).getHeadCount());
-                bundle.putInt("price", myAdapter.getItem(position).getPrice());
-                openfragment(mytaxi_detailFragment, bundle);
+            public void onClick(View view) {
+                btn4.setSelected(!btn4.isSelected());
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn5.setSelected(!btn5.isSelected());
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn6.setSelected(!btn6.isSelected());
+            }
+        });
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GoodReviewActivity.class);
+                startActivity(intent);
             }
         });
 
-    }
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //추가 리뷰테이블 업데이트
+                Boolean btn1 = getIntent().getBooleanExtra("btn1",false);
+                Boolean btn2 = getIntent().getBooleanExtra("btn2",false);
+                Boolean btn3 = getIntent().getBooleanExtra("btn3",false);
+                //리뷰 테이블에 1개씩 증가
+                if(btn4.isSelected())
+                    ;
+                if(btn5.isSelected())
+                    ;
+                if(btn6.isSelected())
+                    ;
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
-    public void openfragment(Fragment fragment, Bundle bundle) {
-        fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().
-                setCustomAnimations(R.anim.to_right, R.anim.from_right).
-                replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
-    }
-
-    public void InitializeMovieData()
-    {
-        movieDataList = new ArrayList<SampleData>();
-
-        movieDataList.add(new SampleData(R.drawable.logo, "가천대학교","태평역", "2023/05/01 10:55", 2, 24000));
-        movieDataList.add(new SampleData(R.drawable.logo, "잠실역","강남역", "2023/05/02 11:55", 1, 10000));
-        movieDataList.add(new SampleData(R.drawable.logo, "건대입구역","홍대입구역", "2023/05/03 12:55", 3, 34000));
-        movieDataList.add(new SampleData(R.drawable.logo, "성수역","사당역", "2023/05/04 13:55", 1, 30000));
-        movieDataList.add(new SampleData(R.drawable.logo, "석촌역","가천대역", "2023/05/05 14:55", 4, 12000));
     }
 
     @Override
@@ -140,4 +146,5 @@ public class MySangTaxi extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

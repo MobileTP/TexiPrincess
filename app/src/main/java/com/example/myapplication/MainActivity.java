@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,9 +11,10 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.login.LoginActivity;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import com.example.myapplication.seungwon.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.myapplication.seungwon;
+package com.example.myapplication.login;
 
 import android.content.Intent;
 import android.os.Bundle;

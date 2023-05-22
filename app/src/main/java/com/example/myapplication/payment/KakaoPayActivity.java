@@ -1,12 +1,10 @@
-package com.example.myapplication.seungwon;
+package com.example.myapplication.payment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -18,7 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
-import com.example.myapplication.reviewGood;
+import com.example.myapplication.review.GoodReviewActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -196,7 +194,7 @@ public class KakaoPayActivity extends AppCompatActivity {
                 }
             }
             view.loadUrl(url);
-            Intent intent = new Intent(getApplicationContext(), reviewGood.class);
+            Intent intent = new Intent(getApplicationContext(), GoodReviewActivity.class);
             startActivity(intent);
             return false;
         }

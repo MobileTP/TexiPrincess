@@ -5,31 +5,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import net.daum.mf.map.api.MapView;
-import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPoint;
-import net.daum.mf.map.api.MapPointBounds;
-import net.daum.mf.map.api.MapPolyline;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
+public class CreateTaxiActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
     private MapView mapView;
     private ViewGroup mapViewContainer;
     private Toolbar toolbar;
@@ -48,7 +35,7 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
     private static final String API_KEY = "KakaoAK fe94c788c227a80046a80f13fce7d65a"; // REST API key
 
 
-    public CreateTaxi() {
+    public CreateTaxiActivity() {
     }
 
     @Override
@@ -112,7 +99,7 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
             @Override
             public void onClick(View v) {
                 //주소 검색 웹뷰 화면으로 이동
-                Intent intent = new Intent(CreateTaxi.this, SearchActivity.class);
+                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
                 getSearchResult.launch(intent);
             }
         });
@@ -122,7 +109,7 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
             @Override
             public void onClick(View v) {
                 //주소 검색 웹뷰 화면으로 이동
-                Intent intent = new Intent(CreateTaxi.this, SearchActivity.class);
+                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
                 getSearchResult.launch(intent);
             }
         });
@@ -177,7 +164,7 @@ public class CreateTaxi extends AppCompatActivity implements MapView.CurrentLoca
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        KakaoAPI api = retrofit.create(KakaoAPI.class); // Create communication interface object
+        KakaoAPI_Interface api = retrofit.create(KakaoAPI_Interface.class); // Create communication interface object
         Call<ResultSearchKeyword> call = api.getSearchKeyword(API_KEY, keyword); // Input search conditions
 
         // Request to API server

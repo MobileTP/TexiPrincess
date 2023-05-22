@@ -3,9 +3,6 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
+import com.example.myapplication.boarding.BoardingActivity;
 
-public class bogi_detailFragment extends Fragment implements View.OnClickListener {
+public class BogiDetailFragment extends Fragment implements View.OnClickListener {
 
     private Button commentBtn;
     private Button tagiBtn;
@@ -64,7 +61,7 @@ public class bogi_detailFragment extends Fragment implements View.OnClickListene
         switch (view.getId()) {
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), boarding.class);
+                Intent intent = new Intent(getActivity(), BoardingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.comment:

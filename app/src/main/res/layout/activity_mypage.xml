@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:id="@+id/activity_mypage"
         android:background="#fffff0"
-        tools:context=".mypage"
+        tools:context=".mypage.MyPageActivity"
         android:orientation="vertical"
         tools:ignore="ExtraText">
 
