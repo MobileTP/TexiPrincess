@@ -95,11 +95,11 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         //지도를 띄우자
-       mapView = new MapView(this);
-       mapViewContainer = (ViewGroup) findViewById(R.id.map);
-       mapViewContainer.addView(mapView);
-       mapView.setMapViewEventListener(this);
-       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//       mapView = new MapView(this);
+//       mapViewContainer = (ViewGroup) findViewById(R.id.map);
+//       mapViewContainer.addView(mapView);
+//       mapView.setMapViewEventListener(this);
+//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         sangButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, CreateTaxi.class);
+                Intent intent = new Intent(HomeActivity.this, ReviewActivity.class);
                 startActivity(intent);
             }
         });
