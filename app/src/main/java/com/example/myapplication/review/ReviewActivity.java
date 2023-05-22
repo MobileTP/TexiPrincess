@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ReviewAdapter;
 import com.example.myapplication.SampleData;
-import com.example.myapplication.mypage.MyAdapter;
 
 import java.util.ArrayList;
 
