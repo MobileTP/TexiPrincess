@@ -19,6 +19,7 @@ import com.example.myapplication.mypage.MySangTaxiActivity;
 import com.example.myapplication.NaviHeaderFragment;
 import com.example.myapplication.payment.PayActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.review.ReviewActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class BoardingActivity extends AppCompatActivity {
@@ -89,7 +90,7 @@ public class BoardingActivity extends AppCompatActivity {
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GoodReviewActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ReviewActivity.class);
                 startActivity(intent);
             }
         });

@@ -9,7 +9,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.R;
 import com.example.myapplication.SampleData;
-import com.example.myapplication.mypage.MyAdapter;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class ReviewActivity extends AppCompatActivity {
         this.InitializeMovieData();
 
         ListView listView = (ListView)findViewById(R.id.listView);
-        final MyAdapter myAdapter = new MyAdapter(this, movieDataList);
+        final ReviewAdapter myAdapter = new ReviewAdapter(this, movieDataList);
 
         listView.setAdapter(myAdapter);
 
