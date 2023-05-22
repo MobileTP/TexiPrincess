@@ -68,12 +68,10 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
         commentFragment CommentFragment = new commentFragment();
         switch (view.getId()) {
             case R.id.taxi_tagi:
-                Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), BoardingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.comment:
-                Toast.makeText(getContext(),"comment",Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("depart", String.valueOf(departtxt));
                 openfragment(CommentFragment, bundle);

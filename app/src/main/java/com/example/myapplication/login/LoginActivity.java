@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                        Glide.with(profile).load(user.getKakaoAccount().getProfile().getProfileImageUrl()).circleCrop().into(profile);
 //                                        textView.setText(nickName);
                                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                        finish();
                                         startActivity(intent);
                                     }
                                     return null;

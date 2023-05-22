@@ -10,21 +10,36 @@
 
 <!--    지도 들어가야할 자리-->
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginBottom="30dp"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/logo"/>
+    <FrameLayout
+        android:id="@+id/map_frame"
+        android:layout_marginTop="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:id="@+id/map"
+            android:layout_marginBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="350dp" />
+
+    </FrameLayout>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_marginLeft="75dp"-->
+<!--        android:layout_marginTop="130dp"-->
+<!--        android:layout_marginBottom="30dp"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="250dp"-->
+<!--        android:src="@drawable/logo"/>-->
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView">
+        android:layout_below="@id/map_frame">
 
         <TableRow>
 

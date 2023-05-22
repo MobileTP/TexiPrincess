@@ -44,14 +44,14 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int position, View converView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.listview_custom, null);
 
-        ImageView imageView = (ImageView)view.findViewById(R.id.poster);
+//        ImageView imageView = (ImageView)view.findViewById(R.id.poster);
         TextView movieName = (TextView)view.findViewById(R.id.movieName);
         TextView grade = (TextView)view.findViewById(R.id.grade);
         TextView time = (TextView)view.findViewById(R.id.dapart);
 
-        imageView.setImageResource(sample.get(position).getPoster());
-        movieName.setText(sample.get(position).getDepart());
-        grade.setText(sample.get(position).getArrive());
+//        imageView.setImageResource(sample.get(position).getPoster());
+        movieName.setText("출발지 : " + sample.get(position).getDepart());
+        grade.setText("도착지 : " + sample.get(position).getArrive());
 
         String[] str = sample.get(position).getTime().split(" ");
         time.setText(str[1]);

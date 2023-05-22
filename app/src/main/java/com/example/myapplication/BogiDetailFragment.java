@@ -15,22 +15,50 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.boarding.BoardingActivity;
+import com.example.myapplication.comment.commentFragment;
+
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapView;
 
 public class BogiDetailFragment extends Fragment implements View.OnClickListener {
 
+    private MapView mapView;
+    private ViewGroup mapViewContainer;
     private Button commentBtn;
     private Button tagiBtn;
     private Toolbar toolbar;
+    private TextView departtxt;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bogi_detail, container, false);
 
+        mapView = new MapView(getContext());
+        mapView.removeAllPOIItems();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
+        mapView.setZoomLevel(4, true);
+        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
+        MapPOIItem marker = new MapPOIItem();
+        marker.setItemName("Default Marker");
+        marker.setTag(0);
+        marker.setMapPoint(MARKER_POINT);
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+        mapView.addPOIItem(marker);
+
+//        mapView.setMapViewEventListener(mapView.getMapViewEventListener());
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+
         toolbar = rootView.findViewById(R.id.toolBar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
-        TextView departtxt = rootView.findViewById(R.id.depart);
+        departtxt = rootView.findViewById(R.id.depart);
         TextView arrivetxt = rootView.findViewById(R.id.arrive);
         TextView timetxt = rootView.findViewById(R.id.time);
         TextView headtxt = rootView.findViewById(R.id.head);
@@ -57,7 +85,15 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         return rootView;
     }
 
+    public void openfragment(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction().
+                setCustomAnimations(R.anim.to_bottom, R.anim.from_bottom).
+                add(R.id.frameLayout, fragment).addToBackStack(null).commit();
+    }
+
     public void onClick(View view) {
+        commentFragment CommentFragment = new commentFragment();
         switch (view.getId()) {
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
@@ -65,7 +101,9 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
                 startActivity(intent);
                 break;
             case R.id.comment:
-                Toast.makeText(getContext(),"comment",Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("depart", String.valueOf(departtxt));
+                openfragment(CommentFragment, bundle);
                 break;
         }
     }

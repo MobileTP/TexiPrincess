@@ -16,6 +16,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -57,18 +58,18 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         setSupportActionBar(toolbar);
 
         //map 부분
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
 
         // 권한ID를 가져옵니다
         int permission = ContextCompat.checkSelfPermission(this,
@@ -93,11 +94,13 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         //지도를 띄우자
-//       mapView = new MapView(this);
-//       mapViewContainer = (ViewGroup) findViewById(R.id.map);
-//       mapViewContainer.addView(mapView);
-//       mapView.setMapViewEventListener(this);
-//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+       mapView = new MapView(this);
+       mapView.removeAllPOIItems();
+       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+       mapViewContainer = (ViewGroup) findViewById(R.id.map);
+       mapViewContainer.addView(mapView);
+       mapView.setMapViewEventListener(this);
+       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -152,6 +155,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -188,12 +192,35 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         return super.onOptionsItemSelected(item);
     }
 
+//    @Override
+//    public void onBackPressed() { //뒤로가기 했을 때
+//        if (drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
+
+
     @Override
-    public void onBackPressed() { //뒤로가기 했을 때
-        if (drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public void onBackPressed() {
+        if ( pressedTime == 0 ) {
+            Toast.makeText(HomeActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
+            pressedTime = System.currentTimeMillis();
+        }
+        else {
+            int seconds = (int) (System.currentTimeMillis() - pressedTime);
+
+            if ( seconds > 2000 ) {
+                Toast.makeText(HomeActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
+                pressedTime = 0 ;
+            }
+            else {
+                super.onBackPressed();
+                moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
         }
     }
     //injae

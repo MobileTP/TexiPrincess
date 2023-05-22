@@ -16,6 +16,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile"
+            android:layout_marginLeft="10dp"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="5dp"
@@ -33,24 +34,26 @@
 <!--            tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />-->
 
         <LinearLayout
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="80dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:text="TextView" />
         </LinearLayout>
 

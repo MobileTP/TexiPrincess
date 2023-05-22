@@ -30,7 +30,7 @@ public class MyPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
 
         usingCount=findViewById(R.id.mypage_use_count);
-        saveCost=findViewById(R.id.mypage_save_cost);
+        saveCost=findViewById(R.id.mypage_inbox_cost);
         userName=findViewById(R.id.User_name);
         userSex=findViewById(R.id.User_sex);
 
@@ -123,7 +123,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     public void getDB(){
         usingCount=findViewById(R.id.mypage_use_count);
-        saveCost=findViewById(R.id.mypage_save_cost);
+        saveCost=findViewById(R.id.mypage_inbox_cost);
         userName=findViewById(R.id.User_name);
         userSex=findViewById(R.id.User_sex);
 
@@ -140,8 +140,8 @@ public class MyPageActivity extends AppCompatActivity {
         int DBuserSeatGroup=0;
         //연결
 
-        usingCount.setText(DBusingCount);
-        saveCost.setText(DBsaveCost);
+        usingCount.setText("내생택 " + DBusingCount + "회");
+        saveCost.setText(DBsaveCost + "원");
         userName.setText(DBuserName);
         userSex.setText(DBuserSex);
 
