@@ -8,13 +8,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.database.ID;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyPageActivity extends AppCompatActivity {
 
@@ -24,6 +36,7 @@ public class MyPageActivity extends AppCompatActivity {
     TextView usingCount, saveCost, userName, userSex;
     RadioGroup userSeatGroup;
     RadioButton userSeatFront, userSeatBack;
+    DatabaseReference database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,14 +97,20 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                database= FirebaseDatabase.getInstance().getReference().child("ID").child("0");
+                Map<String,Object> newMap=new HashMap<String,Object>();
                 switch(checkedId){
                     case R.id.User_seat_front: //0
                         //추가
                         //선호좌석이 앞이라면 DB업데이트
+                        newMap.put("Seat",0);
+                        database.updateChildren(newMap);
                         break;
                     case R.id.User_seat_back: //1
                         //추가
                         //선호좌석이 뒤라면 DB업데이트
+                        newMap.put("Seat",1);
+                        database.updateChildren(newMap);
                         break;
                 }
             }
@@ -131,13 +150,24 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatFront=findViewById(R.id.User_seat_front);
         userSeatBack=findViewById(R.id.User_seat_back);
 
-        //추가
+        final ID[] newID = new ID[1];
+        //0 대신에 이메일 아이디로
+        database=FirebaseDatabase.getInstance().getReference().child("ID").child("0");
+        database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    newID[0] =task.getResult().getValue(ID.class);
+                }
+            }
+        });
+
         //유저테이블에서 정보들 받아오기
-        String DBusingCount="1";
-        String DBsaveCost="3000";
-        String DBuserName="유인재";
-        String DBuserSex="남자";
-        int DBuserSeatGroup=0;
+        String DBusingCount= String.valueOf(newID[0].getCount());
+        String DBsaveCost= String.valueOf(newID[0].getCost());
+        String DBuserName= newID[0].getName();
+        String DBuserSex= newID[0].getSex()==0? "남자":"여자";
+        int DBuserSeatGroup= newID[0].getSeat();
         //연결
 
         usingCount.setText(DBusingCount);
