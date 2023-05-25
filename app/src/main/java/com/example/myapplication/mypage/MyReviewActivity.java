@@ -79,18 +79,19 @@ public class MyReviewActivity extends AppCompatActivity {
             }
         });
 
-        final Review[] newReview = new Review[1];
-        //0 대신에 이메일 아이디로
-        database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
-        database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    newReview[0] =task.getResult().getValue(Review.class);
-                }
-            }
-        });
-        int[] review = newReview[0].getAll();
+//         final Review[] newReview = new Review[1];
+//         //0 대신에 이메일 아이디로
+//         database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
+//         database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//             @Override
+//             public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                 if (task.isSuccessful()) {
+//                     newReview[0] =task.getResult().getValue(Review.class);
+//                 }
+//             }
+//         });
+//         int[] review = newReview[0].getAll();
+        int[] review={6,5,2,4,3,0};
         int[] top = {-1,-1,-1};
         int tmp = -1;
         int ord = 0;
