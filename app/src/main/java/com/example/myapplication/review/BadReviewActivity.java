@@ -124,39 +124,39 @@ public class BadReviewActivity extends AppCompatActivity {
                 Boolean btn2 = getIntent().getBooleanExtra("btn2",false);
                 Boolean btn3 = getIntent().getBooleanExtra("btn3",false);
 
-                final Review[] newReview = new Review[1];
-                //0 대신에 이메일 아이디로
-                database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
-                database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            newReview[0] =task.getResult().getValue(Review.class);
-                        }
-                    }
-                });
-                Map<String,Object> newMap=new HashMap<String,Object>();
-                int newarr[]=newReview[0].getAll();
-                if(btn1==true)
-                    newarr[0]+=1;
-                if(btn2==true)
-                    newarr[1]+=1;
-                if(btn3==true)
-                    newarr[2]+=1;
-                if(btn4.isSelected()==true)
-                    newarr[3]+=1;
-                if(btn5.isSelected()==true)
-                    newarr[4]+=1;
-                if(btn6.isSelected()==true)
-                    newarr[5]+=1;
+//                 final Review[] newReview = new Review[1];
+//                 //0 대신에 이메일 아이디로
+//                 database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
+//                 database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                     @Override
+//                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                         if (task.isSuccessful()) {
+//                             newReview[0] =task.getResult().getValue(Review.class);
+//                         }
+//                     }
+//                 });
+//                 Map<String,Object> newMap=new HashMap<String,Object>();
+//                 int newarr[]=newReview[0].getAll();
+//                 if(btn1==true)
+//                     newarr[0]+=1;
+//                 if(btn2==true)
+//                     newarr[1]+=1;
+//                 if(btn3==true)
+//                     newarr[2]+=1;
+//                 if(btn4.isSelected()==true)
+//                     newarr[3]+=1;
+//                 if(btn5.isSelected()==true)
+//                     newarr[4]+=1;
+//                 if(btn6.isSelected()==true)
+//                     newarr[5]+=1;
 
-                newMap.put("0",newarr[0]);
-                newMap.put("1",newarr[1]);
-                newMap.put("2",newarr[2]);
-                newMap.put("3",newarr[3]);
-                newMap.put("4",newarr[4]);
-                newMap.put("5",newarr[5]);
-                database.updateChildren(newMap);
+//                 newMap.put("0",newarr[0]);
+//                 newMap.put("1",newarr[1]);
+//                 newMap.put("2",newarr[2]);
+//                 newMap.put("3",newarr[3]);
+//                 newMap.put("4",newarr[4]);
+//                 newMap.put("5",newarr[5]);
+//                 database.updateChildren(newMap);
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
