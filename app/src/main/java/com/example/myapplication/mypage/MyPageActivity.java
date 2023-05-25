@@ -97,20 +97,20 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                database= FirebaseDatabase.getInstance().getReference().child("ID").child("0");
-                Map<String,Object> newMap=new HashMap<String,Object>();
+//                database= FirebaseDatabase.getInstance().getReference().child("ID").child("0");
+//                Map<String,Object> newMap=new HashMap<String,Object>();
                 switch(checkedId){
                     case R.id.User_seat_front: //0
                         //추가
                         //선호좌석이 앞이라면 DB업데이트
-                        newMap.put("Seat",0);
-                        database.updateChildren(newMap);
+//                         newMap.put("Seat",0);
+//                         database.updateChildren(newMap);
                         break;
                     case R.id.User_seat_back: //1
                         //추가
                         //선호좌석이 뒤라면 DB업데이트
-                        newMap.put("Seat",1);
-                        database.updateChildren(newMap);
+//                         newMap.put("Seat",1);
+//                         database.updateChildren(newMap);
                         break;
                 }
             }
@@ -150,25 +150,25 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatFront=findViewById(R.id.User_seat_front);
         userSeatBack=findViewById(R.id.User_seat_back);
 
-        final ID[] newID = new ID[1];
-        //0 대신에 이메일 아이디로
-        database=FirebaseDatabase.getInstance().getReference().child("ID").child("0");
-        database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    newID[0] =task.getResult().getValue(ID.class);
-                }
-            }
-        });
+//         final ID[] newID = new ID[1];
+//         //0 대신에 이메일 아이디로
+//         database=FirebaseDatabase.getInstance().getReference().child("ID").child("0");
+//         database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//             @Override
+//             public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                 if (task.isSuccessful()) {
+//                     newID[0] =task.getResult().getValue(ID.class);
+//                 }
+//             }
+//         });
 
-        //유저테이블에서 정보들 받아오기
-        String DBusingCount= String.valueOf(newID[0].getCount());
-        String DBsaveCost= String.valueOf(newID[0].getCost());
-        String DBuserName= newID[0].getName();
-        String DBuserSex= newID[0].getSex()==0? "남자":"여자";
-        int DBuserSeatGroup= newID[0].getSeat();
-        //연결
+//         //유저테이블에서 정보들 받아오기
+//         String DBusingCount= String.valueOf(newID[0].getCount());
+//         String DBsaveCost= String.valueOf(newID[0].getCost());
+//         String DBuserName= newID[0].getName();
+//         String DBuserSex= newID[0].getSex()==0? "남자":"여자";
+//         int DBuserSeatGroup= newID[0].getSeat();
+//         //연결
 
         usingCount.setText(DBusingCount);
         saveCost.setText(DBsaveCost);
