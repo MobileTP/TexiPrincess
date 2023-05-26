@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "723893305749",
+    "firebase_url": "https://taxiprincess-default-rtdb.firebaseio.com",
+    "project_id": "taxiprincess",
+    "storage_bucket": "taxiprincess.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723893305749:android:6448f37036faab04db769c",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723893305749-nsijm0ri4kb1pf1fkvkb9mcmv411b3co.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARj7VM2Z30X2-2BJZ8dQTZi9fw8QDQM3I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723893305749-nsijm0ri4kb1pf1fkvkb9mcmv411b3co.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
