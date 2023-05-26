@@ -13,7 +13,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.NaviHeaderFragment;
 import com.example.myapplication.R;
+import com.example.myapplication.database.ID;
+import com.example.myapplication.database.Review;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MyReviewActivity extends AppCompatActivity {
 
@@ -23,6 +30,7 @@ public class MyReviewActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private TextView reviewTop[];
+    DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +79,20 @@ public class MyReviewActivity extends AppCompatActivity {
             }
         });
 
-        ////사용자의 리뷰 중 top3를 찾기
-        //추가 리뷰테이블에서 리뷰 별 개수 받아오기
-        int[] review={6,5,3,1,0,0};
-        int[] top={-1,-1,-1};
+//         final Review[] newReview = new Review[1];
+//         //0 대신에 이메일 아이디로
+//         database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
+//         database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//             @Override
+//             public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                 if (task.isSuccessful()) {
+//                     newReview[0] =task.getResult().getValue(Review.class);
+//                 }
+//             }
+//         });
+//         int[] review = newReview[0].getAll();
+        int[] review={6,5,2,4,3,0};
+        int[] top = {-1,-1,-1};
         int tmp = -1;
         int ord = 0;
         while(ord!=3) {
