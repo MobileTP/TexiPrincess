@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +20,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -56,12 +62,17 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    TextView profile_name,profile_info;
+    ImageView profile_image;
     DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
+
+        final String[] DBuserName = {"바보"};
+        final String[] DBuserSex = {"남자"};
 
         //Firebase read
         database=FirebaseDatabase.getInstance().getReference();
@@ -150,19 +161,21 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                             idList.add(id);
                         }
 
+                        TaxiList[0] = taxiList;
+                        IDList[0] = idList;
+
                         // 정리된 데이터 출력 예시
                         Log.d("FDB","Taxi data:");
-                        for (Map<String, Object> taxi : taxiList) {
+                        for (Map<String, Object> taxi : TaxiList[0]) {
                             Log.d("FDB",taxi+"");
                         }
 
                         Log.d("FDB","ID data:");
-                        for (Map<String, Object> id : idList) {
+                        for (Map<String, Object> id : IDList[0]) {
                             Log.d("FDB",id+"");
                         }
 
-                        TaxiList[0] = taxiList;
-                        IDList[0] = idList;
+
                     }
 
                     @Override
@@ -178,6 +191,26 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
         //Firebase read
+
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        int IDindex=0;
+        //DB 에서 읽고 네비바 내용 변경
+        if(IDList[0].size()!=0){
+            DBuserName[0] = (String) IDList[0].get(IDindex).get("Name");
+            DBuserSex[0] = IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+        }
+        
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(DBuserName[0]);
+        profile_info.setText(DBuserSex[0]);
+
 
         //injae
 

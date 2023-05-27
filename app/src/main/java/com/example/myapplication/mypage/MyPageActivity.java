@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,10 +38,17 @@ public class MyPageActivity extends AppCompatActivity {
     RadioGroup userSeatGroup;
     RadioButton userSeatFront, userSeatBack;
     DatabaseReference database;
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
 
         usingCount=findViewById(R.id.mypage_use_count);
         saveCost=findViewById(R.id.mypage_save_cost);
@@ -69,6 +78,8 @@ public class MyPageActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
                         startActivity(intent);
                         return true;
 
@@ -77,6 +88,8 @@ public class MyPageActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
                         startActivity(intent);
                         return true;
 
@@ -84,6 +97,8 @@ public class MyPageActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
                         startActivity(intent);
                         return true;
                 }
@@ -96,20 +111,20 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-//                database= FirebaseDatabase.getInstance().getReference().child("ID").child("0");
-//                Map<String,Object> newMap=new HashMap<String,Object>();
+                database=FirebaseDatabase.getInstance().getReference("ID");
+                DatabaseReference IDSeat=database.child("0");
+                Map<String, Object> IDSeatUpdate=new HashMap<>();
+
                 switch(checkedId){
                     case R.id.User_seat_front: //0
-                        //추가
                         //선호좌석이 앞이라면 DB업데이트
-//                         newMap.put("Seat",0);
-//                         database.updateChildren(newMap);
+                        IDSeatUpdate.put("Seat",0);
+                        IDSeat.updateChildren(IDSeatUpdate);
                         break;
                     case R.id.User_seat_back: //1
-                        //추가
                         //선호좌석이 뒤라면 DB업데이트
-//                         newMap.put("Seat",1);
-//                         database.updateChildren(newMap);
+                        IDSeatUpdate.put("Seat",1);
+                        IDSeat.updateChildren(IDSeatUpdate);
                         break;
                 }
             }
@@ -149,9 +164,6 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatFront=findViewById(R.id.User_seat_front);
         userSeatBack=findViewById(R.id.User_seat_back);
 
-        List<Map<String, Object>>[] TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
-        List<Map<String, Object>>[] IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
-
         int IDindex=0;
          Long DBusingCount= (Long) IDList[0].get(IDindex).get("Count");
          Long DBsaveCost= (Long) IDList[0].get(IDindex).get("Cost");
@@ -174,6 +186,26 @@ public class MyPageActivity extends AppCompatActivity {
         }
 
 
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        String userName = "바보";
+        String userSex = "남자";
+        //DB 에서 읽고 네비바 내용 변경
+        //Arraylist에서 null이라고 값 못읽음;
+        if(IDList[0].size()!=0){
+            userName= (String) IDList[0].get(IDindex).get("Name");
+            userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+        }
+
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(userName);
+        profile_info.setText(userSex);
 
     }
 }
