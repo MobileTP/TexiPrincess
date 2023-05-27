@@ -13,14 +13,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.NaviHeaderFragment;
 import com.example.myapplication.R;
-import com.example.myapplication.database.ID;
-import com.example.myapplication.database.Review;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MyReviewActivity extends AppCompatActivity {
 

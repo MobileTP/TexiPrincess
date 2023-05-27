@@ -39,7 +39,10 @@ import net.daum.mf.map.api.MapView;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener{
     private MapView mapView;
@@ -59,23 +62,121 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
+
         //Firebase read
         database=FirebaseDatabase.getInstance().getReference();
-        ValueEventListener postListener = new ValueEventListener() {
+        DatabaseReference taxiRef = database.child("Taxi");
+
+        List<Map<String, Object>>[] TaxiList = new List[]{new ArrayList<>()};
+        List<Map<String, Object>>[] IDList = new List[]{new ArrayList<>()};
+        taxiRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Map<String, Object>> taxiList = new ArrayList<>();
 
-                HashMap get = (HashMap) dataSnapshot.getValue();
-                Log.d("Firebase", String.valueOf(get));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Map<String, Object> taxi = new HashMap<>();
+
+                    // "User" 데이터 읽어오기
+                    DataSnapshot userSnapshot = snapshot.child("User");
+                    List<Integer> userList = new ArrayList<>();
+                    for (DataSnapshot user : userSnapshot.getChildren()) {
+                        int userId = user.getValue(Integer.class);
+                        userList.add(userId);
+                    }
+                    taxi.put("User", userList);
+
+                    // "Chat" 데이터 읽어오기
+                    DataSnapshot chatSnapshot = snapshot.child("Chat");
+                    List<Map<String, Object>> chatList = new ArrayList<>();
+                    for (DataSnapshot chat : chatSnapshot.getChildren()) {
+                        Map<String, Object> chatMap = new HashMap<>();
+                        chatMap.put("Content", chat.child("Content").getValue());
+                        chatMap.put("Time", chat.child("Time").getValue());
+                        chatMap.put("ID", chat.child("ID").getValue());
+                        chatList.add(chatMap);
+                    }
+                    taxi.put("Chat", chatList);
+
+                    // 나머지 데이터 읽어오기
+                    taxi.put("Time", snapshot.child("Time").getValue());
+                    taxi.put("From", snapshot.child("From").getValue());
+                    taxi.put("To", snapshot.child("To").getValue());
+                    taxi.put("Admin", snapshot.child("Admin").getValue());
+                    taxi.put("Cost", snapshot.child("Cost").getValue());
+
+                    taxiList.add(taxi);
+                }
+
+                // "ID" 데이터 읽어오기
+                DatabaseReference idRef = database.child("ID");
+                idRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<Map<String, Object>> idList = new ArrayList<>();
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Map<String, Object> id = new HashMap<>();
+
+                            // "MySang" 데이터 읽어오기
+                            DataSnapshot mySangSnapshot = snapshot.child("MySang");
+                            List<Integer> mySangList = new ArrayList<>();
+                            for (DataSnapshot mySang : mySangSnapshot.getChildren()) {
+                                int mySangValue = mySang.getValue(Integer.class);
+                                mySangList.add(mySangValue);
+                            }
+                            id.put("MySang", mySangList);
+
+                            // 나머지 데이터 읽어오기
+                            id.put("Seat", snapshot.child("Seat").getValue());
+                            id.put("Email", snapshot.child("Email").getValue());
+                            id.put("Sex", snapshot.child("Sex").getValue());
+                            id.put("Count", snapshot.child("Count").getValue());
+
+                            // "Review" 데이터 읽어오기
+                            DataSnapshot reviewSnapshot = snapshot.child("Review");
+                            List<Integer> reviewList = new ArrayList<>();
+                            for (DataSnapshot review : reviewSnapshot.getChildren()) {
+                                int reviewValue = review.getValue(Integer.class);
+                                reviewList.add(reviewValue);
+                            }
+                            id.put("Review", reviewList);
+
+                            id.put("Image", snapshot.child("Image").getValue());
+                            id.put("Cost", snapshot.child("Cost").getValue());
+                            id.put("Name", snapshot.child("Name").getValue());
+                            id.put("Password", snapshot.child("Password").getValue());
+
+                            idList.add(id);
+                        }
+
+                        // 정리된 데이터 출력 예시
+                        Log.d("FDB","Taxi data:");
+                        for (Map<String, Object> taxi : taxiList) {
+                            Log.d("FDB",taxi+"");
+                        }
+
+                        Log.d("FDB","ID data:");
+                        for (Map<String, Object> id : idList) {
+                            Log.d("FDB",id+"");
+                        }
+
+                        TaxiList[0] = taxiList;
+                        IDList[0] = idList;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("ID data read failed: " + databaseError.getCode());
+                    }
+                });
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
+                System.out.println("Taxi data read failed: " + databaseError.getCode());
             }
-        };
-        database.addValueEventListener(postListener);
+        });
         //Firebase read
 
         //injae
@@ -140,6 +241,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
                         startActivity(intent);
                         return true;
 
@@ -149,6 +252,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         startActivity(intent);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
                         return true;
 
                     case R.id.menu_myreview:
@@ -156,6 +261,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         startActivity(intent);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
                         return true;
                 }
 
@@ -169,6 +276,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, CreateTaxiActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
                 startActivity(intent);
             }
         });
@@ -178,6 +287,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
                 startActivity(intent);
             }
         });

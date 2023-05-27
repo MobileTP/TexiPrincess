@@ -15,9 +15,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.database.ID;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MyPageActivity extends AppCompatActivity {
@@ -150,28 +149,19 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatFront=findViewById(R.id.User_seat_front);
         userSeatBack=findViewById(R.id.User_seat_back);
 
-//         final ID[] newID = new ID[1];
-//         //0 대신에 이메일 아이디로
-//         database=FirebaseDatabase.getInstance().getReference().child("ID").child("0");
-//         database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//             @Override
-//             public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                 if (task.isSuccessful()) {
-//                     newID[0] =task.getResult().getValue(ID.class);
-//                 }
-//             }
-//         });
+        List<Map<String, Object>>[] TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        List<Map<String, Object>>[] IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
 
-//         //유저테이블에서 정보들 받아오기
-//         String DBusingCount= String.valueOf(newID[0].getCount());
-//         String DBsaveCost= String.valueOf(newID[0].getCost());
-//         String DBuserName= newID[0].getName();
-//         String DBuserSex= newID[0].getSex()==0? "남자":"여자";
-//         int DBuserSeatGroup= newID[0].getSeat();
-//         //연결
+        int IDindex=0;
+         Long DBusingCount= (Long) IDList[0].get(IDindex).get("Count");
+         Long DBsaveCost= (Long) IDList[0].get(IDindex).get("Cost");
+         String DBuserName= (String) IDList[0].get(IDindex).get("Name");
+         String DBuserSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+        Long DBuserSeatGroup= (Long) IDList[0].get(IDindex).get("Seat");
+         //연결
 
-        usingCount.setText(DBusingCount);
-        saveCost.setText(DBsaveCost);
+        usingCount.setText((DBusingCount)+"");
+        saveCost.setText((DBsaveCost)+"");
         userName.setText(DBuserName);
         userSex.setText(DBuserSex);
 
