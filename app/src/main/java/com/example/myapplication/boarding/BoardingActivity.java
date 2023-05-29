@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,9 @@ import com.example.myapplication.R;
 import com.example.myapplication.review.ReviewActivity;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.Map;
+
 public class BoardingActivity extends AppCompatActivity {
 
     private NaviHeaderFragment fragmentNavi;
@@ -29,11 +34,20 @@ public class BoardingActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Button pay, review;
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boarding);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -47,6 +61,28 @@ public class BoardingActivity extends AppCompatActivity {
         pay=findViewById(R.id.boarding_btn_payment);
         review=findViewById(R.id.boarding_btn_review);
 
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        String userName = "TestName";
+        String userSex = "TestSex";
+        //DB 에서 읽고 네비바 내용 변경
+        //Arraylist에서 null이라고 값 못읽음;
+        if(IDList!=null)
+            if(IDList[0].size()!=0){
+                userName= (String) IDList[0].get(IDindex).get("Name");
+                userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+            }
+
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(userName);
+        profile_info.setText(userSex);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -55,6 +91,9 @@ public class BoardingActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -63,6 +102,9 @@ public class BoardingActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -70,6 +112,9 @@ public class BoardingActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }
@@ -83,6 +128,9 @@ public class BoardingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //추가 결제 클래스로 연결
                 Intent intent = new Intent(getApplicationContext(), PayActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
             }
         });
@@ -91,6 +139,9 @@ public class BoardingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ReviewActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
             }
         });

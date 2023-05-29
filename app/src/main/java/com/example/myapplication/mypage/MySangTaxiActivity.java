@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import com.example.myapplication.SampleData;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MySangTaxiActivity extends AppCompatActivity {
 
@@ -30,13 +34,20 @@ public class MySangTaxiActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_sang_taxi);
 
-//        툴바
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
+
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
@@ -46,6 +57,28 @@ public class MySangTaxiActivity extends AppCompatActivity {
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
 
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        String userName = "TestName";
+        String userSex = "TestSex";
+        //DB 에서 읽고 네비바 내용 변경
+        //Arraylist에서 null이라고 값 못읽음;
+        if(IDList!=null)
+            if(IDList[0].size()!=0){
+                userName= (String) IDList[0].get(IDindex).get("Name");
+                userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+            }
+
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(userName);
+        profile_info.setText(userSex);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -54,6 +87,9 @@ public class MySangTaxiActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -62,6 +98,9 @@ public class MySangTaxiActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -69,6 +108,9 @@ public class MySangTaxiActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }

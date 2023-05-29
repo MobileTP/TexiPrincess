@@ -3,6 +3,8 @@ package com.example.myapplication.mypage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,20 +18,31 @@ import com.example.myapplication.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class MyReviewActivity extends AppCompatActivity {
 
     private NaviHeaderFragment fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
     private TextView reviewTop[];
     DatabaseReference database;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_reivew);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -42,6 +55,36 @@ public class MyReviewActivity extends AppCompatActivity {
 
         reviewTop= new TextView[]{findViewById(R.id.Myreview_top_1), findViewById(R.id.Myreview_top_2), findViewById(R.id.Myreview_top_3)};
 
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        NaviHeaderFragment naviHeaderFragment= (NaviHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_Myprofile);
+        ImageView frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
+        TextView frag_name=naviHeaderFragment.getView().findViewById(R.id.profile_name);
+        TextView frag_sex=naviHeaderFragment.getView().findViewById(R.id.profile_info);
+
+        String userName = "TestName";
+        String userSex = "TestSex";
+        //DB 에서 읽고 네비바 내용 변경
+        //Arraylist에서 null이라고 값 못읽음;
+        if(IDList!=null)
+            if(IDList[0].size()!=0){
+                userName= (String) IDList[0].get(IDindex).get("Name");
+                userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+            }
+
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(userName);
+        profile_info.setText(userSex);
+//        frag_image.setImageResource();
+        frag_name.setText(userName);
+        frag_sex.setText(userSex);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -50,6 +93,9 @@ public class MyReviewActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -58,6 +104,9 @@ public class MyReviewActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -65,6 +114,9 @@ public class MyReviewActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }
@@ -73,19 +125,16 @@ public class MyReviewActivity extends AppCompatActivity {
             }
         });
 
-//         final Review[] newReview = new Review[1];
-//         //0 대신에 이메일 아이디로
-//         database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
-//         database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//             @Override
-//             public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                 if (task.isSuccessful()) {
-//                     newReview[0] =task.getResult().getValue(Review.class);
-//                 }
-//             }
-//         });
-//         int[] review = newReview[0].getAll();
-        int[] review={6,5,2,4,3,0};
+        ArrayList getReview = null;
+        if(IDList!=null)
+            getReview= (ArrayList) IDList[0].get(IDindex).get("Review");
+
+        int[] review;
+        if(getReview!=null)
+            review= new int[]{(int) getReview.get(0), (int) getReview.get(1), (int) getReview.get(2), (int) getReview.get(3), (int) getReview.get(4), (int) getReview.get(5)};
+        else
+            review= new int[]{0, 0, 0, 0, 0, 0};
+
         int[] top = {-1,-1,-1};
         int tmp = -1;
         int ord = 0;

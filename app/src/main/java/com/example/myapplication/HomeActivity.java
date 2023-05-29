@@ -71,8 +71,13 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
 
-        final String[] DBuserName = {"바보"};
-        final String[] DBuserSex = {"남자"};
+        //로그인에서 intent로 로그인 된 정보 받아와서 넣는게 나을듯
+        String IDemail = "test@gmail.com";
+
+        int[] IDindex = new int[1];
+        String[] DBuserName = {"TestName"};
+        String[] DBuserSex = {"TestSex"};
+        int[] cnt = {0};
 
         //Firebase read
         database=FirebaseDatabase.getInstance().getReference();
@@ -159,6 +164,13 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                             id.put("Password", snapshot.child("Password").getValue());
 
                             idList.add(id);
+
+                            if(snapshot.child("Email").getValue().toString().equals(IDemail)){
+                                IDindex[0] =cnt[0];
+                                DBuserName[0] = (String) snapshot.child("Name").getValue();
+                                DBuserSex[0] = snapshot.child("Sex").getValue().toString().equals("0")?"남자":"여자";
+                            }
+                            cnt[0]++;
                         }
 
                         TaxiList[0] = taxiList;
@@ -175,6 +187,16 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                             Log.d("FDB",id+"");
                         }
 
+                        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+                        View view=navi.getHeaderView(0);
+
+                        profile_image=view.findViewById(R.id.profile_image);
+                        profile_name=view.findViewById(R.id.profile_name);
+                        profile_info=view.findViewById(R.id.profile_info);
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+                        profile_name.setText(DBuserName[0]);
+                        profile_info.setText(DBuserSex[0]);
 
                     }
 
@@ -192,24 +214,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         });
         //Firebase read
 
-        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
-        View view=navi.getHeaderView(0);
 
-        profile_image=view.findViewById(R.id.profile_image);
-        profile_name=view.findViewById(R.id.profile_name);
-        profile_info=view.findViewById(R.id.profile_info);
-
-        int IDindex=0;
-        //DB 에서 읽고 네비바 내용 변경
-        if(IDList[0].size()!=0){
-            DBuserName[0] = (String) IDList[0].get(IDindex).get("Name");
-            DBuserSex[0] = IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
-        }
-        
-
-//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
-        profile_name.setText(DBuserName[0]);
-        profile_info.setText(DBuserSex[0]);
 
 
         //injae
@@ -276,6 +281,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex[0]);
                         startActivity(intent);
                         return true;
 
@@ -284,18 +290,20 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
-                        startActivity(intent);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex[0]);
+                        startActivity(intent);
                         return true;
 
                     case R.id.menu_myreview:
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
-                        startActivity(intent);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex[0]);
+                        startActivity(intent);
                         return true;
                 }
 
@@ -311,6 +319,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 Intent intent = new Intent(HomeActivity.this, CreateTaxiActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex[0]);
                 startActivity(intent);
             }
         });
@@ -322,6 +331,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex[0]);
                 startActivity(intent);
             }
         });

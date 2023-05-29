@@ -16,12 +16,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.boarding.BoardingActivity;
 
+import java.util.List;
+import java.util.Map;
+
 public class BogiDetailFragment extends Fragment implements View.OnClickListener {
 
     private Button commentBtn;
     private Button tagiBtn;
     private Toolbar toolbar;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
         int price = bundle.getInt("price");
+        TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
+        IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
+        IDindex = bundle.getInt("IDindex");
 
         departtxt.setText(depart);
         arrivetxt.setText(arrive);
@@ -62,6 +70,9 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), BoardingActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
                 break;
             case R.id.comment:

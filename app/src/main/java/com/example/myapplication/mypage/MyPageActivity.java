@@ -40,8 +40,10 @@ public class MyPageActivity extends AppCompatActivity {
     DatabaseReference database;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
+    int IDindex;
     TextView profile_name,profile_info;
     ImageView profile_image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class MyPageActivity extends AppCompatActivity {
 
         TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
 
         usingCount=findViewById(R.id.mypage_use_count);
         saveCost=findViewById(R.id.mypage_save_cost);
@@ -80,6 +83,7 @@ public class MyPageActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -90,6 +94,7 @@ public class MyPageActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -99,6 +104,7 @@ public class MyPageActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }
@@ -112,7 +118,7 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 database=FirebaseDatabase.getInstance().getReference("ID");
-                DatabaseReference IDSeat=database.child("0");
+                DatabaseReference IDSeat=database.child(String.valueOf(IDindex));
                 Map<String, Object> IDSeatUpdate=new HashMap<>();
 
                 switch(checkedId){
@@ -164,13 +170,11 @@ public class MyPageActivity extends AppCompatActivity {
         userSeatFront=findViewById(R.id.User_seat_front);
         userSeatBack=findViewById(R.id.User_seat_back);
 
-        int IDindex=0;
          Long DBusingCount= (Long) IDList[0].get(IDindex).get("Count");
          Long DBsaveCost= (Long) IDList[0].get(IDindex).get("Cost");
          String DBuserName= (String) IDList[0].get(IDindex).get("Name");
          String DBuserSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
         Long DBuserSeatGroup= (Long) IDList[0].get(IDindex).get("Seat");
-         //연결
 
         usingCount.setText((DBusingCount)+"");
         saveCost.setText((DBsaveCost)+"");
@@ -193,8 +197,8 @@ public class MyPageActivity extends AppCompatActivity {
         profile_name=view.findViewById(R.id.profile_name);
         profile_info=view.findViewById(R.id.profile_info);
 
-        String userName = "바보";
-        String userSex = "남자";
+        String userName = "TestName";
+        String userSex = "TestSex";
         //DB 에서 읽고 네비바 내용 변경
         //Arraylist에서 null이라고 값 못읽음;
         if(IDList[0].size()!=0){

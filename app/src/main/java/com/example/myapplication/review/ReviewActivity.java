@@ -1,7 +1,9 @@
 package com.example.myapplication.review;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,16 +13,26 @@ import com.example.myapplication.R;
 import com.example.myapplication.SampleData;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ReviewActivity extends AppCompatActivity {
 
     ArrayList<SampleData> movieDataList;
     private Toolbar toolbar;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -39,6 +51,8 @@ public class ReviewActivity extends AppCompatActivity {
 //            }
 //        });
 
+        //리뷰리스트에서 리뷰버튼 누르면, 그 눌린 사람 IDindex를 "reviewID"로 GoodReviewActivity로 보내줘야함
+        //intent.putExtra("reviewID",reviewID); <이런 식으로
     }
 
     public void InitializeMovieData()

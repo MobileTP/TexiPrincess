@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,9 @@ import com.example.myapplication.NaviHeaderFragment;
 import com.example.myapplication.R;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+import java.util.Map;
+
 public class GoodReviewActivity extends AppCompatActivity {
 
     private NaviHeaderFragment fragmentNavi;
@@ -27,11 +32,21 @@ public class GoodReviewActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private Button next, btn1, btn2, btn3;
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex,reviewID;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_review);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
+        reviewID=getIntent().getIntExtra("reviewID",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -47,6 +62,36 @@ public class GoodReviewActivity extends AppCompatActivity {
         btn2=findViewById(R.id.review_btn_2);
         btn3=findViewById(R.id.review_btn_3);
 
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        NaviHeaderFragment naviHeaderFragment= (NaviHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_Myprofile);
+        ImageView frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
+        TextView frag_name=naviHeaderFragment.getView().findViewById(R.id.profile_name);
+        TextView frag_sex=naviHeaderFragment.getView().findViewById(R.id.profile_info);
+
+        String userName = "TestName";
+        String userSex = "TestSex";
+        //DB 에서 읽고 네비바 내용 변경
+        //Arraylist에서 null이라고 값 못읽음;
+        if(IDList!=null)
+            if(IDList[0].size()!=0){
+                userName= (String) IDList[0].get(IDindex).get("Name");
+                userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+            }
+
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(userName);
+        profile_info.setText(userSex);
+//        frag_image.setImageResource();
+        frag_name.setText(userName);
+        frag_sex.setText(userSex);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -55,6 +100,9 @@ public class GoodReviewActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -63,6 +111,9 @@ public class GoodReviewActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -70,6 +121,9 @@ public class GoodReviewActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }
@@ -103,6 +157,10 @@ public class GoodReviewActivity extends AppCompatActivity {
                 intent.putExtra("btn1",btn1.isSelected());
                 intent.putExtra("btn2",btn2.isSelected());
                 intent.putExtra("btn3",btn3.isSelected());
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
+                intent.putExtra("reviewID",reviewID);
                 startActivity(intent);
             }
         });
