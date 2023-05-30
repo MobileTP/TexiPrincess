@@ -48,8 +48,6 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private Button sangButton;
     private Button bogiButton;
     private double pressedTime;
-
-    private NaviHeaderFragment fragmentNavi;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -60,6 +58,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
+
         //Firebase read
         database=FirebaseDatabase.getInstance().getReference();
         ValueEventListener postListener = new ValueEventListener() {
@@ -80,7 +79,6 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         //Firebase read
 
         //injae
-
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
@@ -180,9 +178,9 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         bogiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }

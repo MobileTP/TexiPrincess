@@ -52,9 +52,6 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
 
         mapView.addPOIItem(marker);
 
-//        mapView.setMapViewEventListener(mapView.getMapViewEventListener());
-//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-
         toolbar = rootView.findViewById(R.id.toolBar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
