@@ -14,18 +14,26 @@ import androidx.fragment.app.FragmentManager;
 import com.example.myapplication.mypage.MyAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BogiListActivity extends AppCompatActivity {
 
     ArrayList<SampleData> movieDataList;
 
     private Toolbar toolbar;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bogi_list);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -47,6 +55,9 @@ public class BogiListActivity extends AppCompatActivity {
                 bundle.putString("time", myAdapter.getItem(position).getTime());
                 bundle.putInt("head", myAdapter.getItem(position).getHeadCount());
                 bundle.putInt("price", myAdapter.getItem(position).getPrice());
+                bundle.putSerializable("TaxiList",TaxiList);
+                bundle.putSerializable("IDList",IDList);
+                bundle.putInt("IDindex",IDindex);
                 openFragment(BogiDetailFragment, bundle);
             }
         });

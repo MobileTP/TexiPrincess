@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,21 +15,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.HomeActivity;
-import com.example.myapplication.database.ID;
-import com.example.myapplication.database.Review;
 import com.example.myapplication.mypage.MyPageActivity;
 import com.example.myapplication.mypage.MyReviewActivity;
 import com.example.myapplication.mypage.MySangTaxiActivity;
 import com.example.myapplication.NaviHeaderFragment;
 import com.example.myapplication.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BadReviewActivity extends AppCompatActivity {
@@ -39,10 +39,20 @@ public class BadReviewActivity extends AppCompatActivity {
 
     private Button prev, finish, btn4, btn5, btn6;
     DatabaseReference database;
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex,reviewID;
+    TextView profile_name,profile_info;
+    ImageView profile_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bad_review);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
+        reviewID=getIntent().getIntExtra("reviewID",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -59,6 +69,36 @@ public class BadReviewActivity extends AppCompatActivity {
         btn5=findViewById(R.id.review_btn_5);
         btn6=findViewById(R.id.review_btn_6);
 
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
+
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
+
+        NaviHeaderFragment naviHeaderFragment= (NaviHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_Myprofile);
+        ImageView frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
+        TextView frag_name=naviHeaderFragment.getView().findViewById(R.id.profile_name);
+        TextView frag_sex=naviHeaderFragment.getView().findViewById(R.id.profile_info);
+
+        String userName = "TestName";
+        String userSex = "TestSex";
+        //DB 에서 읽고 네비바 내용 변경
+        //Arraylist에서 null이라고 값 못읽음;
+        if(IDList!=null)
+            if(IDList[0].size()!=0){
+                userName= (String) IDList[0].get(IDindex).get("Name");
+                userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+            }
+
+
+//        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
+        profile_name.setText(userName);
+        profile_info.setText(userSex);
+//        frag_image.setImageResource();
+        frag_name.setText(userName);
+        frag_sex.setText(userSex);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -67,6 +107,9 @@ public class BadReviewActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -75,6 +118,9 @@ public class BadReviewActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         //내생택 리스트 생기면 바꿔주기~~~~~~~~
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -82,6 +128,9 @@ public class BadReviewActivity extends AppCompatActivity {
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
+                        intent.putExtra("TaxiList",TaxiList);
+                        intent.putExtra("IDList",IDList);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }
@@ -124,39 +173,20 @@ public class BadReviewActivity extends AppCompatActivity {
                 Boolean btn2 = getIntent().getBooleanExtra("btn2",false);
                 Boolean btn3 = getIntent().getBooleanExtra("btn3",false);
 
-//                 final Review[] newReview = new Review[1];
-//                 //0 대신에 이메일 아이디로
-//                 database= FirebaseDatabase.getInstance().getReference().child("ID").child("0").child("Review");
-//                 database.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                     @Override
-//                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                         if (task.isSuccessful()) {
-//                             newReview[0] =task.getResult().getValue(Review.class);
-//                         }
-//                     }
-//                 });
-//                 Map<String,Object> newMap=new HashMap<String,Object>();
-//                 int newarr[]=newReview[0].getAll();
-//                 if(btn1==true)
-//                     newarr[0]+=1;
-//                 if(btn2==true)
-//                     newarr[1]+=1;
-//                 if(btn3==true)
-//                     newarr[2]+=1;
-//                 if(btn4.isSelected()==true)
-//                     newarr[3]+=1;
-//                 if(btn5.isSelected()==true)
-//                     newarr[4]+=1;
-//                 if(btn6.isSelected()==true)
-//                     newarr[5]+=1;
+                Boolean[] btn= {btn1,btn2,btn3,btn4.isSelected(),btn5.isSelected(),btn6.isSelected()};
 
-//                 newMap.put("0",newarr[0]);
-//                 newMap.put("1",newarr[1]);
-//                 newMap.put("2",newarr[2]);
-//                 newMap.put("3",newarr[3]);
-//                 newMap.put("4",newarr[4]);
-//                 newMap.put("5",newarr[5]);
-//                 database.updateChildren(newMap);
+                database= FirebaseDatabase.getInstance().getReference("ID");
+                DatabaseReference IDReview=database.child(String.valueOf(IDindex));
+                Map<String, Object> IDUpdate=new HashMap<>();
+                List<Integer> reviewList = new ArrayList<>();
+                for (int i=0; i<6; i++) {
+                    int reviewValue = (int) ((ArrayList)IDList[0].get(reviewID).get("Review")).get(i);
+                    if(btn[i]==true)
+                        reviewValue+=1;
+                    reviewList.add(reviewValue);
+                }
+                IDUpdate.put("Review",reviewList);
+                IDReview.updateChildren(IDUpdate);
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);

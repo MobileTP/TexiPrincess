@@ -21,6 +21,9 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.util.List;
+import java.util.Map;
+
 public class BogiDetailFragment extends Fragment implements View.OnClickListener {
 
     private MapView mapView;
@@ -29,6 +32,9 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
     private Button tagiBtn;
     private Toolbar toolbar;
     private TextView departtxt;
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
 
     @Nullable
     @Override
@@ -67,6 +73,9 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
         int price = bundle.getInt("price");
+        TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
+        IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
+        IDindex = bundle.getInt("IDindex");
 
         departtxt.setText(depart);
         arrivetxt.setText(arrive);
@@ -95,6 +104,9 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
             case R.id.taxi_tagi:
                 Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), BoardingActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
                 break;
             case R.id.comment:
