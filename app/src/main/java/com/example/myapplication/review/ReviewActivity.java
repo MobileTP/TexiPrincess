@@ -55,8 +55,12 @@ public class ReviewActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
-                Intent intent = new Intent(ReviewActivity.this, HomeActivity.class); // 여기 이용해서 리뷰 페이지로 이동하면 되고
-                intent.putExtra("IDindex", myAdapter.getItem(position).getDepart()); // 여기 고객 정보 변수 담으면 되고
+                Intent intent = new Intent(ReviewActivity.this, GoodReviewActivity.class); // 여기 이용해서 리뷰 페이지로 이동하면 되고
+                String depart=myAdapter.getItem(position).getDepart();
+                String arrive=myAdapter.getItem(position).getArrive();
+                String time=myAdapter.getItem(position).getTime();
+                //DB에서 찾기
+                intent.putExtra("reviewID", myAdapter.getItem(position).getDepart()); // 여기 고객 정보 변수 담으면 되고
                 startActivity(intent);
             }
         });
@@ -68,8 +72,6 @@ public class ReviewActivity extends AppCompatActivity {
 //            }
 //        });
 
-        //리뷰리스트에서 리뷰버튼 누르면, 그 눌린 사람 IDindex를 "reviewID"로 GoodReviewActivity로 보내줘야함
-        //intent.putExtra("reviewID",reviewID); <이런 식으로
     }
 
     public void InitializeMovieData()

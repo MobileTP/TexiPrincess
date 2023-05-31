@@ -176,28 +176,8 @@ public class MyPageActivity extends AppCompatActivity {
          String DBuserSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
         Long DBuserSeatGroup= (Long) IDList[0].get(IDindex).get("Seat");
 
-//         //유저테이블에서 정보들 받아오기
-//         String DBusingCount= String.valueOf(newID[0].getCount());
-//         String DBsaveCost= String.valueOf(newID[0].getCost());
-//         String DBuserName= newID[0].getName();
-//         String DBuserSex= newID[0].getSex()==0? "남자":"여자";
-//         int DBuserSeatGroup= newID[0].getSeat();
-//         //연결
-//
-//        usingCount.setText("내생택 " + DBusingCount + "회");
-//        saveCost.setText(DBsaveCost + "원");
-//        userName.setText(DBuserName);
-//        userSex.setText(DBuserSex);
-//
-//        if(DBuserSeatGroup == 0){
-//            userSeatFront.setChecked(true);
-//            userSeatBack.setChecked(false);
-//        }else{
-//            userSeatFront.setChecked(false);
-//            userSeatBack.setChecked(true);
-//        }
-        usingCount.setText((DBusingCount)+"");
-        saveCost.setText((DBsaveCost)+"");
+        usingCount.setText("내생택 " + DBusingCount + "회");
+        saveCost.setText(DBsaveCost + "원");
         userName.setText(DBuserName);
         userSex.setText(DBuserSex);
 

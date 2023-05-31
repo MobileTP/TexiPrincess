@@ -60,7 +60,9 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex;
     TextView profile_name,profile_info;
     ImageView profile_image;
     DatabaseReference database;
@@ -70,151 +72,20 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
 
-        //로그인에서 intent로 로그인 된 정보 받아와서 넣는게 나을듯
-        String IDemail = "test@gmail.com";
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
 
-        int[] IDindex = new int[1];
-        String[] DBuserName = {"TestName"};
-        String[] DBuserSex = {"TestSex"};
-        int[] cnt = {0};
+        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
+        View view=navi.getHeaderView(0);
 
-        //Firebase read
-        database=FirebaseDatabase.getInstance().getReference();
-        DatabaseReference taxiRef = database.child("Taxi");
-
-        List<Map<String, Object>>[] TaxiList = new List[]{new ArrayList<>()};
-        List<Map<String, Object>>[] IDList = new List[]{new ArrayList<>()};
-        taxiRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Map<String, Object>> taxiList = new ArrayList<>();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Map<String, Object> taxi = new HashMap<>();
-
-                    // "User" 데이터 읽어오기
-                    DataSnapshot userSnapshot = snapshot.child("User");
-                    List<Integer> userList = new ArrayList<>();
-                    for (DataSnapshot user : userSnapshot.getChildren()) {
-                        int userId = user.getValue(Integer.class);
-                        userList.add(userId);
-                    }
-                    taxi.put("User", userList);
-
-                    // "Chat" 데이터 읽어오기
-                    DataSnapshot chatSnapshot = snapshot.child("Chat");
-                    List<Map<String, Object>> chatList = new ArrayList<>();
-                    for (DataSnapshot chat : chatSnapshot.getChildren()) {
-                        Map<String, Object> chatMap = new HashMap<>();
-                        chatMap.put("Content", chat.child("Content").getValue());
-                        chatMap.put("Time", chat.child("Time").getValue());
-                        chatMap.put("ID", chat.child("ID").getValue());
-                        chatList.add(chatMap);
-                    }
-                    taxi.put("Chat", chatList);
-
-                    // 나머지 데이터 읽어오기
-                    taxi.put("Time", snapshot.child("Time").getValue());
-                    taxi.put("From", snapshot.child("From").getValue());
-                    taxi.put("To", snapshot.child("To").getValue());
-                    taxi.put("Admin", snapshot.child("Admin").getValue());
-                    taxi.put("Cost", snapshot.child("Cost").getValue());
-
-                    taxiList.add(taxi);
-                }
-
-                // "ID" 데이터 읽어오기
-                DatabaseReference idRef = database.child("ID");
-                idRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<Map<String, Object>> idList = new ArrayList<>();
-
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Map<String, Object> id = new HashMap<>();
-
-                            // "MySang" 데이터 읽어오기
-                            DataSnapshot mySangSnapshot = snapshot.child("MySang");
-                            List<Integer> mySangList = new ArrayList<>();
-                            for (DataSnapshot mySang : mySangSnapshot.getChildren()) {
-                                int mySangValue = mySang.getValue(Integer.class);
-                                mySangList.add(mySangValue);
-                            }
-                            id.put("MySang", mySangList);
-
-                            // 나머지 데이터 읽어오기
-                            id.put("Seat", snapshot.child("Seat").getValue());
-                            id.put("Email", snapshot.child("Email").getValue());
-                            id.put("Sex", snapshot.child("Sex").getValue());
-                            id.put("Count", snapshot.child("Count").getValue());
-
-                            // "Review" 데이터 읽어오기
-                            DataSnapshot reviewSnapshot = snapshot.child("Review");
-                            List<Integer> reviewList = new ArrayList<>();
-                            for (DataSnapshot review : reviewSnapshot.getChildren()) {
-                                int reviewValue = review.getValue(Integer.class);
-                                reviewList.add(reviewValue);
-                            }
-                            id.put("Review", reviewList);
-
-                            id.put("Image", snapshot.child("Image").getValue());
-                            id.put("Cost", snapshot.child("Cost").getValue());
-                            id.put("Name", snapshot.child("Name").getValue());
-                            id.put("Password", snapshot.child("Password").getValue());
-
-                            idList.add(id);
-
-                            if(snapshot.child("Email").getValue().toString().equals(IDemail)){
-                                IDindex[0] =cnt[0];
-                                DBuserName[0] = (String) snapshot.child("Name").getValue();
-                                DBuserSex[0] = snapshot.child("Sex").getValue().toString().equals("0")?"남자":"여자";
-                            }
-                            cnt[0]++;
-                        }
-
-                        TaxiList[0] = taxiList;
-                        IDList[0] = idList;
-
-                        // 정리된 데이터 출력 예시
-                        Log.d("FDB","Taxi data:");
-                        for (Map<String, Object> taxi : TaxiList[0]) {
-                            Log.d("FDB",taxi+"");
-                        }
-
-                        Log.d("FDB","ID data:");
-                        for (Map<String, Object> id : IDList[0]) {
-                            Log.d("FDB",id+"");
-                        }
-
-                        NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
-                        View view=navi.getHeaderView(0);
-
-                        profile_image=view.findViewById(R.id.profile_image);
-                        profile_name=view.findViewById(R.id.profile_name);
-                        profile_info=view.findViewById(R.id.profile_info);
+        profile_image=view.findViewById(R.id.profile_image);
+        profile_name=view.findViewById(R.id.profile_name);
+        profile_info=view.findViewById(R.id.profile_info);
 
 //        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
-                        profile_name.setText(DBuserName[0]);
-                        profile_info.setText(DBuserSex[0]);
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        System.out.println("ID data read failed: " + databaseError.getCode());
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Taxi data read failed: " + databaseError.getCode());
-            }
-        });
-        //Firebase read
-
-
-
+        profile_name.setText(IDList[0].get(IDindex).get("Name").toString());
+        profile_info.setText(IDList[0].get(IDindex).get("Sex").equals("0")?"남자":"여자");
 
         //injae
         toolbar=findViewById(R.id.toolBar);
@@ -256,14 +127,14 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             return;
         }
 
-        //지도를 띄우자
-       mapView = new MapView(this);
-       mapView.removeAllPOIItems();
-       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-       mapViewContainer = (ViewGroup) findViewById(R.id.map);
-       mapViewContainer.addView(mapView);
-       mapView.setMapViewEventListener(this);
-       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//        //지도를 띄우자
+//       mapView = new MapView(this);
+//       mapView.removeAllPOIItems();
+//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+//       mapViewContainer = (ViewGroup) findViewById(R.id.map);
+//       mapViewContainer.addView(mapView);
+//       mapView.setMapViewEventListener(this);
+//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -281,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
-                        intent.putExtra("IDindex",IDindex[0]);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -292,7 +163,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent = new Intent(getApplicationContext(), MySangTaxiActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
-                        intent.putExtra("IDindex",IDindex[0]);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
 
@@ -302,7 +173,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent = new Intent(getApplicationContext(), MyReviewActivity.class);
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
-                        intent.putExtra("IDindex",IDindex[0]);
+                        intent.putExtra("IDindex",IDindex);
                         startActivity(intent);
                         return true;
                 }
@@ -319,7 +190,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 Intent intent = new Intent(HomeActivity.this, CreateTaxiActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
-                intent.putExtra("IDindex",IDindex[0]);
+                intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
             }
         });
@@ -332,7 +203,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
-                intent.putExtra("IDindex",IDindex[0]);
+                intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
             }
         });

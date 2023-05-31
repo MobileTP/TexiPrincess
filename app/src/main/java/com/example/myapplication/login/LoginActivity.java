@@ -11,15 +11,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.HomeActivity;
 import com.example.myapplication.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
@@ -34,7 +45,11 @@ public class LoginActivity extends AppCompatActivity {
     ImageView profile;
     EditText editTextName;
     EditText editTextPrice;
-
+    DatabaseReference database;
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int cntTaxi;
+    int cntID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +61,136 @@ public class LoginActivity extends AppCompatActivity {
         KakaoSdk.init(this, "551c0166c5ab89ca32fc99ab1b62e129");
 
 //        textView = findViewById(R.id.textView);
-        idValue = findViewById(R.id.idValue);
+        idValue = findViewById(R.id.emailValue);
         pwValue = findViewById(R.id.pwValue);
 //        profile = findViewById(R.id.imageView);
 //        editTextName = findViewById(R.id.editName);
 //        editTextPrice = findViewById(R.id.editPrice);
 
-        // 로그인 버튼 클릭 이벤트
+        //Firebase read
+        database= FirebaseDatabase.getInstance().getReference();
+        DatabaseReference taxiRef = database.child("Taxi");
+
+        List<Map<String, Object>>[] TaxiList = new List[]{new ArrayList<>()};
+        List<Map<String, Object>>[] IDList = new List[]{new ArrayList<>()};
+        int[] cntTaxi=new int[1];
+        int[] cntID=new int[1];
+        taxiRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Map<String, Object>> taxiList = new ArrayList<>();
+                int cnttaxi=0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    cnttaxi++;
+                    Map<String, Object> taxi = new HashMap<>();
+
+                    // "User" 데이터 읽어오기
+                    DataSnapshot userSnapshot = snapshot.child("User");
+                    List<Integer> userList = new ArrayList<>();
+                    for (DataSnapshot user : userSnapshot.getChildren()) {
+                        int userId = user.getValue(Integer.class);
+                        userList.add(userId);
+                    }
+                    taxi.put("User", userList);
+
+                    // "Chat" 데이터 읽어오기
+                    DataSnapshot chatSnapshot = snapshot.child("Chat");
+                    List<Map<String, Object>> chatList = new ArrayList<>();
+                    for (DataSnapshot chat : chatSnapshot.getChildren()) {
+                        Map<String, Object> chatMap = new HashMap<>();
+                        chatMap.put("Content", chat.child("Content").getValue());
+                        chatMap.put("Time", chat.child("Time").getValue());
+                        chatMap.put("ID", chat.child("ID").getValue());
+                        chatList.add(chatMap);
+                    }
+                    taxi.put("Chat", chatList);
+
+                    // 나머지 데이터 읽어오기
+                    taxi.put("Time", snapshot.child("Time").getValue());
+                    taxi.put("From", snapshot.child("From").getValue());
+                    taxi.put("To", snapshot.child("To").getValue());
+                    taxi.put("Admin", snapshot.child("Admin").getValue());
+                    taxi.put("Cost", snapshot.child("Cost").getValue());
+
+                    taxiList.add(taxi);
+                }
+
+                // "ID" 데이터 읽어오기
+                DatabaseReference idRef = database.child("ID");
+                int finalCnttaxi = cnttaxi;
+                idRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<Map<String, Object>> idList = new ArrayList<>();
+                        int cntid=0;
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            cntid++;
+                            Map<String, Object> id = new HashMap<>();
+
+                            // "MySang" 데이터 읽어오기
+                            DataSnapshot mySangSnapshot = snapshot.child("MySang");
+                            List<Integer> mySangList = new ArrayList<>();
+                            for (DataSnapshot mySang : mySangSnapshot.getChildren()) {
+                                int mySangValue = mySang.getValue(Integer.class);
+                                mySangList.add(mySangValue);
+                            }
+                            id.put("MySang", mySangList);
+
+                            // 나머지 데이터 읽어오기
+                            id.put("Seat", snapshot.child("Seat").getValue());
+                            id.put("Email", snapshot.child("Email").getValue());
+                            id.put("Sex", snapshot.child("Sex").getValue());
+                            id.put("Count", snapshot.child("Count").getValue());
+
+                            // "Review" 데이터 읽어오기
+                            DataSnapshot reviewSnapshot = snapshot.child("Review");
+                            List<Integer> reviewList = new ArrayList<>();
+                            for (DataSnapshot review : reviewSnapshot.getChildren()) {
+                                int reviewValue = review.getValue(Integer.class);
+                                reviewList.add(reviewValue);
+                            }
+                            id.put("Review", reviewList);
+
+                            id.put("Image", snapshot.child("Image").getValue());
+                            id.put("Cost", snapshot.child("Cost").getValue());
+                            id.put("Name", snapshot.child("Name").getValue());
+                            id.put("Password", snapshot.child("Password").getValue());
+
+                            idList.add(id);
+                        }
+
+                        TaxiList[0] = taxiList;
+                        IDList[0] = idList;
+                        cntTaxi[0] = finalCnttaxi;
+                        cntID[0] =cntid;
+                        // 정리된 데이터 출력 예시
+                        Log.d("FDB","Taxi data:");
+                        for (Map<String, Object> taxi : TaxiList[0]) {
+                            Log.d("FDB",taxi+"");
+                        }
+
+                        Log.d("FDB","ID data:");
+                        for (Map<String, Object> id : IDList[0]) {
+                            Log.d("FDB",id+"");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println("ID data read failed: " + databaseError.getCode());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Taxi data read failed: " + databaseError.getCode());
+            }
+        });
+        //Firebase read
+
+
+        // 카카오 로그인 버튼 클릭 이벤트
         ImageButton button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +221,53 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d(TAG, "invoke: birthday " + user.getKakaoAccount().getBirthday());
 //                                        Glide.with(profile).load(user.getKakaoAccount().getProfile().getProfileImageUrl()).circleCrop().into(profile);
 //                                        textView.setText(nickName);
+
+                                        int tmp=0;
+                                        for(tmp=0; tmp<cntID[0]; tmp++){
+                                            if(IDList[0].get(tmp).get("Email").toString().equals(idValue.getText().toString())){
+                                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                                intent.putExtra("TaxiList",TaxiList);
+                                                intent.putExtra("IDList",IDList);
+                                                intent.putExtra("IDindex",tmp);
+                                                intent.putExtra("cntTaxi",cntTaxi[0]);
+                                                intent.putExtra("cntID",cntID[0]);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }
+
+                                        database= FirebaseDatabase.getInstance().getReference("ID");
+                                        database.child(String.valueOf(tmp)).child("Seat").setValue(1);
+                                        database.child(String.valueOf(tmp)).child("Email").setValue( user.getKakaoAccount().getEmail());
+                                        database.child(String.valueOf(tmp)).child("Mysang").setValue(new ArrayList<>());
+                                        database.child(String.valueOf(tmp)).child("Sex").setValue(user.getKakaoAccount().getGender().equals("남자")?0:1);
+                                        database.child(String.valueOf(tmp)).child("Count").setValue(0);
+                                        database.child(String.valueOf(tmp)).child("Review").setValue(new int[]{0, 0, 0, 0, 0, 0});
+                                        database.child(String.valueOf(tmp)).child("Image").setValue("null");
+                                        database.child(String.valueOf(tmp)).child("Cost").setValue(0);
+                                        database.child(String.valueOf(tmp)).child("Name").setValue(user.getKakaoAccount().getProfile().getNickname());
+                                        database.child(String.valueOf(tmp)).child("Password").setValue("null");
+                                        Map<String, Object> id = new HashMap<>();
+                                        id.put("MySang", new ArrayList<>());
+                                        id.put("Seat", 1);
+                                        id.put("Email", user.getKakaoAccount().getEmail());
+                                        id.put("Sex", user.getKakaoAccount().getGender().equals("남자")?0:1);
+                                        id.put("Count", 0);
+                                        List<Integer> reviewList = new ArrayList<>();
+                                        for(int i=0; i<6; i++)
+                                            reviewList.add(0);
+                                        id.put("Review", reviewList);
+                                        id.put("Image", "null");
+                                        id.put("Cost",0);
+                                        id.put("Name", user.getKakaoAccount().getProfile().getNickname());
+                                        id.put("Password", "null");
+                                        IDList[0].add(id);
                                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                        intent.putExtra("TaxiList",TaxiList);
+                                        intent.putExtra("IDList",IDList);
+                                        intent.putExtra("IDindex",tmp);
+                                        intent.putExtra("cntTaxi",cntTaxi[0]);
+                                        intent.putExtra("cntID",cntID[0]);
                                         finish();
                                         startActivity(intent);
                                     }
@@ -101,8 +285,31 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
+                int tmp=0;
+                Log.d("FDB","cntID:"+cntID[0]);
+                for(tmp=0; tmp<cntID[0]; tmp++){
+                    String DBID= (String) IDList[0].get(tmp).get("Email");
+                    String ETID= String.valueOf(idValue.getText());
+                    String DBPW= (String) IDList[0].get(tmp).get("Password");
+                    String ETPW= String.valueOf(pwValue.getText());
+                    if(DBID.equals(ETID)){
+                        if(DBPW.equals(ETPW)){
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            intent.putExtra("TaxiList",TaxiList);
+                            intent.putExtra("IDList",IDList);
+                            intent.putExtra("IDindex",tmp);
+                            intent.putExtra("cntTaxi",cntTaxi[0]);
+                            intent.putExtra("cntID",cntID[0]);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Toast.makeText(LoginActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
+                }
+                if(tmp==cntID[0])
+                    Toast.makeText(LoginActivity.this, "등록된 이메일이 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -111,6 +318,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("cntTaxi",cntTaxi[0]);
+                intent.putExtra("cntID",cntID[0]);
                 startActivity(intent);
             }
         });
