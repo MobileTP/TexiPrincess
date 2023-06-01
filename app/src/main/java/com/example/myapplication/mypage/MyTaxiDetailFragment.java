@@ -18,12 +18,17 @@ import com.example.myapplication.R;
 import com.example.myapplication.boarding.BoardingActivity;
 import com.example.myapplication.comment.commentFragment;
 
+import java.util.List;
+import java.util.Map;
+
 public class MyTaxiDetailFragment extends Fragment implements View.OnClickListener {
 
     private Button commentBtn;
     private Toolbar toolbar;
     private TextView departtxt;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex,cntTaxi,cntID,idx;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +49,12 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
         int price = bundle.getInt("price");
+        idx = bundle.getInt("idx");
+        TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
+        IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
+        IDindex = bundle.getInt("IDindex");
+        cntTaxi=bundle.getInt("cntTaxi",0);
+        cntID=bundle.getInt("cntID",0);
 
         departtxt.setText(depart);
         arrivetxt.setText(arrive);
@@ -74,6 +85,12 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
             case R.id.comment:
                 Bundle bundle = new Bundle();
                 bundle.putString("depart", String.valueOf(departtxt));
+                bundle.putSerializable("TaxiList",TaxiList);
+                bundle.putSerializable("IDList",IDList);
+                bundle.putInt("IDindex",IDindex);
+                bundle.putInt("cntTaxi",cntTaxi);
+                bundle.putInt("cntID",cntID);
+                bundle.putInt("idx",idx);
                 openfragment(CommentFragment, bundle);
                 break;
         }

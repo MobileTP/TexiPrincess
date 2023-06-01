@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private DrawerLayout drawerLayout;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex;
+    int IDindex,cntTaxi,cntID;
     TextView profile_name,profile_info;
     ImageView profile_image;
     DatabaseReference database;
@@ -76,6 +76,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
 
         NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
         View view=navi.getHeaderView(0);
@@ -129,6 +131,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -140,6 +144,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -150,6 +156,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
                 }
@@ -167,6 +175,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
             }
         });
@@ -179,7 +189,10 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
+                finish();
             }
         });
     }

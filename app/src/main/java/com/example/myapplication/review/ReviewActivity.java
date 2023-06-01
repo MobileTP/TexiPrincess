@@ -2,6 +2,7 @@ package com.example.myapplication.review;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.SampleData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public class ReviewActivity extends AppCompatActivity {
     private Toolbar toolbar;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex;
+    int IDindex,cntTaxi,cntID,idx;
     TextView profile_name,profile_info;
     ImageView profile_image;
     @Override
@@ -41,6 +43,9 @@ public class ReviewActivity extends AppCompatActivity {
         TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
+        idx=getIntent().getIntExtra("idx",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -56,11 +61,12 @@ public class ReviewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id){
                 Intent intent = new Intent(ReviewActivity.this, GoodReviewActivity.class); // 여기 이용해서 리뷰 페이지로 이동하면 되고
-                String depart=myAdapter.getItem(position).getDepart();
-                String arrive=myAdapter.getItem(position).getArrive();
-                String time=myAdapter.getItem(position).getTime();
-                //DB에서 찾기
-                intent.putExtra("reviewID", myAdapter.getItem(position).getDepart()); // 여기 고객 정보 변수 담으면 되고
+                intent.putExtra("reviewID", myAdapter.getItem(position).getIdx()); // 여기 고객 정보 변수 담으면 되고
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
             }
         });
@@ -78,10 +84,22 @@ public class ReviewActivity extends AppCompatActivity {
     {
         movieDataList = new ArrayList<SampleData>();
 
-        movieDataList.add(new SampleData(R.drawable.photo, "리뷰1","박현서", "2023/05/01 10:55", 2, 24000));
-        movieDataList.add(new SampleData(R.drawable.logo, "리뷰2","이승원", "2023/05/02 11:55", 1, 10000));
-        movieDataList.add(new SampleData(R.drawable.logo, "건대입구역","문재인", "2023/05/03 12:55", 3, 34000));
-        movieDataList.add(new SampleData(R.drawable.logo, "성수역","유인재", "2023/05/04 13:55", 1, 30000));
+        for(int i=0; i<((ArrayList)TaxiList[0].get(i).get("User")).size(); i++){
+            int ID= (int) ((ArrayList<?>) TaxiList[0].get(i).get("User")).get(i);
+            String depart= (String) IDList[0].get(ID).get("Name");
+            String arrive= depart;
+            String time=(String) TaxiList[0].get(i).get("Time");
+            int headCount= ((ArrayList)TaxiList[0].get(i).get("User")).size()+1;
+            long price= (long) TaxiList[0].get(i).get("Cost");
+            String idx= ID+"";
+            if(!idx.equals(IDindex+""))
+                movieDataList.add(new SampleData(R.drawable.profile, depart,arrive, time, headCount, (int) price,idx));
+
+        }
+//        movieDataList.add(new SampleData(R.drawable.photo, "리뷰1","박현서", "2023/05/01 10:55", 2, 24000, "0"));
+//        movieDataList.add(new SampleData(R.drawable.logo, "리뷰2","이승원", "2023/05/02 11:55", 1, 10000, "0"));
+//        movieDataList.add(new SampleData(R.drawable.logo, "건대입구역","문재인", "2023/05/03 12:55", 3, 34000, "0"));
+//        movieDataList.add(new SampleData(R.drawable.logo, "성수역","유인재", "2023/05/04 13:55", 1, 30000, "0"));
     }
 }
 

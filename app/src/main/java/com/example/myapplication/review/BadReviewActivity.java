@@ -41,7 +41,7 @@ public class BadReviewActivity extends AppCompatActivity {
     DatabaseReference database;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex,reviewID;
+    int IDindex,reviewID,cntTaxi,cntID,idx;
     TextView profile_name,profile_info;
     ImageView profile_image;
     @Override
@@ -53,6 +53,8 @@ public class BadReviewActivity extends AppCompatActivity {
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
         reviewID=getIntent().getIntExtra("reviewID",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -110,6 +112,8 @@ public class BadReviewActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -121,6 +125,8 @@ public class BadReviewActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -131,6 +137,8 @@ public class BadReviewActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
                 }
@@ -189,7 +197,13 @@ public class BadReviewActivity extends AppCompatActivity {
                 IDReview.updateChildren(IDUpdate);
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
+                finish();
             }
         });
 

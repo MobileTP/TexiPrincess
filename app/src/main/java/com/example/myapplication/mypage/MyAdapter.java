@@ -54,8 +54,10 @@ public class MyAdapter extends BaseAdapter {
         grade.setText("도착지 : " + sample.get(position).getArrive());
 
         String[] str = sample.get(position).getTime().split(" ");
-        time.setText(str[1]);
-
+        if(str.length==2)
+            time.setText(str[1]);
+        else
+            time.setText(str[0]);
         return view;
     }
 }

@@ -8,14 +8,15 @@ public class SampleData {
     private String time;
     private int headCount;
     private int price;
-
-    public SampleData(int poster, String depart, String arrive, String time, int headCount, int price){
+    private String idx;
+    public SampleData(int poster, String depart, String arrive, String time, int headCount, int price, String idx){
         this.poster = poster;
         this.depart = depart;
         this.arrive = arrive;
         this.time = time;
         this.headCount = headCount;
         this.price = price;
+        this.idx=idx;
     }
 
     public int getPoster() { return this.poster; }
@@ -38,5 +39,6 @@ public class SampleData {
     public int getHeadCount() { return this.headCount; }
 
     public int getPrice() { return this.price; }
+    public String getIdx() { return this.idx; }
 
 }

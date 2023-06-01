@@ -306,6 +306,9 @@ public class LoginActivity extends AppCompatActivity {
                             myEdit.putString("userID", ETID);
                             myEdit.commit();
 
+                    if(IDList[0].get(tmp).get("Email").toString().equals(idValue.getText().toString())){
+                        if(IDList[0].get(tmp).get("Password").toString().equals(pwValue.getText().toString())){
+
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.putExtra("TaxiList",TaxiList);
                             intent.putExtra("IDList",IDList);
