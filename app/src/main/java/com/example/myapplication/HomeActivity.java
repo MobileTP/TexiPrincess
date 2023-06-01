@@ -130,14 +130,14 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             return;
         }
 
-//        //지도를 띄우자
-//       mapView = new MapView(this);
-//       mapView.removeAllPOIItems();
-//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-//       mapViewContainer = (ViewGroup) findViewById(R.id.map);
-//       mapViewContainer.addView(mapView);
-//       mapView.setMapViewEventListener(this);
-//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        //지도를 띄우자
+       mapView = new MapView(this);
+       mapView.removeAllPOIItems();
+       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+       mapViewContainer = (ViewGroup) findViewById(R.id.map);
+       mapViewContainer.addView(mapView);
+       mapView.setMapViewEventListener(this);
+       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -202,12 +202,12 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         bogiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 Intent intent = new Intent(HomeActivity.this, BogiListActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
                 startActivity(intent);
+                finish();
             }
         });
     }

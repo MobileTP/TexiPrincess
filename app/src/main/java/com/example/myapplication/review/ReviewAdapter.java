@@ -47,11 +47,11 @@ public class ReviewAdapter extends BaseAdapter {
 
         ImageView imageView = (ImageView)view.findViewById(R.id.poster);
         TextView grade = (TextView)view.findViewById(R.id.grade);
-        Button btn = (Button) view.findViewById(R.id.reviewBtn);
+//        Button btn = (Button) view.findViewById(R.id.reviewBtn);
 
         imageView.setImageResource(sample.get(position).getPoster());
         grade.setText(sample.get(position).getArrive());
-        btn.setText("리뷰하기");
+//        btn.setText("리뷰하기");
 
         return view;
     }
