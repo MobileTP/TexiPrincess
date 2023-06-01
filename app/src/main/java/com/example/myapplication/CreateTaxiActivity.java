@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,11 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import net.daum.mf.map.api.MapView;
 import net.daum.mf.map.api.MapPoint;
+
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +39,9 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     private Toolbar toolbar;
     private Button createButton, searchButton1,searchButton2;
     private EditText departure, arrival, departureTime, numberOfPeople;
+
+    private Button departureTimeButton;
+    private TextView departureTimeText;
 
     private static final String BASE_URL = "https://dapi.kakao.com/";
     private static final String API_KEY = "KakaoAK fe94c788c227a80046a80f13fce7d65a"; // REST API key
@@ -51,61 +61,26 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // 권한ID를 가져옵니다
-//        int permission = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.INTERNET);
-//
-//        int permission2 = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION);
-//
-//        int permission3 = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION);
-//
-//        // 권한이 열려있는지 확인
-//        if (permission == PackageManager.PERMISSION_DENIED || permission2 == PackageManager.PERMISSION_DENIED || permission3 == PackageManager.PERMISSION_DENIED) {
-//            // 마쉬멜로우 이상버전부터 권한을 물어본다
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
-//                requestPermissions(
-//                        new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                        1000);
-//            }
-//            return;
-//        }
-//
-//        //지도를 띄우자
-//        // java code
-//        mapView = new MapView(this);
-//        mapViewContainer = (ViewGroup) findViewById(R.id.map);
-//        mapViewContainer.addView(mapView);
-//        mapView.setMapViewEventListener(this);
-//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-//
+        //지도를 띄우기
+        mapView = new MapView(this);
+        mapViewContainer = (ViewGroup) findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapViewEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+
+
+        //출발지, 도착지 텍스트
         departure = findViewById(R.id.departure);
         arrival = findViewById(R.id.arrival);
-        departureTime = findViewById(R.id.departure_time);
+
+        //인원 수 선택 스피너
         Spinner spinner = (Spinner) findViewById(R.id.number_of_people);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.number_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+        //출발지
         departure.setFocusable(false);
         departure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +91,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
             }
         });
 
+        //도착지
         arrival.setFocusable(false);
         arrival.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,29 +102,41 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
             }
         });
 
+        //출발시간 선택 버튼
+        departureTimeButton = findViewById(R.id.departure_time_button);
+        departureTimeText = findViewById(R.id.departure_time_text);
+        departureTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR);
+                int mMonth = c.get(Calendar.MONTH);
+                int mDay = c.get(Calendar.DAY_OF_MONTH);
+                int mHour = c.get(Calendar.HOUR_OF_DAY);
+                int mMinute = c.get(Calendar.MINUTE);
 
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateTaxiActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                // Save the selected date
+                                // Then show TimePickerDialog
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(CreateTaxiActivity.this,
+                                        new TimePickerDialog.OnTimeSetListener() {
+                                            @Override
+                                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                                // Save the selected time
+                                                departureTimeText.setText(" "+year + "년"+(monthOfYear + 1)+ "월" + dayOfMonth + "일" + " " + hourOfDay + "시" + minute+"분");
+                                            }
+                                        }, mHour, mMinute, false);
+                                timePickerDialog.show();
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
 
-//        searchButton1 = findViewById(R.id.search_button_departure);
-//        searchButton1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Retrieve the text from the departure EditText
-//                String departureText = departure.getText().toString();
-//
-//                // Use the text as a parameter for the searchKeyword method
-//                searchKeyword(departureText);
-//            }
-//        });
-//
-//        searchButton2 = findViewById(R.id.search_button_destination);
-//        searchButton2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Add the functionality to go back to the previous window
-//
-//            }
-//        });
-
+        //생성버튼
         createButton = findViewById(R.id.create_button);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +144,13 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 // Add functionality for the create button
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        mapViewContainer.removeView(mapView);
+        mapView = null;
+        super.finish();
     }
 
     private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(
