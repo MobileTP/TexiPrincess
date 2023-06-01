@@ -63,7 +63,7 @@
         android:background="#fffff0"
         tools:context=".HomeActivity">
 
-        <include layout="@layout/toolbar_layout"/>
+        <include layout="@layout/toolbar_layout_home"/>
 
         <FrameLayout
             android:id="@+id/map_frame"
