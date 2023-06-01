@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static int SPLASH_TIME_OUT = 1000; // 3초
     DatabaseReference database;
+    private long backPressedTime;
+    private Toast backToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,19 @@ public class MainActivity extends AppCompatActivity {
 //        } catch (NoSuchAlgorithmException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 
 }

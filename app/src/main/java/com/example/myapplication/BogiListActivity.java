@@ -37,6 +37,9 @@ public class BogiListActivity extends AppCompatActivity {
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         this.InitializeMovieData();
 

@@ -12,8 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import net.daum.mf.map.api.MapView;
 import net.daum.mf.map.api.MapPoint;
@@ -45,6 +47,9 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
 //        try {
 //            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
@@ -92,7 +97,14 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         departure = findViewById(R.id.departure);
         arrival = findViewById(R.id.arrival);
         departureTime = findViewById(R.id.departure_time);
-        numberOfPeople = findViewById(R.id.number_of_people);
+        Spinner spinner = (Spinner) findViewById(R.id.number_of_people);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.number_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
         departure.setFocusable(false);
         departure.setOnClickListener(new View.OnClickListener() {

@@ -19,7 +19,6 @@
 <!--            android:id="@+id/map"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="match_parent" />-->
-
 <!--    </FrameLayout>-->
 
     <LinearLayout
@@ -31,30 +30,96 @@
         android:layout_margin="15dp"
         android:background="@drawable/rounded_border">
 
-
-        <EditText
-            android:id="@+id/departure"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="출발지" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/arrival"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="도착지" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="출발지    "
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/departure_time"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="출발 시간" />
+            <!-- Add margin here -->
+            <View
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
 
-        <EditText
-            android:id="@+id/number_of_people"
+            <EditText
+                android:id="@+id/departure"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="인원 수" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="도착지    "
+                android:textSize="18sp" />
+
+            <!-- Add margin here -->
+            <View
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/arrival"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="출발 시간"
+                android:textSize="18sp" />
+
+            <!-- Add margin here -->
+            <View
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/departure_time"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="인원 수"
+                android:textSize="18sp" />
+
+            <!-- Add margin here -->
+            <View
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+
+            <Spinner
+                android:id="@+id/number_of_people"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"/>
+        </LinearLayout>
     </LinearLayout>
 
     <Button

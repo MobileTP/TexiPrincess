@@ -90,6 +90,9 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         //injae
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         //map 부분
 //        try {
