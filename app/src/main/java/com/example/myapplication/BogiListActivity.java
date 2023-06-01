@@ -100,19 +100,4 @@ public class BogiListActivity extends AppCompatActivity {
 //        movieDataList.add(new SampleData(R.drawable.logo, "석촌역","가천대역", "2023/05/05 14:55", 4, 12000,"0"));
     }
 
-    @Override
-    public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment frag = (Fragment) fm.findFragmentById(R.id.frameLayout);
-
-        if(frag == null) {
-            super.onBackPressed();
-            Intent intent = new Intent(BogiListActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            super.onBackPressed();
-        }
-
-    }
 }

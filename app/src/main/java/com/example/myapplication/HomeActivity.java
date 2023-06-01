@@ -20,6 +20,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -96,50 +97,22 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        //map 부분
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
-
-        // 권한ID를 가져옵니다
-        int permission = ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.INTERNET);
-
-        int permission2 = ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION);
-
-        int permission3 = ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        // 권한이 열려있는지 확인
-        if (permission == PackageManager.PERMISSION_DENIED || permission2 == PackageManager.PERMISSION_DENIED || permission3 == PackageManager.PERMISSION_DENIED) {
-            // 마쉬멜로우 이상버전부터 권한을 물어본다
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
-                requestPermissions(
-                        new String[]{android.Manifest.permission.INTERNET, android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        1000);
+        //키해시 가져오는 코드
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("키해시는 :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-            return;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
 
-        //지도를 띄우자
-//       mapView = new MapView(this);
-//       mapView.removeAllPOIItems();
-//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-//       mapViewContainer = (ViewGroup) findViewById(R.id.map);
-//       mapViewContainer.addView(mapView);
-//       mapView.setMapViewEventListener(this);
-//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        //지도 띄우기
+        initMapView();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -224,26 +197,6 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         });
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if ( pressedTime == 0 ) {
-//            Toast.makeText(HomeActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
-//            pressedTime = System.currentTimeMillis();
-//        }
-//        else {
-//            int seconds = (int) (System.currentTimeMillis() - pressedTime);
-//
-//            if ( seconds > 5000 ) {
-//                Toast.makeText(HomeActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
-//                pressedTime = 0 ;
-//            }
-//            else {
-//                super.onBackPressed();
-////                finish(); // app 종료 시키기
-//            }
-//        }
-//    }
-
     //injae
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -256,15 +209,31 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onBackPressed() { //뒤로가기 했을 때
-//        if (drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        // When restarting the activity (when Activity B is finished and restarted)
+        // if mapView is not included, add it
+        if (mapViewContainer.indexOfChild(mapView) == -1) {
+            try {
+                // Re-initialize and add mapView
+                initMapView();
+            } catch (RuntimeException re) {
+                Log.e("Error", re.toString());
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {//맵 중복 오류때매 잠시 멈춤
+        super.onPause();
+
+        if (mapViewContainer != null && mapView != null) {
+            mapViewContainer.removeView(mapView);
+            mapView = null;
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -311,6 +280,19 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         }
     }
+
+    //맵 실행 함수
+    private void initMapView() {
+        mapView = new MapView(this);
+        mapView.removeAllPOIItems();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapViewEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+    }
+
+
 
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {

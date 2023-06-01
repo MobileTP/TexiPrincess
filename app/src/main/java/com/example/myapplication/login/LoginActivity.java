@@ -3,6 +3,7 @@ package com.example.myapplication.login;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,10 +51,16 @@ public class LoginActivity extends AppCompatActivity {
     List<Map<String, Object>>[] IDList;
     int cntTaxi;
     int cntID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //아이디 저장용 db
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginID",MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
 
 //        Log.e("Debug", Utility.INSTANCE.getKeyHash(this));
 
@@ -281,6 +288,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //일반 로그인 버튼
         Button loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,8 +296,19 @@ public class LoginActivity extends AppCompatActivity {
                 int tmp=0;
                 Log.d("FDB","cntID:"+cntID[0]);
                 for(tmp=0; tmp<cntID[0]; tmp++){
+                    String DBID= (String) IDList[0].get(tmp).get("Email");
+                    String ETID= String.valueOf(idValue.getText());
+                    String DBPW= (String) IDList[0].get(tmp).get("Password");
+                    String ETPW= String.valueOf(pwValue.getText());
+                    if(DBID.equals(ETID)){
+                        if(DBPW.equals(ETPW)){
+                            //아이디 저장(로그인 유지)
+                            myEdit.putString("userID", ETID);
+                            myEdit.commit();
+
                     if(IDList[0].get(tmp).get("Email").toString().equals(idValue.getText().toString())){
                         if(IDList[0].get(tmp).get("Password").toString().equals(pwValue.getText().toString())){
+
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.putExtra("TaxiList",TaxiList);
                             intent.putExtra("IDList",IDList);
@@ -313,11 +332,7 @@ public class LoginActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                intent.putExtra("TaxiList",TaxiList);
-                intent.putExtra("IDList",IDList);
-                intent.putExtra("cntTaxi",cntTaxi[0]);
-                intent.putExtra("cntID",cntID[0]);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });

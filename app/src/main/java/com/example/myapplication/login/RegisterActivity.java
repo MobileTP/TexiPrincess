@@ -28,13 +28,15 @@ public class RegisterActivity extends AppCompatActivity {
     DatabaseReference database;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
+
+    //파이어베이스 연동
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
-        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
 
         name=findViewById(R.id.name);
         email=findViewById(R.id.email);

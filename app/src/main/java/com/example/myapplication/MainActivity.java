@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -39,13 +40,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginID",MODE_PRIVATE);
+        String userID = sharedPreferences.getString("userID", null);
+
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
+//                if(userID != null) {
+//                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+//                    finish();
+//                    startActivity(i);
+//                } else {
+//                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
+//                    finish();
+//                    startActivity(i);
+//                }
+
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 finish();
                 startActivity(i);
+
             }
         }, SPLASH_TIME_OUT);
 
@@ -63,18 +78,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            backToast.cancel();
-            super.onBackPressed();
-            return;
-        } else {
-            backToast = Toast.makeText(getBaseContext(), "한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT);
-            backToast.show();
-        }
-        backPressedTime = System.currentTimeMillis();
-    }
 
 }
 
