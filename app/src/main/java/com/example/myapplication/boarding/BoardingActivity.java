@@ -36,7 +36,7 @@ public class BoardingActivity extends AppCompatActivity {
     private Button pay, review;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex;
+    int IDindex,cntTaxi,cntID,idx;
     TextView profile_name,profile_info;
     ImageView profile_image;
 
@@ -48,6 +48,9 @@ public class BoardingActivity extends AppCompatActivity {
         TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
+        idx=getIntent().getIntExtra("idx",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -97,6 +100,8 @@ public class BoardingActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -108,6 +113,8 @@ public class BoardingActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -118,6 +125,8 @@ public class BoardingActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
                 }
@@ -134,6 +143,8 @@ public class BoardingActivity extends AppCompatActivity {
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
             }
         });
@@ -145,6 +156,9 @@ public class BoardingActivity extends AppCompatActivity {
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
+                intent.putExtra("idx",idx);
                 startActivity(intent);
             }
         });

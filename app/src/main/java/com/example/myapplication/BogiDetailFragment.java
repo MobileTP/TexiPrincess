@@ -16,11 +16,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.boarding.BoardingActivity;
 import com.example.myapplication.comment.commentFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,29 +38,29 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
     private TextView departtxt;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex;
-
+    int IDindex,cntTaxi,cntID,idx;
+    DatabaseReference database;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bogi_detail, container, false);
 
-        mapView = new MapView(getContext());
-        mapView.removeAllPOIItems();
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
-        mapViewContainer.addView(mapView);
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
-        mapView.setZoomLevel(4, true);
-        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
-        MapPOIItem marker = new MapPOIItem();
-        marker.setItemName("Default Marker");
-        marker.setTag(0);
-        marker.setMapPoint(MARKER_POINT);
-        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-
-        mapView.addPOIItem(marker);
+//        mapView = new MapView(getContext());
+//        mapView.removeAllPOIItems();
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+//        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
+//        mapViewContainer.addView(mapView);
+//        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
+//        mapView.setZoomLevel(4, true);
+//        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
+//        MapPOIItem marker = new MapPOIItem();
+//        marker.setItemName("Default Marker");
+//        marker.setTag(0);
+//        marker.setMapPoint(MARKER_POINT);
+//        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+//        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+//
+//        mapView.addPOIItem(marker);
 
         toolbar = rootView.findViewById(R.id.toolBar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -73,9 +77,12 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
         int price = bundle.getInt("price");
+        idx = bundle.getInt("idx");
         TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
         IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
         IDindex = bundle.getInt("IDindex");
+        cntTaxi=bundle.getInt("cntTaxi",0);
+        cntID=bundle.getInt("cntID",0);
 
         departtxt.setText(depart);
         arrivetxt.setText(arrive);
@@ -102,16 +109,39 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         commentFragment CommentFragment = new commentFragment();
         switch (view.getId()) {
             case R.id.taxi_tagi:
-                Toast.makeText(getContext(),"출근 완료",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"택타기",Toast.LENGTH_SHORT).show();
+
+                database= FirebaseDatabase.getInstance().getReference("Taxi");
+                DatabaseReference TaxiUser=database.child(String.valueOf(idx));
+                Map<String, Object> Update=new HashMap<>();
+                ArrayList UserList = new ArrayList<>();
+                for (int i=0; i<((ArrayList)TaxiList[0].get(idx).get("User")).size(); i++) {
+                    int reviewValue = (int) ((ArrayList)TaxiList[0].get(idx).get("User")).get(i);
+                    UserList.add(reviewValue);
+                }
+                if(!TaxiList[0].get(idx).get("Admin").toString().equals(IDindex+""))
+                    UserList.add(IDindex);
+                Update.put("User",UserList);
+                TaxiUser.updateChildren(Update);
+
                 Intent intent = new Intent(getActivity(), BoardingActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
+                intent.putExtra("idx",idx);
                 startActivity(intent);
                 break;
             case R.id.comment:
                 Bundle bundle = new Bundle();
                 bundle.putString("depart", String.valueOf(departtxt));
+                bundle.putSerializable("TaxiList",TaxiList);
+                bundle.putSerializable("IDList",IDList);
+                bundle.putInt("IDindex",IDindex);
+                bundle.putInt("cntTaxi",cntTaxi);
+                bundle.putInt("cntID",cntID);
+                bundle.putInt("idx",idx);
                 openfragment(CommentFragment, bundle);
                 break;
         }

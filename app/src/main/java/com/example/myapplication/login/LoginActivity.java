@@ -288,12 +288,8 @@ public class LoginActivity extends AppCompatActivity {
                 int tmp=0;
                 Log.d("FDB","cntID:"+cntID[0]);
                 for(tmp=0; tmp<cntID[0]; tmp++){
-                    String DBID= (String) IDList[0].get(tmp).get("Email");
-                    String ETID= String.valueOf(idValue.getText());
-                    String DBPW= (String) IDList[0].get(tmp).get("Password");
-                    String ETPW= String.valueOf(pwValue.getText());
-                    if(DBID.equals(ETID)){
-                        if(DBPW.equals(ETPW)){
+                    if(IDList[0].get(tmp).get("Email").toString().equals(idValue.getText().toString())){
+                        if(IDList[0].get(tmp).get("Password").toString().equals(pwValue.getText().toString())){
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.putExtra("TaxiList",TaxiList);
                             intent.putExtra("IDList",IDList);

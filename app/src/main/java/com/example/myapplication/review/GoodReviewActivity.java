@@ -34,7 +34,7 @@ public class GoodReviewActivity extends AppCompatActivity {
     private Button next, btn1, btn2, btn3;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex,reviewID;
+    int IDindex,reviewID,cntTaxi,cntID,idx;
     TextView profile_name,profile_info;
     ImageView profile_image;
 
@@ -47,6 +47,9 @@ public class GoodReviewActivity extends AppCompatActivity {
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
         reviewID=getIntent().getIntExtra("reviewID",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
+        idx=getIntent().getIntExtra("idx",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -70,9 +73,15 @@ public class GoodReviewActivity extends AppCompatActivity {
         profile_info=view.findViewById(R.id.profile_info);
 
         NaviHeaderFragment naviHeaderFragment= (NaviHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_Myprofile);
-        ImageView frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
-        TextView frag_name=naviHeaderFragment.getView().findViewById(R.id.profile_name);
-        TextView frag_sex=naviHeaderFragment.getView().findViewById(R.id.profile_info);
+        ImageView frag_image;
+        TextView frag_name = null;
+        TextView frag_sex = null;
+        if(naviHeaderFragment!=null){
+            frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
+            frag_name=naviHeaderFragment.getView().findViewById(R.id.profile_name);
+            frag_sex=naviHeaderFragment.getView().findViewById(R.id.profile_info);
+        }
+
 
         String userName = "TestName";
         String userSex = "TestSex";
@@ -89,8 +98,10 @@ public class GoodReviewActivity extends AppCompatActivity {
         profile_name.setText(userName);
         profile_info.setText(userSex);
 //        frag_image.setImageResource();
-        frag_name.setText(userName);
-        frag_sex.setText(userSex);
+        if(frag_name!=null)
+            frag_name.setText(userName);
+        if(frag_sex!=null)
+            frag_sex.setText(userSex);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -103,6 +114,8 @@ public class GoodReviewActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -114,6 +127,8 @@ public class GoodReviewActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -124,6 +139,8 @@ public class GoodReviewActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
                 }

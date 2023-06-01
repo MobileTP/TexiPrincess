@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private DrawerLayout drawerLayout;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex;
+    int IDindex,cntTaxi,cntID;
     TextView profile_name,profile_info;
     ImageView profile_image;
     DatabaseReference database;
@@ -75,6 +75,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
 
         NavigationView navi=(NavigationView)findViewById(R.id.navigationView);
         View view=navi.getHeaderView(0);
@@ -131,13 +133,13 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         //지도를 띄우자
-       mapView = new MapView(this);
-       mapView.removeAllPOIItems();
-       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-       mapViewContainer = (ViewGroup) findViewById(R.id.map);
-       mapViewContainer.addView(mapView);
-       mapView.setMapViewEventListener(this);
-       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+//       mapView = new MapView(this);
+//       mapView.removeAllPOIItems();
+//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+//       mapViewContainer = (ViewGroup) findViewById(R.id.map);
+//       mapViewContainer.addView(mapView);
+//       mapView.setMapViewEventListener(this);
+//       mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -156,6 +158,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -167,6 +171,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -177,6 +183,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
                 }
@@ -194,6 +202,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
             }
         });
@@ -206,6 +216,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi);
+                intent.putExtra("cntID",cntID);
                 startActivity(intent);
                 finish();
             }

@@ -16,27 +16,52 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class commentFragment extends Fragment {
 
     ArrayList<CommentData> commentList;
     ListView customListView;
     private static CommentAdapter customAdapter;
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex,cntTaxi,cntID,idx;
+    DatabaseReference database;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.comment_fragment, container, false);
 
+        Bundle bundle = getArguments();
+        idx = bundle.getInt("idx");
+        TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
+        IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
+        IDindex = bundle.getInt("IDindex");
+        cntTaxi=bundle.getInt("cntTaxi",0);
+        cntID=bundle.getInt("cntID",0);
+
         commentList = new ArrayList<CommentData>();
 
-        commentList.add(new CommentData(R.drawable.profile, "박현서","안녕하세요"));
-        commentList.add(new CommentData(R.drawable.profile, "문희상","ㅎㅇㅎㅇ"));
-        commentList.add(new CommentData(R.drawable.profile, "이승원","ㅎㅇㅎㅇ"));
-        commentList.add(new CommentData(R.drawable.profile, "유인재","ㅎㅇㅎㅇ"));
+        for(int i=0; i<((ArrayList)TaxiList[0].get(idx).get("Chat")).size(); i++){
+            String content= (String) ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("Content");
+            String time= (String) ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("Time");
+            long ID= (long) ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("ID");
+            String name= (String) IDList[0].get((int) ID).get("Name");
+            commentList.add(new CommentData(R.drawable.profile, name,content, (int) ID,time));
+        }
+//        commentList.add(new CommentData(R.drawable.profile, "박현서","안녕하세요",0,"2023/05/01 10:55"));
+//        commentList.add(new CommentData(R.drawable.profile, "문희상","ㅎㅇㅎㅇ",0,"2023/05/01 10:55"));
+//        commentList.add(new CommentData(R.drawable.profile, "이승원","ㅎㅇㅎㅇ",0,"2023/05/01 10:55"));
+//        commentList.add(new CommentData(R.drawable.profile, "유인재","ㅎㅇㅎㅇ",0,"2023/05/01 10:55"));
 
         customListView = (ListView) rootView.findViewById(R.id.comment_listView_custom);
         customAdapter = new CommentAdapter(getContext(), commentList);
@@ -57,8 +82,21 @@ public class commentFragment extends Fragment {
             public void onClick(View v) {
                 String inputText = editText.getText().toString().trim();
                 if (!inputText.isEmpty()) {
-                    // 입력된 값이 비어있지 않으면 토스트로 출력
-                    Toast.makeText(getContext(), inputText, Toast.LENGTH_SHORT).show();
+//                    // 입력된 값이 비어있지 않으면 토스트로 출력
+//                    Toast.makeText(getContext(), inputText, Toast.LENGTH_SHORT).show();
+                    database= FirebaseDatabase.getInstance().getReference("Taxi");
+                    int cnt=((ArrayList)TaxiList[0].get(idx).get("Chat")).size();
+                    SimpleDateFormat formatter=new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                    Date date=new Date(System.currentTimeMillis());
+                    String time=formatter.format(date);
+
+                    HashMap chatInfo=new HashMap();
+                    chatInfo.put("Content",inputText);
+                    chatInfo.put("ID",IDindex);
+                    chatInfo.put("Time",time);
+
+                    database.child(String.valueOf(idx)).child("Chat").child(String.valueOf(cnt)).setValue(chatInfo);
+                    commentList.add(new CommentData(R.drawable.profile, (String) IDList[0].get((int) IDindex).get("Name"),inputText, (int) IDindex,time));
                     // EditText 초기화
                     editText.setText("");
                     InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
