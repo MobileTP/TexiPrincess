@@ -21,6 +21,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.SampleData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,14 +85,15 @@ public class ReviewActivity extends AppCompatActivity {
         movieDataList = new ArrayList<SampleData>();
 
         for(int i=0; i<((ArrayList)TaxiList[0].get(i).get("User")).size(); i++){
-            String depart= (String) TaxiList[0].get(i).get("From");
-            String arrive= (String) TaxiList[0].get(i).get("To");
+            int ID= (int) ((ArrayList<?>) TaxiList[0].get(i).get("User")).get(i);
+            String depart= (String) IDList[0].get(ID).get("Name");
+            String arrive= depart;
             String time=(String) TaxiList[0].get(i).get("Time");
             int headCount= ((ArrayList)TaxiList[0].get(i).get("User")).size()+1;
             long price= (long) TaxiList[0].get(i).get("Cost");
-            String idx= (String) ((ArrayList<?>) TaxiList[0].get(i).get("User")).get(i);
+            String idx= ((ArrayList<?>) TaxiList[0].get(i).get("User")).get(i)+"";
             if(!idx.equals(IDindex+""))
-                movieDataList.add(new SampleData(R.drawable.logo, depart,arrive, time, headCount, (int) price,idx));
+                movieDataList.add(new SampleData(R.drawable.profile, depart,arrive, time, headCount, (int) price,idx));
 
         }
 //        movieDataList.add(new SampleData(R.drawable.photo, "리뷰1","박현서", "2023/05/01 10:55", 2, 24000, "0"));
