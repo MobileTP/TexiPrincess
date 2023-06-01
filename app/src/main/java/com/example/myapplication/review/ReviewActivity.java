@@ -91,7 +91,7 @@ public class ReviewActivity extends AppCompatActivity {
             String time=(String) TaxiList[0].get(i).get("Time");
             int headCount= ((ArrayList)TaxiList[0].get(i).get("User")).size()+1;
             long price= (long) TaxiList[0].get(i).get("Cost");
-            String idx= ((ArrayList<?>) TaxiList[0].get(i).get("User")).get(i)+"";
+            String idx= ID+"";
             if(!idx.equals(IDindex+""))
                 movieDataList.add(new SampleData(R.drawable.profile, depart,arrive, time, headCount, (int) price,idx));
 
