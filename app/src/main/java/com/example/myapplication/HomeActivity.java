@@ -5,6 +5,7 @@ import static android.app.PendingIntent.getActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ImageView;
@@ -32,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.myapplication.login.LoginActivity;
 import com.example.myapplication.mypage.MyPageActivity;
 import com.example.myapplication.mypage.MyReviewActivity;
 import com.example.myapplication.mypage.MySangTaxiActivity;
@@ -91,11 +94,21 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         profile_info.setText(IDList[0].get(IDindex).get("Sex").equals("0")?"남자":"여자");
 
         //injae
-        toolbar=findViewById(R.id.toolBar);
+        toolbar=findViewById(R.id.toolBar_home);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        ImageButton logoutButton = findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Here you put your logout logic
+                logout();
+            }
+        });
+
 
         //키해시 가져오는 코드
         try {
@@ -167,6 +180,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         });
         //injae
 
+        //택생성 버튼
         sangButton = findViewById(R.id.taxi_sang);
         sangButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +195,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
             }
         });
 
+        //택보기 버튼
         bogiButton = findViewById(R.id.taxi_bogi);
         bogiButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +210,21 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 finish();
             }
         });
+    }
+
+    //로그아웃
+    private void logout() {
+        // Clear user data, stop background services, etc.
+        // If using shared preferences to store user info, it can be cleared like this:
+        SharedPreferences preferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+
+        // After logout, usually, users are navigated to the login screen
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     //injae
