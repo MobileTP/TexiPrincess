@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import net.daum.mf.map.api.MapView;
 import net.daum.mf.map.api.MapPoint;
@@ -34,6 +35,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateTaxiActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
+    private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     private MapView mapView;
     private ViewGroup mapViewContainer;
     private Toolbar toolbar;
@@ -81,6 +83,19 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         departure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("주소설정페이지", "주소입력창 클릭");
+                int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
+                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                    Log.i("주소설정페이지", "주소입력창 클릭");
+                    Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                    // 화면전환 애니메이션 없애기
+                    overridePendingTransition(0, 0);
+                    // 주소결과
+                    startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                }
                 //주소 검색 웹뷰 화면으로 이동
                 Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
                 getSearchResult.launch(intent);
@@ -217,6 +232,23 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
             if (check_result == false) {
                 finish();
             }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        Log.i("test", "onActivityResult");
+
+        switch (requestCode) {
+            case SEARCH_ADDRESS_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    String data = intent.getExtras().getString("data");
+                    if (data != null) {
+                        Log.i("test", "data: " + data);
+                        departure.setText(data);
+                    }
+                }
+                break;
         }
     }
 

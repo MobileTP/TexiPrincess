@@ -300,31 +300,35 @@ public class LoginActivity extends AppCompatActivity {
                     String ETID = String.valueOf(idValue.getText());
                     String DBPW = (String) IDList[0].get(tmp).get("Password");
                     String ETPW = String.valueOf(pwValue.getText());
-                    if (DBID.equals(ETID)) {
-                        if (DBPW.equals(ETPW)) {
-                            //아이디 저장(로그인 유지)
-                            myEdit.putString("userID", ETID);
-                            myEdit.commit();
+                    if(DBID == null) {
+                        Toast.makeText(LoginActivity.this, "이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (DBID.equals(ETID)) {
+                            if (DBPW.equals(ETPW)) {
+                                //아이디 저장(로그인 유지)
+                                myEdit.putString("userID", ETID);
+                                myEdit.commit();
 
-                            if (IDList[0].get(tmp).get("Email").toString().equals(idValue.getText().toString())) {
-                                if (IDList[0].get(tmp).get("Password").toString().equals(pwValue.getText().toString())) {
+                                if (IDList[0].get(tmp).get("Email").toString().equals(idValue.getText().toString())) {
+                                    if (IDList[0].get(tmp).get("Password").toString().equals(pwValue.getText().toString())) {
 
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                    intent.putExtra("TaxiList", TaxiList);
-                                    intent.putExtra("IDList", IDList);
-                                    intent.putExtra("IDindex", tmp);
-                                    intent.putExtra("cntTaxi", cntTaxi[0]);
-                                    intent.putExtra("cntID", cntID[0]);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
-                                    break;
+                                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                        intent.putExtra("TaxiList", TaxiList);
+                                        intent.putExtra("IDList", IDList);
+                                        intent.putExtra("IDindex", tmp);
+                                        intent.putExtra("cntTaxi", cntTaxi[0]);
+                                        intent.putExtra("cntID", cntID[0]);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    }
                                 }
                             }
+                            if (tmp == cntID[0])
+                                Toast.makeText(LoginActivity.this, "등록된 이메일이 없습니다.", Toast.LENGTH_SHORT).show();
                         }
-                        if (tmp == cntID[0])
-                            Toast.makeText(LoginActivity.this, "등록된 이메일이 없습니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
         }});
