@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +21,11 @@ import com.example.myapplication.comment.commentFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPointBounds;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
@@ -46,24 +50,43 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bogi_detail, container, false);
 
-//        mapView = new MapView(getContext());
-//        mapView.removeAllPOIItems();
-//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-//        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
-//        mapViewContainer.addView(mapView);
-//        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
-//        mapView.setZoomLevel(4, true);
-//        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
-//        MapPOIItem marker = new MapPOIItem();
-//        marker.setItemName("Default Marker");
-//        marker.setTag(0);
-//        marker.setMapPoint(MARKER_POINT);
-//        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-//        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-//
-//        mapView.addPOIItem(marker);
+        mapView = new MapView(getContext());
+        mapView.removeAllPOIItems();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.49892296550104, 126.94089033876304), true);
 
-        //지도 띄우기
+        MapPoint MARKER_POINT_depart = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
+        MapPOIItem marker_depart = new MapPOIItem();
+        marker_depart.setItemName("departure");
+        marker_depart.setTag(0);
+        marker_depart.setMapPoint(MARKER_POINT_depart);
+        MapPoint MARKER_POINT_arrive = MapPoint.mapPointWithGeoCoord(37.44892296550104, 126.89089033876304);
+        MapPOIItem marker_arrive = new MapPOIItem();
+        marker_arrive.setItemName("arrival");
+        marker_arrive.setTag(0);
+        marker_arrive.setMapPoint(MARKER_POINT_arrive);
+        marker_depart.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker_depart.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        marker_arrive.setMarkerType(MapPOIItem.MarkerType.RedPin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker_arrive.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+        mapView.addPOIItem(marker_depart);
+        mapView.addPOIItem(marker_arrive);
+
+        MapPolyline polyline = new MapPolyline();
+        polyline.setLineColor(Color.argb(128, 255, 0, 0));
+        polyline.addPoint(MARKER_POINT_arrive);
+        polyline.addPoint(MARKER_POINT_depart);
+        mapView.addPolyline(polyline);
+
+        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
+        int padding = 100; // px
+        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
+
+
+//        지도 띄우기
 //        initMapView();
 
         toolbar = rootView.findViewById(R.id.toolBar);
@@ -161,6 +184,7 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
     private void initMapView() {
         mapView = new MapView(getActivity());
         mapView.removeAllPOIItems();
+        mapView.removeAllPolylines();
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapViewContainer = (ViewGroup) getView().findViewById(R.id.map);
         mapViewContainer.addView(mapView);

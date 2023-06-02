@@ -316,6 +316,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private void initMapView() {
         mapView = new MapView(this);
         mapView.removeAllPOIItems();
+        mapView.removeAllPolylines();
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapViewContainer = (ViewGroup) findViewById(R.id.map);
         mapViewContainer.addView(mapView);

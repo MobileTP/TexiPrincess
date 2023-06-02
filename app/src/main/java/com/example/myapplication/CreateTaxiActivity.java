@@ -35,7 +35,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateTaxiActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
-    private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
+    private static final int SEARCH_DEPART_ACTIVITY = 20000;
+    private static final int SEARCH_ARRIVE_ACTIVITY = 10000;
     private MapView mapView;
     private ViewGroup mapViewContainer;
     private Toolbar toolbar;
@@ -91,14 +92,11 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                     // 화면전환 애니메이션 없애기
                     overridePendingTransition(0, 0);
                     // 주소결과
-                    startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+                    startActivityForResult(i, SEARCH_DEPART_ACTIVITY);
 
                 }else {
                     Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
                 }
-                //주소 검색 웹뷰 화면으로 이동
-                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
-                getSearchResult.launch(intent);
             }
         });
 
@@ -107,9 +105,19 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         arrival.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //주소 검색 웹뷰 화면으로 이동
-                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
-                getSearchResult.launch(intent);
+                Log.i("주소설정페이지", "주소입력창 클릭");
+                int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
+                if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                    Log.i("주소설정페이지", "주소입력창 클릭");
+                    Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                    // 화면전환 애니메이션 없애기
+                    overridePendingTransition(0, 0);
+                    // 주소결과
+                    startActivityForResult(i, SEARCH_ARRIVE_ACTIVITY);
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -137,7 +145,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                                             @Override
                                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                                 // Save the selected time
-                                                departureTimeText.setText(" "+year + "년"+(monthOfYear + 1)+ "월" + dayOfMonth + "일" + " " + hourOfDay + "시" + minute+"분");
+                                                departureTimeText.setText(" "+year + "년 "+(monthOfYear + 1)+ "월 " + dayOfMonth + "일 " + hourOfDay + "시 " + minute+"분");
                                             }
                                         }, mHour, mMinute, false);
                                 timePickerDialog.show();
@@ -240,12 +248,21 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         Log.i("test", "onActivityResult");
 
         switch (requestCode) {
-            case SEARCH_ADDRESS_ACTIVITY:
+            case SEARCH_DEPART_ACTIVITY:
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
                     if (data != null) {
                         Log.i("test", "data: " + data);
                         departure.setText(data);
+                    }
+                }
+                break;
+            case SEARCH_ARRIVE_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    String data = intent.getExtras().getString("data");
+                    if (data != null) {
+                        Log.i("test", "data: " + data);
+                        arrival.setText(data);
                     }
                 }
                 break;
