@@ -90,8 +90,10 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         profile_info=view.findViewById(R.id.profile_info);
 
 //        profile_image.setImageResource(IDList[0].get(0).get("Image").toString());
-        profile_name.setText(IDList[0].get(IDindex).get("Name").toString());
-        profile_info.setText(IDList[0].get(IDindex).get("Sex").equals("0")?"남자":"여자");
+        if(IDList[0]!=null){
+            profile_name.setText(IDList[0].get(IDindex).get("Name").toString());
+            profile_info.setText(IDList[0].get(IDindex).get("Sex").equals("0")?"남자":"여자");
+        }
 
         //injae
         toolbar=findViewById(R.id.toolBar_home);

@@ -54,9 +54,17 @@ public class commentFragment extends Fragment {
         for(int i=0; i<((ArrayList)TaxiList[0].get(idx).get("Chat")).size(); i++){
             String content= (String) ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("Content");
             String time= (String) ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("Time");
-            long ID= (long) ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("ID");
-            String name= (String) IDList[0].get((int) ID).get("Name");
-            commentList.add(new CommentData(R.drawable.profile, name,content, (int) ID,time));
+            Object ID=  ((HashMap)((ArrayList<?>) TaxiList[0].get(idx).get("Chat")).get(i)).get("ID");
+
+            if(ID instanceof  Long){
+                long cID= (long) ID;
+                String name= (String) IDList[0].get((int) cID).get("Name");
+                commentList.add(new CommentData(R.drawable.profile, name,content, (int) cID,time));
+            }else if(ID instanceof Integer){
+                int cID= (int)ID;
+                String name= (String) IDList[0].get(cID).get("Name");
+                commentList.add(new CommentData(R.drawable.profile, name,content, cID,time));
+            }
         }
 //        commentList.add(new CommentData(R.drawable.profile, "박현서","안녕하세요",0,"2023/05/01 10:55"));
 //        commentList.add(new CommentData(R.drawable.profile, "문희상","ㅎㅇㅎㅇ",0,"2023/05/01 10:55"));
@@ -96,6 +104,7 @@ public class commentFragment extends Fragment {
                     chatInfo.put("Time",time);
 
                     database.child(String.valueOf(idx)).child("Chat").child(String.valueOf(cnt)).setValue(chatInfo);
+                    ((ArrayList) TaxiList[0].get(idx).get("Chat")).add(chatInfo);
                     commentList.add(new CommentData(R.drawable.profile, (String) IDList[0].get((int) IDindex).get("Name"),inputText, (int) IDindex,time));
                     // EditText 초기화
                     editText.setText("");

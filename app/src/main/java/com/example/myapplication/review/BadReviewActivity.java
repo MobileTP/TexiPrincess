@@ -78,19 +78,23 @@ public class BadReviewActivity extends AppCompatActivity {
         profile_name=view.findViewById(R.id.profile_name);
         profile_info=view.findViewById(R.id.profile_info);
 
-        NaviHeaderFragment naviHeaderFragment= (NaviHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_Myprofile);
-        ImageView frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
+        NaviHeaderFragment naviHeaderFragment= (NaviHeaderFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_profile);
+//        ImageView frag_image=naviHeaderFragment.getView().findViewById(R.id.profile_image);
         TextView frag_name=naviHeaderFragment.getView().findViewById(R.id.profile_name);
         TextView frag_sex=naviHeaderFragment.getView().findViewById(R.id.profile_info);
 
         String userName = "TestName";
         String userSex = "TestSex";
+        String reviewName = "TestName";
+        String reviewSex = "TestSex";
         //DB 에서 읽고 네비바 내용 변경
         //Arraylist에서 null이라고 값 못읽음;
         if(IDList!=null)
             if(IDList[0].size()!=0){
                 userName= (String) IDList[0].get(IDindex).get("Name");
                 userSex= IDList[0].get(IDindex).get("Sex").equals("0")? "남자":"여자";
+                reviewName = (String) IDList[0].get(reviewID).get("Name");
+                reviewSex = IDList[0].get(reviewID).get("Sex").equals("0")? "남자":"여자";
             }
 
 
@@ -98,9 +102,10 @@ public class BadReviewActivity extends AppCompatActivity {
         profile_name.setText(userName);
         profile_info.setText(userSex);
 //        frag_image.setImageResource();
-        frag_name.setText(userName);
-        frag_sex.setText(userSex);
-
+        if(frag_name!=null)
+            frag_name.setText(reviewName);
+        if(frag_sex!=null)
+            frag_sex.setText(reviewSex);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -184,7 +189,7 @@ public class BadReviewActivity extends AppCompatActivity {
                 Boolean[] btn= {btn1,btn2,btn3,btn4.isSelected(),btn5.isSelected(),btn6.isSelected()};
 
                 database= FirebaseDatabase.getInstance().getReference("ID");
-                DatabaseReference IDReview=database.child(String.valueOf(IDindex));
+                DatabaseReference IDReview=database.child(String.valueOf(reviewID));
                 Map<String, Object> IDUpdate=new HashMap<>();
                 List<Integer> reviewList = new ArrayList<>();
                 for (int i=0; i<6; i++) {
