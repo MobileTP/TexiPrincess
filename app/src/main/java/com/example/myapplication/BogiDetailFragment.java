@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BogiDetailFragment extends Fragment implements View.OnClickListener {
+public class BogiDetailFragment extends Fragment implements View.OnClickListener, MapView.CurrentLocationEventListener, MapView.MapViewEventListener  {
 
     private MapView mapView;
     private ViewGroup mapViewContainer;
@@ -62,21 +62,29 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
 //
 //        mapView.addPOIItem(marker);
 
+        //지도 띄우기
+//        initMapView();
+
         toolbar = rootView.findViewById(R.id.toolBar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
 
         departtxt = rootView.findViewById(R.id.depart);
         TextView arrivetxt = rootView.findViewById(R.id.arrive);
         TextView timetxt = rootView.findViewById(R.id.time);
         TextView headtxt = rootView.findViewById(R.id.head);
-        TextView pricetxt = rootView.findViewById(R.id.price);
+//        TextView pricetxt = rootView.findViewById(R.id.price);
 
         Bundle bundle = getArguments();
         String depart = bundle.getString("depart");
         String arrive = bundle.getString("arrive");
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
-        int price = bundle.getInt("price");
+//        int price = bundle.getInt("price");
         idx = bundle.getInt("idx");
         TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
         IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
@@ -88,7 +96,7 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         arrivetxt.setText(arrive);
         timetxt.setText(time);
         headtxt.setText(head + "/4");
-        pricetxt.setText(price + "원");
+//        pricetxt.setText(price + "원");
 
         tagiBtn = rootView.findViewById(R.id.taxi_tagi);
         commentBtn = rootView.findViewById(R.id.comment);
@@ -146,5 +154,82 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
                 break;
         }
     }
+
+    //맵 실행 함수
+    private void initMapView() {
+        mapView = new MapView(getActivity());
+        mapView.removeAllPOIItems();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) getView().findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapViewEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+    }
+
+    @Override
+    public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
+
+    }
+
+    @Override
+    public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateFailed(MapView mapView) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateCancelled(MapView mapView) {
+
+    }
+
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+
+    }
+
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
 
 }

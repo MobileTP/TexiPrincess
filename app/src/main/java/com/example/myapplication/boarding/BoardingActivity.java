@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.review.GoodReviewActivity;
 import com.example.myapplication.mypage.MyPageActivity;
 import com.example.myapplication.mypage.MyReviewActivity;
@@ -63,6 +64,12 @@ public class BoardingActivity extends AppCompatActivity {
 
         navigationView=findViewById(R.id.navigationView);
         drawerLayout=findViewById(R.id.drawer_layout);
+
+        ImageView gifImageView = findViewById(R.id.my_gif);
+        Glide.with(this)
+          .asGif()
+          .load("https://media.giphy.com/media/ViocF1IBCGSvuz0VPR/giphy.gif")
+          .into(gifImageView);
 
         pay=findViewById(R.id.boarding_btn_payment);
         review=findViewById(R.id.boarding_btn_review);

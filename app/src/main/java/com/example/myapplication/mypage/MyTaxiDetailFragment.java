@@ -35,20 +35,24 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.my_taxi_fragment, container, false);
 
         toolbar = rootView.findViewById(R.id.toolBar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         departtxt = rootView.findViewById(R.id.depart);
         TextView arrivetxt = rootView.findViewById(R.id.arrive);
         TextView timetxt = rootView.findViewById(R.id.time);
         TextView headtxt = rootView.findViewById(R.id.head);
-        TextView pricetxt = rootView.findViewById(R.id.price);
+//        TextView pricetxt = rootView.findViewById(R.id.price);
 
         Bundle bundle = getArguments();
         String depart = bundle.getString("depart");
         String arrive = bundle.getString("arrive");
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
-        int price = bundle.getInt("price");
+//        int price = bundle.getInt("price");
         idx = bundle.getInt("idx");
         TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
         IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
@@ -60,7 +64,7 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
         arrivetxt.setText(arrive);
         timetxt.setText(time);
         headtxt.setText(head + "/4");
-        pricetxt.setText(price + "원");
+//        pricetxt.setText(price + "원");
 
         commentBtn = rootView.findViewById(R.id.comment);
         commentBtn.setOnClickListener((View.OnClickListener) this);

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#fffff0"
     tools:context=".CreateTaxiActivity">
 
     <include layout="@layout/toolbar_layout"/>
@@ -88,8 +89,9 @@
                 android:layout_height="30dp"
                 android:layout_weight="2"
                 android:text=""
-                android:background="@drawable/border_departtime"
+                android:textSize="17sp"
                 android:layout_marginRight="10dp"/>
+<!--            android:background="@drawable/border_departtime"-->
 
             <Button
                 android:id="@+id/departure_time_button"

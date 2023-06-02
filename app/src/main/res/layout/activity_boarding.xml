@@ -12,16 +12,30 @@
         android:layout_height="match_parent"
         android:background="#fffff0">
 
+
+        <ImageView
+            android:id="@+id/my_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/boarding"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            />
+
         <TextView
             android:id="@+id/boarding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_above="@id/table_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="100dp"
             android:textSize="50sp"
             android:text="탑승 중..." />
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/table_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

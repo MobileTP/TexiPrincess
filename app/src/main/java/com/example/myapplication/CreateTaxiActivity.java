@@ -61,12 +61,8 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        //지도를 띄우기
-        mapView = new MapView(this);
-        mapViewContainer = (ViewGroup) findViewById(R.id.map);
-        mapViewContainer.addView(mapView);
-        mapView.setMapViewEventListener(this);
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        //지도 띄우기
+        initMapView();
 
 
         //출발지, 도착지 텍스트
@@ -141,7 +137,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Add functionality for the create button
+                finish();
             }
         });
     }
@@ -151,6 +147,16 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         mapViewContainer.removeView(mapView);
         mapView = null;
         super.finish();
+    }
+
+    private void initMapView() {
+        mapView = new MapView(this);
+        mapView.removeAllPOIItems();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+        mapView.setMapViewEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
     }
 
     private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(

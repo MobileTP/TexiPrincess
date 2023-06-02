@@ -207,7 +207,6 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
                 intent.putExtra("cntTaxi",cntTaxi);
                 intent.putExtra("cntID",cntID);
                 startActivity(intent);
-                finish();
             }
         });
     }

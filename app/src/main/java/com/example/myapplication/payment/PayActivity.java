@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.myapplication.R;
 
@@ -20,7 +21,7 @@ public class PayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pay);
 
         EditText PaymentValue = findViewById(R.id.paymentValue);
-        Button PaymentBtn = findViewById(R.id.paymentBtn);
+        ImageButton PaymentBtn = findViewById(R.id.paymentBtn);
 
         PaymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
