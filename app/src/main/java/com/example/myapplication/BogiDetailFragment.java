@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,22 +46,22 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bogi_detail, container, false);
 
-        mapView = new MapView(getContext());
-        mapView.removeAllPOIItems();
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
-        mapViewContainer.addView(mapView);
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
-        mapView.setZoomLevel(4, true);
-        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
-        MapPOIItem marker = new MapPOIItem();
-        marker.setItemName("Default Marker");
-        marker.setTag(0);
-        marker.setMapPoint(MARKER_POINT);
-        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-
-        mapView.addPOIItem(marker);
+//        mapView = new MapView(getContext());
+//        mapView.removeAllPOIItems();
+//        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+//        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
+//        mapViewContainer.addView(mapView);
+//        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
+//        mapView.setZoomLevel(4, true);
+//        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
+//        MapPOIItem marker = new MapPOIItem();
+//        marker.setItemName("Default Marker");
+//        marker.setTag(0);
+//        marker.setMapPoint(MARKER_POINT);
+//        marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+//        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+//
+//        mapView.addPOIItem(marker);
 
         //지도 띄우기
 //        initMapView();
@@ -85,7 +86,7 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
 //        int price = bundle.getInt("price");
-        idx = bundle.getInt("idx");
+        idx = Integer.parseInt(bundle.getString("idx"));
         TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
         IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
         IDindex = bundle.getInt("IDindex");
@@ -150,6 +151,7 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
                 bundle.putInt("cntTaxi",cntTaxi);
                 bundle.putInt("cntID",cntID);
                 bundle.putInt("idx",idx);
+                Log.d("Comment",idx+"");
                 openfragment(CommentFragment, bundle);
                 break;
         }

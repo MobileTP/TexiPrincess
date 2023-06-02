@@ -91,6 +91,7 @@ public class BogiListActivity extends AppCompatActivity {
             int headCount= ((ArrayList)TaxiList[0].get(i).get("User")).size()+1;
             long price= (long) TaxiList[0].get(i).get("Cost");
             String idx= String.valueOf(i);
+            Log.d("Comment",idx+"");
             movieDataList.add(new SampleData(R.drawable.logo, depart,arrive, time, headCount, (int) price,idx));
         }
 //        movieDataList.add(new SampleData(R.drawable.logo, "가천대학교","태평역", "2023/05/01 10:55", 2, 24000,"0"));
