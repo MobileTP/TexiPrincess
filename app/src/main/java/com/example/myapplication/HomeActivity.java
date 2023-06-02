@@ -217,7 +217,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private void logout() {
         // Clear user data, stop background services, etc.
         // If using shared preferences to store user info, it can be cleared like this:
-        SharedPreferences preferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("LoginID", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.commit();
