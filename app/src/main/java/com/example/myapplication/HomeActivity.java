@@ -127,7 +127,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
         }
 
         //지도 띄우기
-//        initMapView();
+        initMapView();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 왼쪽 상단 버튼 만들기
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hambuger); //왼쪽 상단 버튼 아이콘 지정
@@ -246,14 +246,14 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
 
         // When restarting the activity (when Activity B is finished and restarted)
         // if mapView is not included, add it
-//        if (mapViewContainer.indexOfChild(mapView) == -1) {
-//            try {
-//                // Re-initialize and add mapView
-//                initMapView();
-//            } catch (RuntimeException re) {
-//                Log.e("Error", re.toString());
-//            }
-//        }
+        if (mapViewContainer.indexOfChild(mapView) == -1) {
+            try {
+                // Re-initialize and add mapView
+                initMapView();
+            } catch (RuntimeException re) {
+                Log.e("Error", re.toString());
+            }
+        }
     }
 
     @Override

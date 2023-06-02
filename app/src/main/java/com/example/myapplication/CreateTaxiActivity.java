@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateTaxiActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
-    private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
+    private static final int SEARCH_DEPARTURE_ACTIVITY = 10000;
+    private static final int SEARCH_ARRIVAL_ACTIVITY = 20000;
+    private double mLastClickTime = 0;
     private MapView mapView;
     private ViewGroup mapViewContainer;
     private Toolbar toolbar;
@@ -64,7 +67,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         }
 
         //지도 띄우기
-//        initMapView();
+        initMapView();
 
 
         //출발지, 도착지 텍스트
@@ -80,7 +83,36 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
 
         //출발지
         departure.setFocusable(false);
-        departure.setOnClickListener(new View.OnClickListener() {
+        if(SystemClock.elapsedRealtime() - mLastClickTime > 1000) {
+            departure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("주소설정페이지", "주소입력창 클릭");
+                    int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
+                    if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
+                        Log.i("주소설정페이지", "주소입력창 클릭");
+                        Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                        // 화면전환 애니메이션 없애기
+                        overridePendingTransition(0, 0);
+                        // 주소결과
+                        startActivityForResult(i, SEARCH_DEPARTURE_ACTIVITY);
+
+                    }else {
+                        Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    }
+//                    //주소 검색 웹뷰 화면으로 이동
+//                    Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
+//                    getSearchResult.launch(intent);
+                }
+            });
+
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+
+        //도착지
+        arrival.setFocusable(false);
+        arrival.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("주소설정페이지", "주소입력창 클릭");
@@ -91,25 +123,14 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                     // 화면전환 애니메이션 없애기
                     overridePendingTransition(0, 0);
                     // 주소결과
-                    startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+                    startActivityForResult(i, SEARCH_ARRIVAL_ACTIVITY);
 
                 }else {
                     Toast.makeText(getApplicationContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show();
                 }
-                //주소 검색 웹뷰 화면으로 이동
-                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
-                getSearchResult.launch(intent);
-            }
-        });
-
-        //도착지
-        arrival.setFocusable(false);
-        arrival.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //주소 검색 웹뷰 화면으로 이동
-                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
-                getSearchResult.launch(intent);
+//                //주소 검색 웹뷰 화면으로 이동
+//                Intent intent = new Intent(CreateTaxiActivity.this, SearchActivity.class);
+//                getSearchResult.launch(intent);
             }
         });
 
@@ -238,14 +259,24 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         Log.i("test", "onActivityResult");
+        Log.i("requestCode", "REQUESTCODE : " + requestCode);
 
         switch (requestCode) {
-            case SEARCH_ADDRESS_ACTIVITY:
+            case SEARCH_DEPARTURE_ACTIVITY:
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
                     if (data != null) {
-                        Log.i("test", "data: " + data);
+                        Log.i("testdepart", "data: " + data);
                         departure.setText(data);
+                    }
+                }
+                break;
+            case SEARCH_ARRIVAL_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    String data = intent.getExtras().getString("data");
+                    if (data != null) {
+                        Log.i("testarrive", "data: " + data);
+                        arrival.setText(data);
                     }
                 }
                 break;

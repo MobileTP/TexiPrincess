@@ -3,7 +3,9 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -29,7 +31,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
@@ -43,28 +45,16 @@ public class SearchActivity extends AppCompatActivity {
                 webview.loadUrl("javascript:sample2_execDaumPostcode();");
             }
         });
-        webview.loadUrl("http://172.20.10.5:5000/api");
+        webview.setWebChromeClient(new WebChromeClient() {
+            public boolean onConsoleMessage(ConsoleMessage message) {
+                Log.d("WebViewConsoleLog", "message:" + message.message());
+                Log.d("WebViewConsoleLog", "lineNumber:" + message.lineNumber());
+                Log.d("WebViewConsoleLog", "sourceId:" + message.sourceId());
+                return true;
+            }
+        });
+        webview.loadUrl("http://220.76.68.121:5000/api");
 
-//        webview.addJavascriptInterface(new BridgeInterface(), "Android");
-//        webview.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public void onPageFinished(WebView view, String url) {
-//                // Android -> javascript 함수 호출!
-//                webview.loadUrl("javascript:sample2_execDaumPostcode();");
-//            }
-//        });
-//        //최초 웹뷰 로드
-//        webview.loadUrl("https://searchaddress-bab25.web.app/");
     }
 
-//    private class BridgeInterface {
-//        @JavascriptInterface
-//        public void processDATA(String data){
-//            // 카카오 주소 검색 API의 결과 값이 브릿지 통로를 통해 전달 받는다. (from Javascript)
-//            Intent intent = new Intent();
-//            intent.putExtra("data",data);
-//            setResult(RESULT_OK, intent);
-//            finish();
-//        }
-//    }
 }
