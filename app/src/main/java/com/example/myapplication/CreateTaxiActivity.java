@@ -64,7 +64,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         }
 
         //지도 띄우기
-//        initMapView();
+        initMapView();
 
 
         //출발지, 도착지 텍스트
