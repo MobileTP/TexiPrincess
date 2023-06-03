@@ -34,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.myapplication.kakaoApi.MainActivity;
 import com.example.myapplication.login.LoginActivity;
 import com.example.myapplication.mypage.MyPageActivity;
 import com.example.myapplication.mypage.MyReviewActivity;
@@ -316,6 +317,7 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     private void initMapView() {
         mapView = new MapView(this);
         mapView.removeAllPOIItems();
+        mapView.removeAllPolylines();
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapViewContainer = (ViewGroup) findViewById(R.id.map);
         mapViewContainer.addView(mapView);

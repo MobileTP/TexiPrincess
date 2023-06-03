@@ -45,16 +45,6 @@ public class SearchActivity extends AppCompatActivity {
                 webview.loadUrl("javascript:sample2_execDaumPostcode();");
             }
         });
-        webview.setWebChromeClient(new WebChromeClient() {
-            public boolean onConsoleMessage(ConsoleMessage message) {
-                Log.d("WebViewConsoleLog", "message:" + message.message());
-                Log.d("WebViewConsoleLog", "lineNumber:" + message.lineNumber());
-                Log.d("WebViewConsoleLog", "sourceId:" + message.sourceId());
-                return true;
-            }
-        });
         webview.loadUrl("http://220.76.68.121:5000/api");
-
     }
-
 }
