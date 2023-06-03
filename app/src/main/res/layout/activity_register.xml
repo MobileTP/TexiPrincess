@@ -123,14 +123,14 @@
             android:id="@+id/register_User_seat_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="앞"
+            android:text="남자"
             android:textSize="12sp" />
 
         <RadioButton
             android:id="@+id/register_User_seat_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="뒤"
+            android:text="여자"
             android:textSize="12sp" />
 
     </RadioGroup>

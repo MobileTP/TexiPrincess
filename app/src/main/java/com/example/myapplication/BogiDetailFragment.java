@@ -102,11 +102,13 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         mapViewContainer.addView(mapView);
 
         MapPoint MARKER_POINT_depart = MapPoint.mapPointWithGeoCoord(FromY, FromX);
+        Log.e("MARKER_DEPART", "X: " + FromX + " Y: " + FromY);
         MapPOIItem marker_depart = new MapPOIItem();
         marker_depart.setItemName("departure");
         marker_depart.setTag(0);
         marker_depart.setMapPoint(MARKER_POINT_depart);
         MapPoint MARKER_POINT_arrive = MapPoint.mapPointWithGeoCoord(ToY, ToX);
+        Log.e("MARKER_ARRIVE", "X: " + ToX + " Y: " + ToY);
         MapPOIItem marker_arrive = new MapPOIItem();
         marker_arrive.setItemName("arrival");
         marker_arrive.setTag(0);

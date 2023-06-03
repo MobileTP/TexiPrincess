@@ -1,7 +1,9 @@
 package com.example.myapplication.mypage;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,23 @@ import androidx.fragment.app.Fragment;
 import com.example.myapplication.R;
 import com.example.myapplication.boarding.BoardingActivity;
 import com.example.myapplication.comment.commentFragment;
+import com.google.firebase.database.DatabaseReference;
+
+import net.daum.mf.map.api.CameraUpdateFactory;
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPointBounds;
+import net.daum.mf.map.api.MapPolyline;
+import net.daum.mf.map.api.MapView;
 
 import java.util.List;
 import java.util.Map;
 
 public class MyTaxiDetailFragment extends Fragment implements View.OnClickListener {
 
+    private MapView mapView;
+    private ViewGroup mapViewContainer;
+    double FromX,FromY,ToX,ToY;
     private Button commentBtn;
     private Toolbar toolbar;
     private TextView departtxt;
@@ -53,12 +66,17 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
         String time = bundle.getString("time");
         int head = bundle.getInt("head");
 //        int price = bundle.getInt("price");
-        idx = bundle.getInt("idx");
+        idx = Integer.parseInt(bundle.getString("idx"));
         TaxiList = (List<Map<String, Object>>[]) bundle.getSerializable("TaxiList");
         IDList = (List<Map<String, Object>>[]) bundle.getSerializable("IDList");
         IDindex = bundle.getInt("IDindex");
         cntTaxi=bundle.getInt("cntTaxi",0);
         cntID=bundle.getInt("cntID",0);
+
+        FromX= (double) TaxiList[0].get(idx).get("FromX");
+        FromY= (double) TaxiList[0].get(idx).get("FromY");
+        ToX= (double) TaxiList[0].get(idx).get("ToX");
+        ToY= (double) TaxiList[0].get(idx).get("ToY");
 
         departtxt.setText(depart);
         arrivetxt.setText(arrive);
@@ -69,6 +87,42 @@ public class MyTaxiDetailFragment extends Fragment implements View.OnClickListen
         commentBtn = rootView.findViewById(R.id.comment);
         commentBtn.setOnClickListener((View.OnClickListener) this);
 
+        mapView = new MapView(getContext());
+        mapView.removeAllPOIItems();
+        mapView.removeAllPolylines();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+
+        MapPoint MARKER_POINT_depart = MapPoint.mapPointWithGeoCoord(FromY, FromX);
+        Log.e("MARKER_DEPART", "X: " + FromX + " Y: " + FromY);
+        MapPOIItem marker_depart = new MapPOIItem();
+        marker_depart.setItemName("departure");
+        marker_depart.setTag(0);
+        marker_depart.setMapPoint(MARKER_POINT_depart);
+        MapPoint MARKER_POINT_arrive = MapPoint.mapPointWithGeoCoord(ToY, ToX);
+        Log.e("MARKER_ARRIVE", "X: " + ToX + " Y: " + ToY);
+        MapPOIItem marker_arrive = new MapPOIItem();
+        marker_arrive.setItemName("arrival");
+        marker_arrive.setTag(0);
+        marker_arrive.setMapPoint(MARKER_POINT_arrive);
+        marker_depart.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker_depart.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        marker_arrive.setMarkerType(MapPOIItem.MarkerType.RedPin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker_arrive.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+        mapView.addPOIItem(marker_depart);
+        mapView.addPOIItem(marker_arrive);
+
+        MapPolyline polyline = new MapPolyline();
+        polyline.setLineColor(Color.argb(128, 255, 0, 0));
+        polyline.addPoint(MARKER_POINT_arrive);
+        polyline.addPoint(MARKER_POINT_depart);
+        mapView.addPolyline(polyline);
+
+        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
+        int padding = 100; // px
+        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
         return rootView;
     }
 

@@ -89,10 +89,15 @@ public class BogiListActivity extends AppCompatActivity {
             String arrive= (String) TaxiList[0].get(i).get("To");
             String time=(String) TaxiList[0].get(i).get("Time");
             int headCount= ((ArrayList)TaxiList[0].get(i).get("User")).size()+1;
-            long price= (long) TaxiList[0].get(i).get("Cost");
+            Object priced= (Object) TaxiList[0].get(i).get("Cost");
+            Object price;
+//            if(priced instanceof  Long){
+//                price=(long)priced;
+//            }else
+//                price=(int)priced;
             String idx= String.valueOf(i);
-            Log.d("Comment",idx+"");
-            movieDataList.add(new SampleData(R.drawable.logo, depart,arrive, time, headCount, (int) price,idx));
+//            Log.d("Comment",idx+"");
+            movieDataList.add(new SampleData(R.drawable.logo, depart,arrive, time, headCount, (int) 0,idx));
         }
 //        movieDataList.add(new SampleData(R.drawable.logo, "가천대학교","태평역", "2023/05/01 10:55", 2, 24000,"0"));
 //        movieDataList.add(new SampleData(R.drawable.logo, "잠실역","강남역", "2023/05/02 11:55", 1, 10000, "0"));
