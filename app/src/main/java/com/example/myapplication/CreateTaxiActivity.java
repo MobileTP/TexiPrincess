@@ -200,7 +200,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 taxi.put("Chat", new ArrayList<>());
                 taxi.put("Cost", cost);
                 taxi.put("From", From);
-                taxi.put("From", FromX);
+                taxi.put("FromX", FromX);
                 taxi.put("FromY", FromY);
                 taxi.put("Time", time);
                 taxi.put("To",To);
