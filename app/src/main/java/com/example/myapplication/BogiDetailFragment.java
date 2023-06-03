@@ -45,47 +45,11 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
     List<Map<String, Object>>[] IDList;
     int IDindex,cntTaxi,cntID,idx;
     DatabaseReference database;
+    double FromX,FromY,ToX,ToY;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_bogi_detail, container, false);
-
-        mapView = new MapView(getContext());
-        mapView.removeAllPOIItems();
-        mapView.removeAllPolylines();
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
-        mapViewContainer.addView(mapView);
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.49892296550104, 126.94089033876304), true);
-
-        MapPoint MARKER_POINT_depart = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
-        MapPOIItem marker_depart = new MapPOIItem();
-        marker_depart.setItemName("departure");
-        marker_depart.setTag(0);
-        marker_depart.setMapPoint(MARKER_POINT_depart);
-        MapPoint MARKER_POINT_arrive = MapPoint.mapPointWithGeoCoord(37.44892296550104, 126.89089033876304);
-        MapPOIItem marker_arrive = new MapPOIItem();
-        marker_arrive.setItemName("arrival");
-        marker_arrive.setTag(0);
-        marker_arrive.setMapPoint(MARKER_POINT_arrive);
-        marker_depart.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-        marker_depart.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        marker_arrive.setMarkerType(MapPOIItem.MarkerType.RedPin); // 기본으로 제공하는 BluePin 마커 모양.
-        marker_arrive.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-
-        mapView.addPOIItem(marker_depart);
-        mapView.addPOIItem(marker_arrive);
-
-        MapPolyline polyline = new MapPolyline();
-        polyline.setLineColor(Color.argb(128, 255, 0, 0));
-        polyline.addPoint(MARKER_POINT_arrive);
-        polyline.addPoint(MARKER_POINT_depart);
-        mapView.addPolyline(polyline);
-
-        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
-        int padding = 100; // px
-        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
-
 
         toolbar = rootView.findViewById(R.id.toolBar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -114,6 +78,11 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         cntTaxi=bundle.getInt("cntTaxi",0);
         cntID=bundle.getInt("cntID",0);
 
+        FromX= (double) TaxiList[0].get(idx).get("FromX");
+        FromY= (double) TaxiList[0].get(idx).get("FromY");
+        ToX= (double) TaxiList[0].get(idx).get("ToX");
+        ToY= (double) TaxiList[0].get(idx).get("ToY");
+
         departtxt.setText(depart);
         arrivetxt.setText(arrive);
         timetxt.setText(time);
@@ -125,6 +94,40 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         tagiBtn.setOnClickListener((View.OnClickListener) this);
         commentBtn.setOnClickListener((View.OnClickListener) this);
 
+        mapView = new MapView(getContext());
+        mapView.removeAllPOIItems();
+        mapView.removeAllPolylines();
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
+        mapViewContainer.addView(mapView);
+
+        MapPoint MARKER_POINT_depart = MapPoint.mapPointWithGeoCoord(FromY, FromX);
+        MapPOIItem marker_depart = new MapPOIItem();
+        marker_depart.setItemName("departure");
+        marker_depart.setTag(0);
+        marker_depart.setMapPoint(MARKER_POINT_depart);
+        MapPoint MARKER_POINT_arrive = MapPoint.mapPointWithGeoCoord(ToY, ToX);
+        MapPOIItem marker_arrive = new MapPOIItem();
+        marker_arrive.setItemName("arrival");
+        marker_arrive.setTag(0);
+        marker_arrive.setMapPoint(MARKER_POINT_arrive);
+        marker_depart.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker_depart.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        marker_arrive.setMarkerType(MapPOIItem.MarkerType.RedPin); // 기본으로 제공하는 BluePin 마커 모양.
+        marker_arrive.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+        mapView.addPOIItem(marker_depart);
+        mapView.addPOIItem(marker_arrive);
+
+        MapPolyline polyline = new MapPolyline();
+        polyline.setLineColor(Color.argb(128, 255, 0, 0));
+        polyline.addPoint(MARKER_POINT_arrive);
+        polyline.addPoint(MARKER_POINT_depart);
+        mapView.addPolyline(polyline);
+
+        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
+        int padding = 100; // px
+        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
         return rootView;
     }
 

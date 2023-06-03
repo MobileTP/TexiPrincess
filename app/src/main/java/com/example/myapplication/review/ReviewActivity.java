@@ -2,7 +2,6 @@ package com.example.myapplication.review;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,17 +10,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.myapplication.BogiDetailFragment;
-import com.example.myapplication.BogiListActivity;
-import com.example.myapplication.HomeActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.SampleData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +81,7 @@ public class ReviewActivity extends AppCompatActivity {
     {
         movieDataList = new ArrayList<SampleData>();
 
-        for(int i=0; i<((ArrayList)TaxiList[0].get(i).get("User")).size(); i++){
+        for(int i=0; i<((ArrayList)TaxiList[0].get(idx).get("User")).size(); i++){
             int ID= (int) ((ArrayList<?>) TaxiList[0].get(i).get("User")).get(i);
             String depart= (String) IDList[0].get(ID).get("Name");
             String arrive= depart;

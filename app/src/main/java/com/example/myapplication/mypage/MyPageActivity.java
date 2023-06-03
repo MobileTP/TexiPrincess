@@ -1,14 +1,7 @@
 package com.example.myapplication.mypage;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,15 +9,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.myapplication.R;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +35,7 @@ public class MyPageActivity extends AppCompatActivity {
     DatabaseReference database;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int IDindex;
+    int IDindex,cntTaxi,cntID;
     TextView profile_name,profile_info;
     ImageView profile_image;
 
@@ -52,6 +47,8 @@ public class MyPageActivity extends AppCompatActivity {
         TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
         IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
         IDindex=getIntent().getIntExtra("IDindex",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
 
         usingCount=findViewById(R.id.mypage_use_count);
         saveCost=findViewById(R.id.mypage_inbox_cost);
@@ -87,6 +84,8 @@ public class MyPageActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -98,6 +97,8 @@ public class MyPageActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
 
@@ -108,6 +109,8 @@ public class MyPageActivity extends AppCompatActivity {
                         intent.putExtra("TaxiList",TaxiList);
                         intent.putExtra("IDList",IDList);
                         intent.putExtra("IDindex",IDindex);
+                        intent.putExtra("cntTaxi",cntTaxi);
+                        intent.putExtra("cntID",cntID);
                         startActivity(intent);
                         return true;
                 }

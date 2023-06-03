@@ -1,18 +1,11 @@
 package com.example.myapplication;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,22 +18,29 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.myapplication.kakaoApi.MainActivity;
+import com.example.myapplication.mypage.MyPageActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
-import net.daum.mf.map.api.MapPoint;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CreateTaxiActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
   
@@ -55,11 +55,16 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     private MapPOIItem marker_arrive = null;
     private MapPoint MARKER_POINT_ARRIVE = null;
     private MapPoint MARKER_POINT_DEPART = null;
+    private double FromX,FromY,ToX,ToY;
+    private String From,To,time;
+    private int cost=0;
     private Button departureTimeButton;
     private TextView departureTimeText;
     private int cnt = 0;
-
-
+    List<Map<String, Object>>[] TaxiList;
+    List<Map<String, Object>>[] IDList;
+    int IDindex,cntTaxi,cntID;
+    DatabaseReference database;
     public CreateTaxiActivity() {
     }
 
@@ -67,6 +72,12 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createtaxi);
+
+        TaxiList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("TaxiList");
+        IDList= (List<Map<String, Object>>[]) getIntent().getSerializableExtra("IDList");
+        IDindex=getIntent().getIntExtra("IDindex",0);
+        cntTaxi=getIntent().getIntExtra("cntTaxi",0);
+        cntID=getIntent().getIntExtra("cntID",0);
 
         toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -145,6 +156,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 int mHour = c.get(Calendar.HOUR_OF_DAY);
                 int mMinute = c.get(Calendar.MINUTE);
 
+                time=mYear+"/"+mMonth+"/"+mDay+" "+mHour+":"+mMinute;
                 DatePickerDialog datePickerDialog = new DatePickerDialog(CreateTaxiActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -171,6 +183,40 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                database= FirebaseDatabase.getInstance().getReference("Taxi");
+                database.child(String.valueOf(cntTaxi)).child("Admin").setValue(IDindex);
+                database.child(String.valueOf(cntTaxi)).child("Chat").setValue(new ArrayList<>());
+                database.child(String.valueOf(cntTaxi)).child("Cost").setValue(cost);
+                database.child(String.valueOf(cntTaxi)).child("From").setValue(From);
+                database.child(String.valueOf(cntTaxi)).child("FromX").setValue(FromX);
+                database.child(String.valueOf(cntTaxi)).child("FromY").setValue(FromY);
+                database.child(String.valueOf(cntTaxi)).child("Time").setValue(time);
+                database.child(String.valueOf(cntTaxi)).child("To").setValue(To);
+                database.child(String.valueOf(cntTaxi)).child("ToX").setValue(ToX);
+                database.child(String.valueOf(cntTaxi)).child("ToY").setValue(ToY);
+                database.child(String.valueOf(cntTaxi)).child("User").setValue(new ArrayList<>());
+
+                Map<String, Object> taxi = new HashMap<>();
+                taxi.put("Admin", IDindex);
+                taxi.put("Chat", new ArrayList<>());
+                taxi.put("Cost", cost);
+                taxi.put("From", From);
+                taxi.put("From", FromX);
+                taxi.put("FromY", FromY);
+                taxi.put("Time", time);
+                taxi.put("To",To);
+                taxi.put("ToX", ToX);
+                taxi.put("ToY", ToY);
+                taxi.put("User", new ArrayList<>());
+                TaxiList[0].add(taxi);
+
+                Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("IDindex",IDindex);
+                intent.putExtra("cntTaxi",cntTaxi+1);
+                intent.putExtra("cntID",cntID);
+                startActivity(intent);
                 finish();
             }
         });
@@ -276,6 +322,8 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                         Log.i("test", "data: " + data);
                         double X = intent.getExtras().getDouble("PlaceX");
                         double Y = intent.getExtras().getDouble("PlaceY");
+                        FromX=X;
+                        FromY=Y;
                         departure.setText(data);
                         if (marker_depart != null) {
                             mapView.removePOIItem(marker_depart);
@@ -301,6 +349,8 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                         arrival.setText(data);
                         double X = intent.getExtras().getDouble("PlaceX");
                         double Y = intent.getExtras().getDouble("PlaceY");
+                        ToX=X;
+                        ToY=Y;
                         if (marker_arrive != null) {
                             mapView.removePOIItem(marker_arrive);
                         }

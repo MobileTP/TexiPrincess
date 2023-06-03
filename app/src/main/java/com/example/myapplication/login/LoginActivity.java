@@ -49,8 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference database;
     List<Map<String, Object>>[] TaxiList;
     List<Map<String, Object>>[] IDList;
-    int cntTaxi;
-    int cntID;
+    int IDindex,cntTaxi[],cntID[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +77,10 @@ public class LoginActivity extends AppCompatActivity {
         database= FirebaseDatabase.getInstance().getReference();
         DatabaseReference taxiRef = database.child("Taxi");
 
-        List<Map<String, Object>>[] TaxiList = new List[]{new ArrayList<>()};
-        List<Map<String, Object>>[] IDList = new List[]{new ArrayList<>()};
-        int[] cntTaxi=new int[1];
-        int[] cntID=new int[1];
+        TaxiList = new List[]{new ArrayList<>()};
+        IDList = new List[]{new ArrayList<>()};
+        cntTaxi=new int[1];
+        cntID=new int[1];
         taxiRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -118,6 +117,11 @@ public class LoginActivity extends AppCompatActivity {
                     taxi.put("To", snapshot.child("To").getValue());
                     taxi.put("Admin", snapshot.child("Admin").getValue());
                     taxi.put("Cost", snapshot.child("Cost").getValue());
+
+                    taxi.put("FromX", snapshot.child("FromX").getValue());
+                    taxi.put("FromY", snapshot.child("FromY").getValue());
+                    taxi.put("ToX", snapshot.child("ToX").getValue());
+                    taxi.put("ToY", snapshot.child("ToY").getValue());
 
                     taxiList.add(taxi);
                 }
@@ -313,11 +317,11 @@ public class LoginActivity extends AppCompatActivity {
                                     if (IDList[0].get(tmp).get("Password").toString().equals(pwValue.getText().toString())) {
 
                                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                        intent.putExtra("TaxiList", TaxiList);
-                                        intent.putExtra("IDList", IDList);
-                                        intent.putExtra("IDindex", tmp);
-                                        intent.putExtra("cntTaxi", cntTaxi[0]);
-                                        intent.putExtra("cntID", cntID[0]);
+                                        intent.putExtra("TaxiList",TaxiList);
+                                        intent.putExtra("IDList",IDList);
+                                        intent.putExtra("IDindex",tmp);
+                                        intent.putExtra("cntTaxi",cntTaxi[0]);
+                                        intent.putExtra("cntID",cntID[0]);
                                         startActivity(intent);
                                         finish();
                                     } else {
@@ -338,7 +342,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("TaxiList",TaxiList);
+                intent.putExtra("IDList",IDList);
+                intent.putExtra("cntTaxi",cntTaxi[0]);
+                intent.putExtra("cntID",cntID[0]);
                 startActivity(intent);
+                finish();
             }
         });
 
