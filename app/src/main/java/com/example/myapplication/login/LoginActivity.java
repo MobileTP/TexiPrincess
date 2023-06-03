@@ -247,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
                                         database.child(String.valueOf(tmp)).child("Seat").setValue(1);
                                         database.child(String.valueOf(tmp)).child("Email").setValue( user.getKakaoAccount().getEmail());
                                         database.child(String.valueOf(tmp)).child("Mysang").setValue(new ArrayList<>());
-                                        database.child(String.valueOf(tmp)).child("Sex").setValue(user.getKakaoAccount().getGender().equals("남자")?0:1);
+                                        database.child(String.valueOf(tmp)).child("Sex").setValue(user.getKakaoAccount().getGender().equals("MALE")?0:1);
                                         database.child(String.valueOf(tmp)).child("Count").setValue(0);
                                         database.child(String.valueOf(tmp)).child("Review").setValue(new int[]{0, 0, 0, 0, 0, 0});
                                         database.child(String.valueOf(tmp)).child("Image").setValue("null");
@@ -258,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                                         id.put("MySang", new ArrayList<>());
                                         id.put("Seat", 1);
                                         id.put("Email", user.getKakaoAccount().getEmail());
-                                        id.put("Sex", user.getKakaoAccount().getGender().equals("남자")?0:1);
+                                        id.put("Sex", user.getKakaoAccount().getGender().equals("MALE")?0:1);
                                         id.put("Count", 0);
                                         List<Integer> reviewList = new ArrayList<>();
                                         for(int i=0; i<6; i++)
