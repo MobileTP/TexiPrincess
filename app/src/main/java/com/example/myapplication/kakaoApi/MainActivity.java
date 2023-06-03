@@ -1,6 +1,8 @@
 package com.example.myapplication.kakaoApi;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,18 +13,29 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.google.gson.Gson;
 
+import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPointBounds;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
+import java.net.URLEncoder;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.EventListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private int pageNumber = 1;
     private String keyword = "";
     private int cnt = 1;
+    private MarkerEventListener eventListener = new MarkerEventListener(this, this);
+    MapPOIItem[] poiLists = new MapPOIItem[100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         }
         mapViewContainer = (ViewGroup) findViewById(R.id.map);
         mapViewContainer.addView(mapView);
+        mapView.setPOIItemEventListener(eventListener);  // 마커 클릭 이벤트 리스너 등록
 
         recyclerView = findViewById(R.id.rv_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,17 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 double longitude = item.getX();
                 // Perform the necessary actions on item click
                 mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(latitude, longitude), true);
-
-                Log.i("getData", "data: item");
-                Bundle extra = new Bundle();
-                Intent intent = new Intent();
-                extra.putString("PlaceName", item.getName());
-                extra.putString("PlaceADD", item.getAddress());
-                extra.putDouble("PlaceX", item.getX());
-                extra.putDouble("PlaceY", item.getY());
-                intent.putExtras(extra);
-                setResult(RESULT_OK, intent);
-                finish();
+                mapView.selectPOIItem(poiLists[position], true);
             }
         });
 
@@ -167,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     private void addItemsAndMarkers(ResultSearchKeyword searchResult) {
         listItems.clear();
         int cnt = 0;
+        int i = 0;
         if (searchResult != null && searchResult.getDocuments() != null) {
             for (Place document : searchResult.getDocuments()) {
                 ListLayout item = new ListLayout(
@@ -183,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(Double.parseDouble(document.getY()), Double.parseDouble(document.getX()));
                 MapPOIItem marker = new MapPOIItem();
+                poiLists[i] = marker;
+                i++;
                 marker.setItemName(document.getPlace_name());
                 marker.setTag(0);
                 marker.setMapPoint(MARKER_POINT);
