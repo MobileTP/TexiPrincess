@@ -2,28 +2,20 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.login.LoginActivity;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
                     taxi.put("To", snapshot.child("To").getValue());
                     taxi.put("Admin", snapshot.child("Admin").getValue());
                     taxi.put("Cost", snapshot.child("Cost").getValue());
+
+                    taxi.put("FromX", snapshot.child("FromX").getValue());
+                    taxi.put("FromY", snapshot.child("FromY").getValue());
+                    taxi.put("ToX", snapshot.child("ToX").getValue());
+                    taxi.put("ToY", snapshot.child("ToY").getValue());
 
                     taxiList.add(taxi);
                 }

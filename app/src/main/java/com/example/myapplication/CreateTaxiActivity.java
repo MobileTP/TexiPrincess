@@ -25,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.kakaoApi.MainActivity;
-import com.example.myapplication.mypage.MyPageActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -210,7 +209,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 taxi.put("User", new ArrayList<>());
                 TaxiList[0].add(taxi);
 
-                Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra("TaxiList",TaxiList);
                 intent.putExtra("IDList",IDList);
                 intent.putExtra("IDindex",IDindex);
@@ -241,8 +240,6 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     public void onResume() {
         super.onResume();
 
-//         When restarting the activity (when Activity B is finished and restarted)
-//         if mapView is not included, add it
         if (mapViewContainer.indexOfChild(mapView) == -1) {
             try {
                 // Re-initialize and add mapView
@@ -324,6 +321,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                         double Y = intent.getExtras().getDouble("PlaceY");
                         FromX=X;
                         FromY=Y;
+                        From=data;
                         departure.setText(data);
                         if (marker_depart != null) {
                             mapView.removePOIItem(marker_depart);
@@ -351,6 +349,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                         double Y = intent.getExtras().getDouble("PlaceY");
                         ToX=X;
                         ToY=Y;
+                        To=data;
                         if (marker_arrive != null) {
                             mapView.removePOIItem(marker_arrive);
                         }
