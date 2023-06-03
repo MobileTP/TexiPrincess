@@ -52,6 +52,7 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
 
         mapView = new MapView(getContext());
         mapView.removeAllPOIItems();
+        mapView.removeAllPolylines();
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
         mapViewContainer = (ViewGroup) rootView.findViewById(R.id.map);
         mapViewContainer.addView(mapView);

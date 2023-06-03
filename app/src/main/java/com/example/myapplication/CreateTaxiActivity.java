@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.myapplication.kakaoApi.MainActivity;
+
+import net.daum.mf.map.api.CameraUpdateFactory;
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPointBounds;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 import net.daum.mf.map.api.MapPoint;
 
@@ -42,12 +49,13 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     private Toolbar toolbar;
     private Button createButton, searchButton1,searchButton2;
     private EditText departure, arrival, departureTime, numberOfPeople;
-
+    private MapPOIItem marker_depart = null;
+    private MapPOIItem marker_arrive = null;
+    private MapPoint MARKER_POINT_ARRIVE = null;
+    private MapPoint MARKER_POINT_DEPART = null;
     private Button departureTimeButton;
     private TextView departureTimeText;
-
-    private static final String BASE_URL = "https://dapi.kakao.com/";
-    private static final String API_KEY = "KakaoAK fe94c788c227a80046a80f13fce7d65a"; // REST API key
+    private int cnt = 0;
 
 
     public CreateTaxiActivity() {
@@ -88,7 +96,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
                 if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
                     Log.i("주소설정페이지", "주소입력창 클릭");
-                    Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     // 화면전환 애니메이션 없애기
                     overridePendingTransition(0, 0);
                     // 주소결과
@@ -109,7 +117,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 int status = NetworkStatus.getConnectivityStatus(getApplicationContext());
                 if(status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
                     Log.i("주소설정페이지", "주소입력창 클릭");
-                    Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     // 화면전환 애니메이션 없애기
                     overridePendingTransition(0, 0);
                     // 주소결과
@@ -169,17 +177,44 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     public void finish() {
         mapViewContainer.removeView(mapView);
         mapView = null;
+        cnt--;
         super.finish();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapViewContainer.removeView(mapView);
+        mapView = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//         When restarting the activity (when Activity B is finished and restarted)
+//         if mapView is not included, add it
+        if (mapViewContainer.indexOfChild(mapView) == -1) {
+            try {
+                // Re-initialize and add mapView
+                initMapView();
+            } catch (RuntimeException re) {
+                Log.e("Error", re.toString());
+            }
+        }
     }
 
     private void initMapView() {
         mapView = new MapView(this);
-        mapView.removeAllPOIItems();
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        if (cnt == 0) {
+            cnt++;
+            mapView.removeAllPOIItems();
+            mapView.removeAllPolylines();
+            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+        }
         mapViewContainer = (ViewGroup) findViewById(R.id.map);
         mapViewContainer.addView(mapView);
         mapView.setMapViewEventListener(this);
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
     }
 
     private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(
@@ -194,31 +229,6 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 }
             }
     );
-
-    private void searchKeyword(String keyword) {
-        Retrofit retrofit = new Retrofit.Builder() // Retrofit setup
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        KakaoAPI_Interface api = retrofit.create(KakaoAPI_Interface.class); // Create communication interface object
-        Call<ResultSearchKeyword> call = api.getSearchKeyword(API_KEY, keyword); // Input search conditions
-
-        // Request to API server
-        call.enqueue(new Callback<ResultSearchKeyword>() {
-            @Override
-            public void onResponse(Call<ResultSearchKeyword> call, Response<ResultSearchKeyword> response) {
-                // Communication success (search results are stored in response.body())
-                Log.d("Test", "Raw: " + response.raw());
-                Log.d("Test", "Body: " + response.body());
-            }
-
-            @Override
-            public void onFailure(Call<ResultSearchKeyword> call, Throwable t) {
-                // Communication failure
-                Log.w("CreateTaxi", "Communication failure: " + t.getMessage());
-            }
-        });
-    }
 
     // 권한 체크 이후로직
     @Override
@@ -246,26 +256,79 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         Log.i("test", "onActivityResult");
+        if (mapViewContainer.indexOfChild(mapView) == -1) {
+            try {
+                // Re-initialize and add mapView
+                initMapView();
+            } catch (RuntimeException re) {
+                Log.e("Error", re.toString());
+            }
+        }
 
         switch (requestCode) {
             case SEARCH_DEPART_ACTIVITY:
                 if (resultCode == RESULT_OK) {
-                    String data = intent.getExtras().getString("data");
+                    String data = intent.getExtras().getString("PlaceName");
                     if (data != null) {
                         Log.i("test", "data: " + data);
+                        double X = intent.getExtras().getDouble("PlaceX");
+                        double Y = intent.getExtras().getDouble("PlaceY");
                         departure.setText(data);
+                        if (marker_depart != null) {
+                            mapView.removePOIItem(marker_depart);
+                        }
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(Y, X), true);
+
+                        MARKER_POINT_DEPART = MapPoint.mapPointWithGeoCoord(Y, X);
+                        marker_depart = new MapPOIItem();
+                        marker_depart.setItemName("출발지 : " + data);
+                        marker_depart.setTag(0);
+                        marker_depart.setMapPoint(MARKER_POINT_DEPART);
+                        marker_depart.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+                        marker_depart.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+                        mapView.addPOIItem(marker_depart);
                     }
                 }
                 break;
             case SEARCH_ARRIVE_ACTIVITY:
                 if (resultCode == RESULT_OK) {
-                    String data = intent.getExtras().getString("data");
+                    String data = intent.getExtras().getString("PlaceName");
                     if (data != null) {
                         Log.i("test", "data: " + data);
                         arrival.setText(data);
+                        double X = intent.getExtras().getDouble("PlaceX");
+                        double Y = intent.getExtras().getDouble("PlaceY");
+                        if (marker_arrive != null) {
+                            mapView.removePOIItem(marker_arrive);
+                        }
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(Y, X), true);
+
+                        MARKER_POINT_ARRIVE = MapPoint.mapPointWithGeoCoord(Y, X);
+                        marker_arrive = new MapPOIItem();
+                        marker_arrive.setItemName("도착지 : " + data);
+                        marker_arrive.setTag(0);
+                        marker_arrive.setMapPoint(MARKER_POINT_ARRIVE);
+                        marker_arrive.setMarkerType(MapPOIItem.MarkerType.RedPin); // 기본으로 제공하는 BluePin 마커 모양.
+                        marker_arrive.setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+                        mapView.addPOIItem(marker_arrive);
                     }
                 }
                 break;
+        }
+
+        if (marker_arrive != null && marker_depart != null) {
+            mapView.removeAllPolylines();
+            mapView.addPOIItem(marker_depart);
+            mapView.addPOIItem(marker_arrive);
+            MapPolyline polyline = new MapPolyline();
+            polyline.setLineColor(Color.argb(128, 255, 0, 0));
+            polyline.addPoint(MARKER_POINT_ARRIVE);
+            polyline.addPoint(MARKER_POINT_DEPART);
+            mapView.addPolyline(polyline);
+
+            MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
+            int padding = 100; // px
+            mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
         }
     }
 
