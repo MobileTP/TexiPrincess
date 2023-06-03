@@ -166,24 +166,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                if(userID != null) {
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    intent.putExtra("TaxiList", TaxiList);
-                    intent.putExtra("IDList", IDList);
-                    intent.putExtra("IDindex", userID);
-                    intent.putExtra("cntTaxi", cntTaxi[0]);
-                    intent.putExtra("cntID", cntID[0]);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-                }
+//                if(userID != null) {
+//                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+//                    intent.putExtra("TaxiList", TaxiList);
+//                    intent.putExtra("IDList", IDList);
+//                    intent.putExtra("IDindex", userID);
+//                    intent.putExtra("cntTaxi", cntTaxi[0]);
+//                    intent.putExtra("cntID", cntID[0]);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
+//                    startActivity(i);
+//                    finish();
+//                }
 
-//                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-//                finish();
-//                startActivity(i);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                finish();
+                startActivity(i);
 
             }
         }, SPLASH_TIME_OUT);
