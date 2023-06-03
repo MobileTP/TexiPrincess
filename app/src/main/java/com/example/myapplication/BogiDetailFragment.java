@@ -87,9 +87,6 @@ public class BogiDetailFragment extends Fragment implements View.OnClickListener
         mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
 
 
-//        지도 띄우기
-//        initMapView();
-
         toolbar = rootView.findViewById(R.id.toolBar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);

@@ -245,8 +245,8 @@ public class HomeActivity extends AppCompatActivity implements MapView.CurrentLo
     public void onResume() {
         super.onResume();
 
-//         When restarting the activity (when Activity B is finished and restarted)
-//         if mapView is not included, add it
+        // When restarting the activity (when Activity B is finished and restarted)
+        // if mapView is not included, add it
         if (mapViewContainer.indexOfChild(mapView) == -1) {
             try {
                 // Re-initialize and add mapView

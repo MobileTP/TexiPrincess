@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateTaxiActivity extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener {
+  
     private static final int SEARCH_DEPART_ACTIVITY = 20000;
     private static final int SEARCH_ARRIVE_ACTIVITY = 10000;
     private MapView mapView;
@@ -86,6 +88,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
                 R.array.number_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
 
         //출발지
         departure.setFocusable(false);
@@ -331,6 +334,7 @@ public class CreateTaxiActivity extends AppCompatActivity implements MapView.Cur
             mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
         }
     }
+
 
     @Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
